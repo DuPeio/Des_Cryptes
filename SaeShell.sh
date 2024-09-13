@@ -62,6 +62,21 @@ caesarChif(){
 
     read choixCaesaerChif
 
+    if[ "$choixCaesaerChif" == "1" ]; then
+        echo "Vous avez choisi le chiffrement le contenu d'un fichier externe"
+        echo "Entrez le chemin de votre fichier..."
+
+        read caesarCheminChif
+        
+    fi 
+    if[ "$choixCaesaerChif" == "2" ]; then
+        echo "Vous avez choisi de chiffrer d'une phrase"
+        echo "Entrez la phrase que vous souhaitez chiffrer..."
+        
+    fi
+
+    
+
 }
 
 caesarDechif(){
@@ -70,4 +85,18 @@ caesarDechif(){
     echo "Une phrase (2)" 
 
     read choixCaesarDechif
+
+    if[ "$choixCaesarDechif" == "1" ]; then
+        echo "Vous avez choisi de déchiffrer le contenu d'un fichier externe"
+        echo "Entrez le chemin de votre fichier..."
+
+        read caesarCheminDechif
+
+    fi 
+    if[ "$choixCaesarDechif" == "2" ]; then
+        echo "Vous avez choisi de déchiffrer d'une phrase"
+        echo "Entrez la phrase que vous souhaitez déchiffrer..."
+    fi
+
+    
 }
