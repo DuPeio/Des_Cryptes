@@ -5,21 +5,35 @@ main() {
     echo "Code Morse (1)"
     echo "Code Caesar (2)"
     echo "Code de Vigenère (3)"
+    echo "Quitter le programme (4)"
 
     read choix
 
-    if[ "$choix" == "1" ]; then
-        echo "Vous avez choisi le Code Morse"
-    fi 
-    if[ "$choix" == "2" ]; then
-        echo "Vous avez choisi le Code Caesar"
-        caesarMain
-    fi
-    
-    if[ "$choix" == "3" ]; then
-        echo "Vous avez choisi le Code de Vigenère"
-    fi
+    case $choix in
+        "1")
+            echo "Vous avez choisi le Code Morse"
+            ;;
+        "2")
+            echo "Vous avez choisi le Code Caesar"
+            caesarMain
+            ;;
+        "3")
+            echo "Vous avez choisi le Code de Vigenère"
+            ;;
+        "4")
+            echo "Vous avez choisi de quitter le programme"
+            quitter
+            ;;
+        *)
+            echo "Choix invalide. Veuillez réessayer."
+            main
+    esac
     echo $choix
+}
+
+# Fontion qui quitte le programme
+quitter(){
+    exit 0
 }
 
 
@@ -37,20 +51,18 @@ caesarMain() {
     if[ "$choixCaesar" == "1" ]; then
         echo "Vous avez choisi le chiffrement de données"
         caesarChif
-    fi 
-    if[ "$choixCaesar" == "2" ]; then
+     
+    else if[ "$choixCaesar" == "2" ]; then
         echo "Vous avez choisi le déchiffrement de données"
         caesarDechif
-    fi
 
-    if[ "$choixCaesar" == "3" ]; then
+    else if[ "$choixCaesar" == "3" ]; then
         echo "Retour au menu principal..."
         main
-    fi
 
-    if[ "$choixCaesar" == "4" ]; then
+    else if[ "$choixCaesar" == "4" ]; then
         echo "Vous avez choisi de quitter le programme"
-        exit 0
+        quitter
     fi
     echo $choixCaesar
 }
@@ -61,6 +73,7 @@ caesarChif(){
     echo "Que souhaitez-vous chiffrer ?"
     echo "Le contenu d'un fichier externe (1)"
     echo "Une phrase (2)"
+    # echo "Retour (3)"
 
     read choixCaesaerChif
 
@@ -73,6 +86,24 @@ caesarChif(){
         if [ ! -e "$caesarCheminChif" -o ! -f "$caesarCheminChif"]; then
             echo "Chemin incorrect..."
         fi
+
+        echo "Quelles lignes du fichier voulez-vous chiffrer ?"
+        echo "Attention"
+        echo "Tout (1)"
+        echo "Choisissez les lignes (2)"
+        echo "Retour (3)"
+
+        read caesarChoixLignes
+
+        if[ "$caesarChoixLignes" == "1" ]; then
+            echo "Chiffrement du fichier en cours"
+            echo "Entrez le chemin de votre fichier..."
+        if[ "$caesarChoixLignes" == "1" ]; then
+            echo "Chiffrement du fichier en cours"
+            echo "Entrez le chemin de votre fichier..."
+        if[ "$caesarChoixLignes" == "1" ]; then
+            echo "Chiffrement du fichier en cours"
+            echo "Entrez le chemin de votre fichier..."
 
 
         
