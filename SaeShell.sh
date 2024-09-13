@@ -80,7 +80,7 @@ caesarMain() {
     # echo $choixCaesar //Pour test
 }
 
-CleCaesarChiff = 0 #Pour le moment je la mets à la portée de toute les fonctions
+CleCaesarChiff = 0 #Elle est en globale sinon elle se réinitialise à chaque fois que je lance caesarChif
 
 # Chiffrment choix
 caesarChif(){
@@ -209,8 +209,11 @@ caesarDechif(){
 
             case $caesarChoixLignes in
                 "1")
-                    # Doit choisir la clé de déchiffrement
+                    echo "Entrez la clé pour déchiffrer cette phrase"
+                    read cleCaesarDechif
+
                     echo "Déchiffrement du fichier en cours"
+                    # Traduire le texte
                     ;;
 
                 "2")
@@ -220,7 +223,10 @@ caesarDechif(){
                     read choixLignesCaesar
 
                     
-                    # Il faut voir si les lignes sont valides 
+                    # Il faut voir si les lignes sont valides
+
+                    echo "Entrez la clé pour déchiffrer cette phrase"
+                    read cleCaesarDechif 
                     # Puis traduire 
                     ;;
 
@@ -238,11 +244,13 @@ caesarDechif(){
             ;;
         
         "2")
-            # Doit choisir la clé de déchiffrement
+            
             echo "Vous avez choisi de déchiffrer une phrase"
             echo "Entrez la phrase que vous souhaitez déchiffrer..."
-
             read phraseCaesar
+
+            echo "Entrez la clé pour déchiffrer cette phrase"
+            read cleCaesarDechif
 
             # Il faut traduire la phrase
 
