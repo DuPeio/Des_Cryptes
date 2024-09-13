@@ -69,6 +69,12 @@ caesarChif(){
         echo "Entrez le chemin de votre fichier..."
 
         read caesarCheminChif
+
+        if [ ! -e "$caesarCheminChif" -o ! -f "$caesarCheminChif"]; then
+            echo "Chemin incorrect..."
+        fi
+
+
         
     fi 
     if[ "$choixCaesaerChif" == "2" ]; then
