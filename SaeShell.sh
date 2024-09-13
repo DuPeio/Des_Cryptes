@@ -28,7 +28,7 @@ main() {
             echo "Choix invalide. Veuillez réessayer."
             main
     esac
-    echo $choix
+    # echo $choix //Pour test
 }
 
 # Fontion qui quitte le programme
@@ -48,23 +48,28 @@ caesarMain() {
 
     read choixCaesar
 
-    if[ "$choixCaesar" == "1" ]; then
-        echo "Vous avez choisi le chiffrement de données"
-        caesarChif
-     
-    else if[ "$choixCaesar" == "2" ]; then
-        echo "Vous avez choisi le déchiffrement de données"
-        caesarDechif
-
-    else if[ "$choixCaesar" == "3" ]; then
-        echo "Retour au menu principal..."
-        main
-
-    else if[ "$choixCaesar" == "4" ]; then
-        echo "Vous avez choisi de quitter le programme"
-        quitter
-    fi
-    echo $choixCaesar
+    case $choixCaesar in
+        "1")   
+            echo "Vous avez choisi le chiffrement de données"
+            caesarChif
+            ;;
+        "2")
+            echo "Vous avez choisi le déchiffrement de données"
+            caesarDechif
+            ;;
+        "3")
+            echo "Retour au menu principal..."
+            main
+            ;;
+        "4")
+            echo "Vous avez choisi de quitter le programme"
+            quitter
+            ;;
+        *)
+            echo "Choix invalide. Veuillez réessayer."
+            caesarMain
+    esac
+    # echo $choixCaesar //Pour test
 }
 
 
@@ -73,66 +78,152 @@ caesarChif(){
     echo "Que souhaitez-vous chiffrer ?"
     echo "Le contenu d'un fichier externe (1)"
     echo "Une phrase (2)"
-    # echo "Retour (3)"
+    echo "Retour (3)"
 
     read choixCaesaerChif
 
-    if[ "$choixCaesaerChif" == "1" ]; then
-        echo "Vous avez choisi le chiffrement le contenu d'un fichier externe"
-        echo "Entrez le chemin de votre fichier..."
 
-        read caesarCheminChif
-
-        if [ ! -e "$caesarCheminChif" -o ! -f "$caesarCheminChif"]; then
-            echo "Chemin incorrect..."
-        fi
-
-        echo "Quelles lignes du fichier voulez-vous chiffrer ?"
-        echo "Attention"
-        echo "Tout (1)"
-        echo "Choisissez les lignes (2)"
-        echo "Retour (3)"
-
-        read caesarChoixLignes
-
-        if[ "$caesarChoixLignes" == "1" ]; then
-            echo "Chiffrement du fichier en cours"
-            echo "Entrez le chemin de votre fichier..."
-        if[ "$caesarChoixLignes" == "1" ]; then
-            echo "Chiffrement du fichier en cours"
-            echo "Entrez le chemin de votre fichier..."
-        if[ "$caesarChoixLignes" == "1" ]; then
-            echo "Chiffrement du fichier en cours"
+    case $choixCaesaerChif in
+        "1")
+            echo "Vous avez choisi de chiffrer le contenu d'un fichier externe"
             echo "Entrez le chemin de votre fichier..."
 
+            read caesarCheminChif
 
+            if [ ! -e "$caesarCheminChif" -o ! -f "$caesarCheminChif"]; then
+                echo "Chemin incorrect..."
+                caesarChif
+            fi
+
+            echo "Voulez vous chiffrer tout le fichier ou juste quelques lignes ?"
+            echo "Attention votre fichier va subir des modifications"
+            echo "Tout (1)"
+            echo "Choisissez les lignes (2)"
+            echo "Retour (3)"
+
+            read caesarChoixLignes
+
+            case $caesarChoixLignes in
+                "1")
+                    echo "Chiffrement du fichier en cours"
+                    ;;
+
+                "2")
+                    echo "Quelles lignes du fichier voulez-vous chiffrer ?"
+                
+                    read choixLignesCaesar
+
+                    # Il faut voir si les lignes sont valides 
+                    # Puis traduire 
+                    ;;
+
+                "3")
+                    echo "Retour au menu Caesar..."
+                    caesarMain
+                    ;;
+
+                *)
+                    echo "Choix invalide. Veuillez réessayer."
+                    caesarChif
+                    ;;
+
+            esac
+            ;;
         
-    fi 
-    if[ "$choixCaesaerChif" == "2" ]; then
-        echo "Vous avez choisi de chiffrer d'une phrase"
-        echo "Entrez la phrase que vous souhaitez chiffrer..."
-        
-    fi    
+        "2")
+            echo "Vous avez choisi de chiffrer une phrase"
+            echo "Entrez la phrase que vous souhaitez chiffrer..."
 
+            read phraseCaesar
+
+            # Il faut traduire la phrase
+
+            ;;
+        
+        "3")
+            ;;
+        
+        *)
+            echo "Choix invalide. Veuillez réessayer."
+            caesarChif
+            ;;
+
+    esac
 }
 
 # Dechiffrement choix
 caesarDechif(){
     echo "Que souhaitez-vous déchiffrer ?"
     echo "Le contenu d'un fichier externe (1)"
-    echo "Une phrase (2)" 
+    echo "Une phrase (2)"
+    echo "Retour (3)" 
 
     read choixCaesarDechif
 
-    if[ "$choixCaesarDechif" == "1" ]; then
-        echo "Vous avez choisi de déchiffrer le contenu d'un fichier externe"
-        echo "Entrez le chemin de votre fichier..."
+    case $choixCaesarDechif in
+        "1")
+            echo "Vous avez choisi de déchiffrer le contenu d'un fichier externe"
+            echo "Entrez le chemin de votre fichier..."
 
-        read caesarCheminDechif
+            read caesarCheminDechif
 
-    fi 
-    if[ "$choixCaesarDechif" == "2" ]; then
-        echo "Vous avez choisi de déchiffrer d'une phrase"
-        echo "Entrez la phrase que vous souhaitez déchiffrer..."
-    fi
+            if [ ! -e "$caesarCheminDechif" -o ! -f "$caesarCheminDechif"]; then
+                echo "Chemin incorrect..."
+                caesarDechif
+            fi
+
+            echo "Voulez vous déchiffrer tout le fichier ou juste quelques lignes ?"
+            echo "Attention votre fichier va subir des modifications"
+            echo "Tout (1)"
+            echo "Choisissez les lignes (2)"
+            echo "Retour (3)"
+
+            read caesarChoixLignes
+
+            case $caesarChoixLignes in
+                "1")
+                    echo "Déchiffrement du fichier en cours"
+                    ;;
+
+                "2")
+                    echo "Quelles lignes du fichier voulez-vous déchiffrer ?"
+                
+                    read choixLignesCaesar
+
+                    # Il faut voir si les lignes sont valides 
+                    # Puis traduire 
+                    ;;
+
+                "3")
+                    echo "Retour au menu Caesar..."
+                    caesarMain
+                    ;;
+
+                *)
+                    echo "Choix invalide. Veuillez réessayer."
+                    caesarDechif
+                    ;;
+
+            esac
+            ;;
+        
+        "2")
+            echo "Vous avez choisi de déchiffrer une phrase"
+            echo "Entrez la phrase que vous souhaitez déchiffrer..."
+
+            read phraseCaesar
+
+            # Il faut traduire la phrase
+
+            ;;
+        
+        "3")
+            ;;
+        
+        *)
+            echo "Choix invalide. Veuillez réessayer."
+            caesardechif
+            ;;
+
+    esac
 }
