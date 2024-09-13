@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #Partie Globale : Main
 main() {
     echo "Bonjour"
@@ -36,6 +38,12 @@ quitter(){
     exit 0
 }
 
+# Fonction qui fait de l'aléatoire
+aleatoire(){
+    echo $((RANDOM % (500 - 5 + 1) + 5))
+}
+
+
 
 # Partie Peio : Code Ceasar
 # Menu 
@@ -72,25 +80,27 @@ caesarMain() {
     # echo $choixCaesar //Pour test
 }
 
+CleCaesarChiff = 0 #Pour le moment je la mets à la portée de toute les fonctions
 
 # Chiffrment choix
 caesarChif(){
-    echo "Que souhaitez-vous chiffrer ?"
-    echo "Le contenu d'un fichier externe (1)"
-    echo "Une phrase (2)"
-    echo "Retour (3)"
+    echo "Que souhaitez-vous faire ?"
+    echo "Chiffrer le contenu d'un fichier externe (1)"
+    echo "Chiffrer une phrase (2)"
+    echo "Changer la clé de chiffrement, elle est égale à $CleCaesarChiff (3)"
+    echo "Retour au menu Caesar (4)"
 
-    read choixCaesaerChif
+    read choixCaesarChif
 
 
-    case $choixCaesaerChif in
+    case $choixCaesarChif in
         "1")
             echo "Vous avez choisi de chiffrer le contenu d'un fichier externe"
             echo "Entrez le chemin de votre fichier..."
 
             read caesarCheminChif
 
-            if [ ! -e "$caesarCheminChif" -o ! -f "$caesarCheminChif"]; then
+            if [ ! -e "$caesarCheminChif" ] || [ ! -f "$caesarCheminChif" ]; then
                 echo "Chemin incorrect..."
                 caesarChif
             fi
@@ -141,8 +151,25 @@ caesarChif(){
             ;;
         
         "3")
+            echo "Choisissez une clé de chiffrement"
+            echo "Aléatoire (0)"
+            echo "Autre, entrez la valeur de la clé"
+
+            read choixCleCaesarChiff
+
+            if [ "$choixCleCaesarChiff" == "0" ]; then
+                CleCaesarChiff = $(aleatoire)
+            else
+                CleCaesarChiff = choixCleCaesarChiff
+            fi
+            caesarChif
             ;;
-        
+
+        "4")
+            echo "Retour au menu Caesar..."
+                    caesarMain
+            ;;
+
         *)
             echo "Choix invalide. Veuillez réessayer."
             caesarChif
@@ -167,7 +194,7 @@ caesarDechif(){
 
             read caesarCheminDechif
 
-            if [ ! -e "$caesarCheminDechif" -o ! -f "$caesarCheminDechif"]; then
+            if [ ! -e "$caesarCheminDechif" ] || [ ! -f "$caesarCheminDechif" ]; then
                 echo "Chemin incorrect..."
                 caesarDechif
             fi
@@ -182,14 +209,17 @@ caesarDechif(){
 
             case $caesarChoixLignes in
                 "1")
+                    # Doit choisir la clé de déchiffrement
                     echo "Déchiffrement du fichier en cours"
                     ;;
 
                 "2")
+                    # Doit choisir la clé de déchiffrement
                     echo "Quelles lignes du fichier voulez-vous déchiffrer ?"
                 
                     read choixLignesCaesar
 
+                    
                     # Il faut voir si les lignes sont valides 
                     # Puis traduire 
                     ;;
@@ -208,6 +238,7 @@ caesarDechif(){
             ;;
         
         "2")
+            # Doit choisir la clé de déchiffrement
             echo "Vous avez choisi de déchiffrer une phrase"
             echo "Entrez la phrase que vous souhaitez déchiffrer..."
 
@@ -218,6 +249,8 @@ caesarDechif(){
             ;;
         
         "3")
+            echo "Retour au menu Caesar..."
+            caesarMain
             ;;
         
         *)
