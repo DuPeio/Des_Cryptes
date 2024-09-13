@@ -24,6 +24,7 @@ main() {
 
 
 # Partie Peio : Code Ceasar
+# Menu 
 caesarMain() {
     echo "Que voulez vous faire ?"
     echo "Chiffrer (1)"
@@ -55,6 +56,7 @@ caesarMain() {
 }
 
 
+# Chiffrment choix
 caesarChif(){
     echo "Que souhaitez-vous chiffrer ?"
     echo "Le contenu d'un fichier externe (1)"
@@ -73,12 +75,11 @@ caesarChif(){
         echo "Vous avez choisi de chiffrer d'une phrase"
         echo "Entrez la phrase que vous souhaitez chiffrer..."
         
-    fi
-
-    
+    fi    
 
 }
 
+# Dechiffrement choix
 caesarDechif(){
     echo "Que souhaitez-vous déchiffrer ?"
     echo "Le contenu d'un fichier externe (1)"
@@ -97,6 +98,4 @@ caesarDechif(){
         echo "Vous avez choisi de déchiffrer d'une phrase"
         echo "Entrez la phrase que vous souhaitez déchiffrer..."
     fi
-
-    
 }
