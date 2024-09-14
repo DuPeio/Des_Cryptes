@@ -3,37 +3,37 @@
 #Partie Globale : Main
 main() {
     echo "---------------------------------------------------------------"
-    echo "Choisissez un mode de chiffrement"
+    echo "              Choisissez un mode de chiffrement"
     echo "---------------------------------------------------------------"
-    echo "Code Morse (1)"
-    echo "Code Caesar (2)"
-    echo "Code de Vigenère (3)"
-    echo "Quitter le programme (4)"
+    echo "                        Code Morse (1)"
+    echo "                        Code Caesar (2)"
+    echo "                      Code de Vigenère (3)"
+    echo "                    Quitter le programme (4)"
 
     read choix
 
     case $choix in
         "1")     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi le Code Morse"
+            echo "             Vous avez choisi le Code Morse"
             ;;
         "2")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi le Code Caesar"
+            echo "             Vous avez choisi le Code Caesar"
             caesarMain
             ;;
         "3")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi le Code de Vigenère"
+            echo "            Vous avez choisi le Code de Vigenère"
             ;;
         "4")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi de quitter le programme"
+            echo "          Vous avez choisi de quitter le programme"
             quitter
             ;;
         *)
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo "Choix invalide. Veuillez réessayer."
+            echo "             Choix invalide. Veuillez réessayer."
             main
     esac
     # echo $choix //Pour test
@@ -55,39 +55,39 @@ aleatoire(){
 # Menu 
 caesarMain() {
     echo "---------------------------------------------------------------"
-    echo "Que voulez vous faire ?"
+    echo "                   Que voulez vous faire ?"
     echo "---------------------------------------------------------------"
-    echo "Chiffrer (1)"
-    echo "Dechiffrer (2)"
-    echo "Choisir un autre mode de chiffrement (3)"
-    echo "Quitter le programme (4)"
+    echo "                        Chiffrer (1)"
+    echo "                       Dechiffrer (2)"
+    echo "           Choisir un autre mode de chiffrement (3)"
+    echo "                  Quitter le programme (4)"
 
     read choixCaesar
 
     case $choixCaesar in
         "1")     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi le chiffrement de données"
+            echo "        Vous avez choisi le chiffrement de données"
             caesarChif
             ;;
         "2")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi le déchiffrement de données"
+            echo "        Vous avez choisi le déchiffrement de données"
             caesarDechif
             ;;
         "3")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Retour au menu principal..."
+            echo "                 Retour au menu principal..."
             main
             ;;
         "4")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi de quitter le programme"
+            echo "           Vous avez choisi de quitter le programme"
             quitter
             ;;
         *)
             echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo "Choix invalide. Veuillez réessayer."
+            echo "              Choix invalide. Veuillez réessayer."
             caesarMain
     esac
     # echo $choixCaesar //Pour test
@@ -98,12 +98,12 @@ cleCaesarChif=0 #Elle est en globale sinon elle se réinitialise à chaque fois 
 # Chiffrment choix
 caesarChif(){
     echo "---------------------------------------------------------------"
-    echo "Que souhaitez-vous faire ?"
+    echo "                 Que souhaitez-vous faire ?"
     echo "---------------------------------------------------------------"
-    echo "Chiffrer le contenu d'un fichier externe (1)"
-    echo "Chiffrer une phrase (2)"
-    echo "Changer la clé de chiffrement, elle est égale à $cleCaesarChif (3)"
-    echo "Retour au menu Caesar (4)"
+    echo "         Chiffrer le contenu d'un fichier externe (1)"
+    echo "                  Chiffrer une phrase (2)"
+    echo "     Changer la clé de chiffrement, elle est égale à $cleCaesarChif (3)"
+    echo "                 Retour au menu Caesar (4)"
 
     read choixCaesarChif
 
@@ -111,8 +111,8 @@ caesarChif(){
     case $choixCaesarChif in
         "1")     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi de chiffrer le contenu d'un fichier externe"
-            echo "Entrez le chemin de votre fichier..."
+            echo " Vous avez choisi de chiffrer le contenu d'un fichier externe"
+            echo "           Entrez le chemin de votre fichier..."
 
             read caesarCheminChif
 
@@ -123,42 +123,42 @@ caesarChif(){
             
 	    echo "---------------------------------------------------------------"
             echo "Voulez vous chiffrer tout le fichier ou juste quelques lignes ?"
-            echo "Attention votre fichier va subir des modifications"
+            echo "     Attention votre fichier va subir des modifications"
             echo "---------------------------------------------------------------"
-            echo "Tout (1)"
-            echo "Choisissez les lignes (2)"
-            echo "Retour (3)"
+            echo "                           Tout (1)"
+            echo "                 Choisissez les lignes (2)"
+            echo "                           Retour (3)"
 
             read caesarChoixLignes
 
             case $caesarChoixLignes in
                 "1")     
                     echo "_______________________________________________________________"
-                    echo "Chiffrement du fichier en cours..."
+                    echo "            Chiffrement du fichier en cours..."
                     ;;
 
                 "2")
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "Quelles lignes du fichier voulez-vous chiffrer ?"
+                    echo "      Quelles lignes du fichier voulez-vous chiffrer ?"
                 
                     read choixLignesCaesar
 
                     # Il faut voir si les lignes sont valides 
                     
                     echo "_______________________________________________________________"
-                    echo "Chiffrement en cours..."
+                    echo "                  Chiffrement en cours..."
                     # Puis traduire 
                     ;;
 
                 "3")
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "Retour au menu Caesar..."
+                    echo "                 Retour au menu Caesar..."
                     caesarMain
                     ;;
 
                 *)
                     echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                    echo "Choix invalide. Veuillez réessayer."
+                    echo "             Choix invalide. Veuillez réessayer."
                     caesarChif
                     ;;
 
@@ -167,13 +167,13 @@ caesarChif(){
         
         "2")     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi de chiffrer une phrase"
-            echo "Entrez la phrase que vous souhaitez chiffrer..."
+            echo "         Vous avez choisi de chiffrer une phrase"
+            echo "       Entrez la phrase que vous souhaitez chiffrer..."
 
             read phraseCaesar
             	
             echo "_______________________________________________________________"
-            echo "Chiffrement en cours"
+            echo "                   Chiffrement en cours"
 
             # Il faut traduire la phrase
 
@@ -181,9 +181,9 @@ caesarChif(){
         
         "3")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Choisissez une clé de chiffrement"
-            echo "Aléatoire (0)"
-            echo "Autre, entrez la valeur de la clé"
+            echo "              Choisissez une clé de chiffrement"
+            echo "                       Aléatoire (0)"
+            echo "              Autre, entrez la valeur de la clé"
 
             read choixCleCaesarChiff
 
@@ -197,13 +197,13 @@ caesarChif(){
 
         "4")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Retour au menu Caesar..."
+            echo "                  Retour au menu Caesar..."
                     caesarMain
             ;;
 
         *)
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo "Choix invalide. Veuillez réessayer."
+            echo "            Choix invalide. Veuillez réessayer."
             caesarChif
             ;;
 
@@ -213,11 +213,11 @@ caesarChif(){
 # Dechiffrement choix
 caesarDechif(){
     echo "---------------------------------------------------------------"
-    echo "Que souhaitez-vous déchiffrer ?"
+    echo "               Que souhaitez-vous déchiffrer ?"
     echo "---------------------------------------------------------------"
-    echo "Le contenu d'un fichier externe (1)"
-    echo "Une phrase (2)"
-    echo "Retour (3)" 
+    echo "             Le contenu d'un fichier externe (1)"
+    echo "                       Une phrase (2)"
+    echo "                         Retour (3)" 
 
     read choixCaesarDechif
 
@@ -225,7 +225,7 @@ caesarDechif(){
         "1")     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "Vous avez choisi de déchiffrer le contenu d'un fichier externe"
-            echo "Entrez le chemin de votre fichier..."
+            echo "           Entrez le chemin de votre fichier..."
 
             read caesarCheminDechif
 
@@ -237,52 +237,52 @@ caesarDechif(){
             
 	    echo "-----------------------------------------------------------------"
             echo "Voulez vous déchiffrer tout le fichier ou juste quelques lignes ?"
-            echo "Attention votre fichier va subir des modifications"
+            echo "      Attention votre fichier va subir des modifications"
             echo "-----------------------------------------------------------------"
-            echo "Tout (1)"
-            echo "Choisissez les lignes (2)"
-            echo "Retour (3)"
+            echo "                          Tout (1)"
+            echo "                  Choisissez les lignes (2)"
+            echo "                         Retour (3)"
 
             read caesarChoixLignes
 
             case $caesarChoixLignes in
                 "1")     
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "Entrez la clé pour déchiffrer cette phrase"
+                    echo "        Entrez la clé pour déchiffrer cette phrase"
                     read cleCaesarDechif
 
                     echo "_______________________________________________________________"
-                    echo "Déchiffrement du fichier en cours"
+                    echo "            Déchiffrement du fichier en cours"
                     # Traduire le texte
                     ;;
 
                 "2")
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     # Doit choisir la clé de déchiffrement
-                    echo "Quelles lignes du fichier voulez-vous déchiffrer ?"
+                    echo "      Quelles lignes du fichier voulez-vous déchiffrer ?"
                 
                     read choixLignesCaesar
 
                     
                     # Il faut voir si les lignes sont valides
 
-                    echo "Entrez la clé pour déchiffrer cette phrase"
+                    echo "          Entrez la clé pour déchiffrer cette phrase"
                     read cleCaesarDechif 
                     
                     echo "_______________________________________________________________"
-                    echo "Déchiffrement en cours..."
+                    echo "                  Déchiffrement en cours..."
                     # Puis traduire 
                     ;;
 
                 "3")
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "Retour au menu Caesar..."
+                    echo "                  Retour au menu Caesar..."
                     caesarMain
                     ;;
 
                 *)
                     echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                    echo "Choix invalide. Veuillez réessayer."
+                    echo "              Choix invalide. Veuillez réessayer."
                     caesarDechif
                     ;;
 
@@ -291,15 +291,15 @@ caesarDechif(){
         
         "2")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi de déchiffrer une phrase"
-            echo "Entrez la phrase que vous souhaitez déchiffrer..."
+            echo "         Vous avez choisi de déchiffrer une phrase"
+            echo "       Entrez la phrase que vous souhaitez déchiffrer..."
             read phraseCaesar
 
-            echo "Entrez la clé pour déchiffrer cette phrase"
+            echo "         Entrez la clé pour déchiffrer cette phrase"
             read cleCaesarDechif
             
             echo "_______________________________________________________________"
-            echo "Déchiffrement en cours..."
+            echo "                 Déchiffrement en cours..."
 
             # Il faut traduire la phrase
 
@@ -307,13 +307,13 @@ caesarDechif(){
         
         "3")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Retour au menu Caesar..."
+            echo "                   Retour au menu Caesar..."
             caesarMain
             ;;
         
         *)
             echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo "Choix invalide. Veuillez réessayer."
+            echo "             Choix invalide. Veuillez réessayer."
             caesardechif
             ;;
 
