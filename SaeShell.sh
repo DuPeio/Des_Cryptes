@@ -171,9 +171,11 @@ caesarChif(){
             echo "       Entrez la phrase que vous souhaitez chiffrer..."
 
             read phraseCaesar
+            
             	
             echo "_______________________________________________________________"
             echo "                   Chiffrement en cours"
+            chiffrementCasear "$phraseCaesar"
 
             # Il faut traduire la phrase
 
@@ -322,27 +324,52 @@ caesarDechif(){
 
 chiffrementCasear(){
 #Valeur Ascii [0-127]
+#[a-z] => 97-122
+#[A-Z] => 65-90
+#[0-9] => 48-57
 	local chaine="$1"
+	res=""
 	#Avoir la taille de la chaine => ${#chaine}
 	for ((i=0; i<${#chaine}; i++)); do
-		#Récupérer la lettre à la position i=> ${chaine:$i:1}
-		lettre=${chaine:$i:1}
+	
+		lettre=${chaine:$i:1} #Récupérer la lettre à la position i=> ${chaine:$i:1}
 		#echo "$lettre"
 		
 		asciiLettre=$(printf "%d" "'$lettre") #la ' permet de montrer que $lettre est un caractère
-		asciiLettre=$((asciiLettre+cleCaesarChif)) #Pour additionner en bash, il faut utiliser (( ))
-		while [ $asciiLettre -gt 127 ]; do
-			asciiLettre=$((asciiLettre-127)) #Au cas où ça dépasse, on fait -127 pour boucler 
-		done 
-		echo "$asciiLettre"
 		
+		#Lettres majuscules
+		if [ $asciiLettre -ge 65 ] && [ $asciiLettre -le 90 ]; then
+			asciiLettre=$((asciiLettre+cleCaesarChif)) #Pour additionner en bash, il faut utiliser (( ))
+			while [ $asciiLettre -gt 90 ]; do
+				asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler 
+			done
+			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
 		
-		lettre=$(printf "\\$(printf '%03o' $asciiLettre)") #Cette chose lugubre transforme le code ascii en caractère
+		#Lettres minuscules
+		elif [ $asciiLettre -ge 97 ] && [ $asciiLettre -le 122 ]; then
+			asciiLettre=$((asciiLettre+cleCaesarChif))
+			while [ $asciiLettre -gt 122 ]; do
+				asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler 
+			done
+			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
+		
+		#Chiffres
+		elif [ $asciiLettre -ge 48 ] && [ $asciiLettre -le 57 ]; then
+			asciiLettre=$((asciiLettre+cleCaesarChif))
+			while [ $asciiLettre -gt 57 ]; do
+				asciiLettre=$((asciiLettre-10)) #Au cas où ça dépasse, on fait -10 pour boucler 
+			done
+			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
+		fi
+		 
+		#echo "$asciiLettre"
+		
 		echo "$lettre"
-		
+		res+=$lettre
 	done
+	echo "$res"
+	caesarChif
 }
 
 
-#main
-chiffrementCasear "salut"
+main
