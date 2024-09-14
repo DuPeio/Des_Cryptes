@@ -1,7 +1,11 @@
 #!/bin/bash
 
+
+source morse.sh
+
 #Partie Globale : Main
 main() {
+    # clear
     echo "---------------------------------------------------------------"
     echo "              Choisissez un mode de chiffrement"
     echo "---------------------------------------------------------------"
@@ -16,6 +20,7 @@ main() {
         "1")     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "             Vous avez choisi le Code Morse"
+            morseMain
             ;;
         "2")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -36,6 +41,7 @@ main() {
             echo "             Choix invalide. Veuillez réessayer."
             main
     esac
+    main
     # echo $choix //Pour test
 }
 
