@@ -321,17 +321,25 @@ caesarDechif(){
 }
 
 chiffrementCasear(){
+#Valeur Ascii [0-127]
 	local chaine="$1"
 	#Avoir la taille de la chaine => ${#chaine}
 	for ((i=0; i<${#chaine}; i++)); do
 		#Récupérer la lettre à la position i=> ${chaine:$i:1}
 		lettre=${chaine:$i:1}
-		echo "$lettre"
+		#echo "$lettre"
 		
 		asciiLettre=$(printf "%d" "'$lettre") #la ' permet de montrer que $lettre est un caractère
 		asciiLettre=$((asciiLettre+cleCaesarChif)) #Pour additionner en bash, il faut utiliser (( ))
-		
+		while [ $asciiLettre -gt 127 ]; do
+			asciiLettre=$((asciiLettre-127)) #Au cas où ça dépasse, on fait -127 pour boucler 
+		done 
 		echo "$asciiLettre"
+		
+		
+		lettre=$(printf "\\$(printf '%03o' $asciiLettre)") #Cette chose lugubre transforme le code ascii en caractère
+		echo "$lettre"
+		
 	done
 }
 
