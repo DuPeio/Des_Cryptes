@@ -80,14 +80,14 @@ caesarMain() {
     # echo $choixCaesar //Pour test
 }
 
-CleCaesarChiff = 0 #Elle est en globale sinon elle se réinitialise à chaque fois que je lance caesarChif
+cleCaesarChif = 0 #Elle est en globale sinon elle se réinitialise à chaque fois que je lance caesarChif
 
 # Chiffrment choix
 caesarChif(){
     echo "Que souhaitez-vous faire ?"
     echo "Chiffrer le contenu d'un fichier externe (1)"
     echo "Chiffrer une phrase (2)"
-    echo "Changer la clé de chiffrement, elle est égale à $CleCaesarChiff (3)"
+    echo "Changer la clé de chiffrement, elle est égale à $cleCaesarChif (3)"
     echo "Retour au menu Caesar (4)"
 
     read choixCaesarChif
@@ -158,9 +158,9 @@ caesarChif(){
             read choixCleCaesarChiff
 
             if [ "$choixCleCaesarChiff" == "0" ]; then
-                CleCaesarChiff = $(aleatoire)
+                cleCaesarChif = $(aleatoire)
             else
-                CleCaesarChiff = choixCleCaesarChiff
+                cleCaesarChif = choixCleCaesarChiff
             fi
             caesarChif
             ;;
@@ -268,3 +268,5 @@ caesarDechif(){
 
     esac
 }
+
+main
