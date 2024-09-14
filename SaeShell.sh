@@ -93,7 +93,7 @@ caesarMain() {
     # echo $choixCaesar //Pour test
 }
 
-cleCaesarChif=0 #Elle est en globale sinon elle se réinitialise à chaque fois que je lance caesarChif
+cleCaesarChif=1 #Elle est en globale sinon elle se réinitialise à chaque fois que je lance caesarChif
 
 # Chiffrment choix
 caesarChif(){
@@ -320,4 +320,21 @@ caesarDechif(){
     esac
 }
 
-main
+chiffrementCasear(){
+	local chaine="$1"
+	#Avoir la taille de la chaine => ${#chaine}
+	for ((i=0; i<${#chaine}; i++)); do
+		#Récupérer la lettre à la position i=> ${chaine:$i:1}
+		lettre=${chaine:$i:1}
+		echo "$lettre"
+		
+		asciiLettre=$(printf "%d" "'$lettre") #la ' permet de montrer que $lettre est un caractère
+		asciiLettre=$((asciiLettre+cleCaesarChif)) #Pour additionner en bash, il faut utiliser (( ))
+		
+		echo "$asciiLettre"
+	done
+}
+
+
+#main
+chiffrementCasear "salut"
