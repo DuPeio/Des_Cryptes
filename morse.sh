@@ -2,6 +2,8 @@
 
 declare -A code_morse # Lettre : morse
 
+# sed -i -e 's/\r$//' ./SaeShell.sh
+
 # Construction des Tables
 while  read -r ligne
 do
