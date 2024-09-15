@@ -2,6 +2,7 @@
 
 
 source morse.sh
+source vigenere.sh
 
 #Partie Globale : Main
 main() {
@@ -30,6 +31,7 @@ main() {
         "3")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "            Vous avez choisi le Code de Vigenère"
+            vigenereMain
             ;;
         "4")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
