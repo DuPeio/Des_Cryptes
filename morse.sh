@@ -82,7 +82,7 @@ codeMorse() {
 decodeMorse() {
     nbErreurs=0
     string=$1
-    arr=(${string//" "/ })
+    arr=(${string//" "/ }) # Split par des espaces
     res=""
     for val in "${arr[@]}";
     do
@@ -113,6 +113,57 @@ decodeMorse() {
     echo -ne "$res"
     echo ""
 }
+
+
+decodeMorseRecursiveStart() {
+    string="$1"
+    arr=(${string//" "/ })
+    res=""
+
+    decodeMorseRecursive 0 ${#arr[@]} "$res" "${arr[@]}"
+}
+
+decodeMorseRecursive() {
+    index=$1
+    size=$2
+    res=$3
+    arr=("${@:4}")  # Note à moi même : $4 ne marche pas, faut recuperer tous les éléments à partir du 4eme
+
+    if [[ $index -ge $size ]]
+    then
+        echo -e "$res"
+        return 0
+    fi
+
+    val="${arr[$index]}"
+    trouve=0
+    txt=""
+    
+    for cle in "${!code_morse[@]}"
+    do
+        if [[ "${code_morse[$cle]}" == "$val" ]]
+        then
+            trouve=1
+            txt=$cle
+            break
+        fi
+    done
+    
+    if [ $trouve -eq 1 ]
+    then
+        res="$res$txt"
+    else
+        if [[ $val == "*" ]]
+        then
+            res="$res*"
+        else
+            res="$res$val"
+        fi
+    fi
+    decodeMorseRecursive $((index + 1)) $size "$res" "${arr[@]}"
+}
+
+
 
 
 chiffrementFichierMorse() {
@@ -201,7 +252,7 @@ morseInput() {
                 then
                     codeMorse "$line"
                 else
-                    decodeMorse "$line"
+                    decodeMorseRecursiveStart "$line"
                 fi
                 ;;
         esac
