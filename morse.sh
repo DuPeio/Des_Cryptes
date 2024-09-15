@@ -26,16 +26,31 @@ done < 'morse.json'
 #     echo "Clé: $cle, Valeur: ${code_morse[$cle]}"
 # done
 
+erreurFunc() {
+    if [ $1 == 1 ]
+    then
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "              Choix invalide. Veuillez réessayer."
+    elif [ $1 == 2 ]
+    then
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "              Le Fichier n'existe pas..."
+    fi
+}
+
 codeMorse() {
     string=$1
     res=""
+    noise=""
     for (( i=0; i<${#string}; i++ )); do
         trouve=0
         val=""
         char="${string:$i:1}"
         char=$(echo "$char" | tr '[:lower:]' '[:upper:]')
-        for cle in "${!code_morse[@]}"; do
-            if [[ "$cle" == "$char" ]]; then
+        for cle in "${!code_morse[@]}"
+        do
+            if [[ "$cle" == "$char" ]]
+            then
                 trouve=1
                 val=${code_morse[$cle]}
                 break
@@ -48,8 +63,22 @@ codeMorse() {
             res="$res ${string:$i:1}"
         fi
     done
+    for (( i=0; i<${#res}; i++ ))
+    do
+        char="${res:$i:1}"
+        if [[ "$char" == "." ]]
+        then 
+            noise="$noise\a "
+        elif [[ "$char" == "_" ]]
+        then
+            noise="$noise \007\007\007 "
+        fi
+    done
+    # echo -ne "$noise"
     echo "$res"
 }
+
+
 
 erreur=0
 morseMain(){
@@ -57,23 +86,22 @@ morseMain(){
     echo "---------------------------------------------------------------"
     echo "                          MORSE"
     echo "---------------------------------------------------------------"
-    echo "                        Chiffrer (1)    TEXT \t->\t MORSE"
-    echo "                       Dechiffrer (2)   MORSE \t->\t TEXT"
+    echo -ne "                        Chiffrer (1)    \tTEXT \t->\t MORSE\n"
+    echo -ne "                       Dechiffrer (2)   \tMORSE \t->\t TEXT\n"
     echo ""
     echo "                        Retour (4)"
-    if [ $erreur == 1 ]
-    then
-        erreur=0
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo "              Choix invalide. Veuillez réessayer."
-    fi
 
+    erreurFunc $erreur
+    erreur=0
+    echo -ne " VOTRE CHOIX : "
     read choixMorse
+    echo ""
 
     case $choixMorse in
         "1")     
             clear
             morseChiff
+            return 0
             ;;
         "2")
             clear
@@ -97,17 +125,14 @@ morseChiff() {
     echo ""
     echo "                        Retour (4)"
 
-    if [ $erreur == 1 ]
-    then
-        erreur=0
-        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo "              Choix invalide. Veuillez réessayer."
-    fi
-
+    erreurFunc $erreur
+    erreur=0
+    echo -ne " VOTRE CHOIX : "
     read choixMorse
-
+    echo ""
     case $choixMorse in
-        "1")     
+        "1")
+            morseChiffFile     
             clear
             ;;
         "2")
@@ -120,6 +145,7 @@ morseChiff() {
         *)
             erreur=1
             morseChiff
+            return 0
     esac
     morseMain
 }
@@ -144,4 +170,51 @@ morseChiffInput() {
         esac
     done
     # morseChiff
+}
+
+morseChiffFile() {
+    clear
+    echo "---------------------------------------------------------------"
+    echo "                     CHOIX DU FICHIER"
+    echo "---------------------------------------------------------------"
+    echo -ne " VOTRE CHOIX : "
+
+    choixFichierSortie=""
+
+    read choixFichier
+    echo ""
+    if [ -f "$choixFichier" ]
+    then
+        fichierOK=0
+        while [ $fichierOK == 0 ]
+        do
+            echo -ne " NOM DU FICHIER DE SORTIE : "
+            read choixFichierSortie
+            echo ""
+            if [ -f "$choixFichierSortie" ]
+            then
+                echo -ne " CE FICHIER EXISTE DEJA, VOULEZ-VOUS LE SUPPRIMER ? (Y/N) : "
+                read supprimer
+                echo ""
+                if [[ "$supprimer" == "Y" ]]
+                then
+                    rm -f "$choixFichierSortie"
+                    fichierOK=1
+                fi
+            elif [[ "$choixFichierSortie" =~ [\/] ]]
+            then
+                echo "NOM DE FICHIER INCORRECT. CARACTERES INTERDITS."
+            elif [ ${#nom_fichier} -gt 255 || ${#nom_fichier} -eq 0 ]
+            then
+                echo "TAILLE DU NOM DE FICHIER INCORRECTE."
+            else
+                fichierOK=1
+            fi
+        done
+
+
+
+    else
+        erreur=2
+    fi
 }
