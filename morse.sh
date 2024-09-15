@@ -34,7 +34,11 @@ erreurFunc() {
     elif [ $1 == 2 ]
     then
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo "              Le Fichier n'existe pas..."
+        echo "                Le Fichier n'existe pas..."
+    elif [ $1 == 3 ]
+    then
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "              FICHIER SAUVEGARDE AVEC SUCCES !"
     fi
 }
 
@@ -78,7 +82,17 @@ codeMorse() {
     echo "$res"
 }
 
+chiffrementFichierMorse() {
+    fichierEntree=$1
+    fichierSortie=$2
 
+    cat "$fichierEntree" | while read -r ligne || [[ -n "$ligne" ]]
+    do
+        ligne_morse=$(codeMorse "$ligne")
+        echo "$ligne_morse" >> "$fichierSortie"
+    done
+
+}
 
 erreur=0
 morseMain(){
@@ -204,15 +218,19 @@ morseChiffFile() {
             elif [[ "$choixFichierSortie" =~ [\/] ]]
             then
                 echo "NOM DE FICHIER INCORRECT. CARACTERES INTERDITS."
-            elif [ ${#nom_fichier} -gt 255 || ${#nom_fichier} -eq 0 ]
+            elif [ ${#choixFichierSortie} -gt 255 ]
             then
-                echo "TAILLE DU NOM DE FICHIER INCORRECTE."
+                echo "TAILLE DU NOM DE FICHIER TROP GRANDE."
+            elif [ ${#choixFichierSortie} -lt 2 ]
+            then
+                echo "TAILLE DU NOM DE FICHIER TROP PETITE."
             else
                 fichierOK=1
             fi
         done
-
-
+        touch "$choixFichierSortie"
+        chiffrementFichierMorse "$choixFichier" "$choixFichierSortie"
+        erreur=3
 
     else
         erreur=2
