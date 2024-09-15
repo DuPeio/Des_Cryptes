@@ -1,30 +1,20 @@
 #!/bin/bash
 
 declare -A code_morse # Lettre : morse
-# declare -A decode_morse # Morse : Lettre
 
 # Construction des Tables
 while  read -r ligne
 do
-    # echo $ligne
     # /"+."+|"+[_.]{1,6}"+/
     if [[ $ligne =~ \"([^\"]+)\"[[:space:]]*:[[:space:]]*\"([^\"]+)\" ]]
     then
-        # echo $ligne
         cle="${BASH_REMATCH[1]}" # Premier Groupe entre ()
         valeur="${BASH_REMATCH[2]}" # Deuxieme Groupe entre ()
         
         code_morse["$cle"]="$valeur"
-        # echo "Clé: $cle, Valeur: ${code_morse[$cle]}"
-        # decode_morse["$valeur"]="$cle"
     fi
 done < 'morse.json'
 
-#DEBUG
-# echo "Clé: A, Valeur: ${code_morse["A"]}"
-# for cle in "${!code_morse[@]}"; do
-#     echo "Clé: $cle, Valeur: ${code_morse[$cle]}"
-# done
 
 erreurFunc() {
     if [ $1 == 1 ]
@@ -34,15 +24,15 @@ erreurFunc() {
     elif [ $1 == 2 ]
     then
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        echo "                Le Fichier n'existe pas..."
+        echo "                $choixFichier n'existe pas..."
     elif [ $1 == 3 ]
     then
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "              FICHIER SAUVEGARDE AVEC SUCCES !"
     fi
 }
-
 codeMorse() {
+    nbErreurs=0
     string=$1
     res=""
     noise=""
@@ -64,7 +54,13 @@ codeMorse() {
         then
             res="$res $val"
         else
-            res="$res ${string:$i:1}"
+            ((nbErreurs++))
+            if [[ "${string:$i:1}" == "*" ]]
+            then
+                res="$res \*"
+            else
+                res="$res ${string:$i:1}"
+            fi
         fi
     done
     for (( i=0; i<${#res}; i++ ))
@@ -75,12 +71,100 @@ codeMorse() {
             noise="$noise\a "
         elif [[ "$char" == "_" ]]
         then
-            noise="$noise \007\007\007 "
+            noise="$noise \a\a\a "
         fi
     done
     # echo -ne "$noise"
-    echo "$res"
+    echo -ne "$res"
+    echo ""
 }
+
+decodeMorse() {
+    nbErreurs=0
+    string=$1
+    arr=(${string//" "/ }) # Split par des espaces
+    res=""
+    for val in "${arr[@]}";
+    do
+        trouve=0
+        txt=""
+        for cle in "${!code_morse[@]}"
+        do
+            if [[ "${code_morse[$cle]}" == $val ]]
+            then
+                trouve=1
+                txt=$cle
+                break
+            fi
+        done
+        if [ $trouve -eq 1 ]
+        then
+            res="$res$txt"
+        else
+            ((nbErreurs++))
+            if [[ $val == "\*" ]]
+            then
+                res="$res*"
+            else
+                res="$res$val"
+            fi
+        fi
+    done
+    echo -ne "$res"
+    echo ""
+}
+
+
+decodeMorseRecursiveStart() {
+    string="$1"
+    arr=(${string//" "/ })
+    res=""
+
+    decodeMorseRecursive 0 ${#arr[@]} "$res" "${arr[@]}"
+}
+
+decodeMorseRecursive() {
+    index=$1
+    size=$2
+    res=$3
+    arr=("${@:4}")  # Note à moi même : $4 ne marche pas, faut recuperer tous les éléments à partir du 4eme
+
+    if [[ $index -ge $size ]]
+    then
+        echo -e "$res"
+        return 0
+    fi
+
+    val="${arr[$index]}"
+    trouve=0
+    txt=""
+    
+    for cle in "${!code_morse[@]}"
+    do
+        if [[ "${code_morse[$cle]}" == "$val" ]]
+        then
+            trouve=1
+            txt=$cle
+            break
+        fi
+    done
+    
+    if [ $trouve -eq 1 ]
+    then
+        res="$res$txt"
+    else
+        if [[ $val == "*" ]]
+        then
+            res="$res*"
+        else
+            res="$res$val"
+        fi
+    fi
+    decodeMorseRecursive $((index + 1)) $size "$res" "${arr[@]}"
+}
+
+
+
 
 chiffrementFichierMorse() {
     fichierEntree=$1
@@ -88,8 +172,19 @@ chiffrementFichierMorse() {
 
     cat "$fichierEntree" | while read -r ligne || [[ -n "$ligne" ]]
     do
-        ligne_morse=$(codeMorse "$ligne")
-        echo "$ligne_morse" >> "$fichierSortie"
+        ligneMorse=$(codeMorse "$ligne")
+        echo -e "$ligneMorse" >> "$fichierSortie"
+    done
+
+}
+dechiffrementFichierMorse() {
+    fichierEntree=$1
+    fichierSortie=$2
+
+    cat "$fichierEntree" | while read -r ligneMorse || [[ -n "$ligneMorse" ]]
+    do
+        ligne=$(decodeMorse "$ligneMorse")
+        echo -e "$ligne" >> "$fichierSortie"
     done
 
 }
@@ -114,10 +209,11 @@ morseMain(){
     case $choixMorse in
         "1")     
             clear
-            morseChiff
+            morseMenu 0
             return 0
             ;;
         "2")
+            morseMenu 1
             clear
             ;;
         "4")
@@ -129,45 +225,18 @@ morseMain(){
     esac
 }
 
-morseChiff() {
+morseInput() {
     clear
-    echo "---------------------------------------------------------------"
-    echo "                    CHIFFREMENT MORSE"
-    echo "---------------------------------------------------------------"
-    echo "                  Via Un Fichier Externe (1)   "
-    echo "                       Via l'Input (2)"
-    echo ""
-    echo "                        Retour (4)"
 
-    erreurFunc $erreur
-    erreur=0
-    echo -ne " VOTRE CHOIX : "
-    read choixMorse
-    echo ""
-    case $choixMorse in
-        "1")
-            morseChiffFile     
-            clear
-            ;;
-        "2")
-            # clear
-            morseChiffInput
-            ;;
-        "4")
-            clear
-            ;;
-        *)
-            erreur=1
-            morseChiff
-            return 0
-    esac
-    morseMain
-}
+    opt=$1  # 0 = Chiffrement, #1 = Dechiffrement
 
-morseChiffInput() {
-    clear
     echo "---------------------------------------------------------------"
-    echo "                  CHIFFREMENT MORSE INPUT"
+    if [ $opt == 0 ]
+    then
+        echo "                  CHIFFREMENT MORSE INPUT"
+    else
+        echo "                  DECHIFFREMENT MORSE INPUT"
+    fi
     echo "                 POUR QUITTER FAITES /exit"
     echo "---------------------------------------------------------------"
     exit=0
@@ -179,21 +248,28 @@ morseChiffInput() {
                 exit=1
                 ;;
             *)
-                codeMorse "$line"
+                if [ $opt == 0 ]
+                then
+                    codeMorse "$line"
+                else
+                    decodeMorseRecursiveStart "$line"
+                fi
                 ;;
         esac
     done
     # morseChiff
 }
 
-morseChiffFile() {
+choixFichierSortie=""
+choixFichier=""
+morseFile() {
     clear
     echo "---------------------------------------------------------------"
     echo "                     CHOIX DU FICHIER"
     echo "---------------------------------------------------------------"
     echo -ne " VOTRE CHOIX : "
 
-    choixFichierSortie=""
+    
 
     read choixFichier
     echo ""
@@ -229,10 +305,70 @@ morseChiffFile() {
             fi
         done
         touch "$choixFichierSortie"
-        chiffrementFichierMorse "$choixFichier" "$choixFichierSortie"
-        erreur=3
+
 
     else
         erreur=2
+        return 2
     fi
+    return 0
+}
+
+
+morseMenu() {
+    clear
+
+    opt=$1 # 0 Chiffrement, 1 Dechiffrement
+
+    echo "---------------------------------------------------------------"
+    if [ $opt -eq 0 ]
+    then
+        echo "                    CHIFFREMENT MORSE"
+    else
+        echo "                   DECHIFFREMENT MORSE"
+    fi
+    echo "---------------------------------------------------------------"
+    echo "                  Via Un Fichier Externe (1)   "
+    echo "                       Via l'Input (2)"
+    echo ""
+    echo "                        Retour (4)"
+
+    erreurFunc $erreur
+    erreur=0
+    echo -ne " VOTRE CHOIX : "
+    read choixMorse
+    echo ""
+    case $choixMorse in
+        "1")
+            morseFile
+            if [ $? != 0 ]
+            then
+                morseMain
+                return 0
+            fi
+
+            if [ $opt == 0 ] 
+            then
+                echo "CHIFFREMENT EN COURS, VEUILLEZ PATIENTER ..."
+                chiffrementFichierMorse "$choixFichier" "$choixFichierSortie"
+            else
+                echo "DECHIFFREMENT EN COURS, VEUILLEZ PATIENTER ..."
+                dechiffrementFichierMorse "$choixFichier" "$choixFichierSortie"
+            fi
+            erreur=3    
+            clear
+            ;;
+        "2")
+            # clear
+            morseInput $opt
+            ;;
+        "4")
+            clear
+            ;;
+        *)
+            erreur=1
+            morseMenu
+            return 0
+    esac
+    morseMain
 }
