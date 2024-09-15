@@ -34,6 +34,7 @@ erreurFunc() {
 codeMorse() {
     nbErreurs=0
     string=$1
+    # string=$(echo "$string" | grep -o "[A-Za-z0-9 ><\u002E\u002C\u0021\u003F\u003B\u003A\u0027\u0022\u0028\u0029\u002D\u00E0\u00F9\u003D\u002B\u0024\u0026\u00E9\u00E7\u002E\u002C\u0021\u003F\u003B\u003A\u0027\u0022\u0028\u0029\u005F\u00E8\u00F9\u0023\u007B\u007D\u005B\u007C\u0060\u005E\u0040\u007E\u20AC]")
     res=""
     noise=""
     for (( i=0; i<${#string}; i++ )); do
@@ -58,6 +59,8 @@ codeMorse() {
             if [[ "${string:$i:1}" == "*" ]]
             then
                 res="$res \*"
+            # elif [[ "${string:$i:1}" =~ [A-Za-z0-9\u002E\u002C\u0021\u003F\u003B\u003A\u0027\u0022\u0028\u0029\u002D\u00E0\u00F9\u003D\u002B\u0024\u0026\u00E9\u00E7\u002E\u002C\u0021\u003F\u003B\u003A\u0027\u0022\u0028\u0029\u005F\u00E8\u00F9\u0023\u007B\u007D\u005B\u007C\u0060\u005E\u0040\u007E\u20AC] ]]
+            # then
             else
                 res="$res ${string:$i:1}"
             fi
@@ -75,8 +78,8 @@ codeMorse() {
         fi
     done
     # echo -ne "$noise"
-    echo -ne "$res"
-    echo ""
+    echo -e "$res"
+    # echo ""
 }
 
 decodeMorse() {
@@ -110,8 +113,8 @@ decodeMorse() {
             fi
         fi
     done
-    echo -ne "$res"
-    echo ""
+    echo -e "$res"
+    # echo ""
 }
 
 
@@ -162,8 +165,6 @@ decodeMorseRecursive() {
     fi
     decodeMorseRecursive $((index + 1)) $size "$res" "${arr[@]}"
 }
-
-
 
 
 chiffrementFichierMorse() {
