@@ -32,7 +32,8 @@ vigenereMain() {
                 "3")
                     ;;
                 "4")
-                ;;  
+                    quitter
+                    ;;  
                 *)
                     ;;
             esac
@@ -46,7 +47,7 @@ vigenereMain() {
             ;;
 
         "4")
-            exit 0
+            quitter
             ;;
 
         *)
@@ -59,8 +60,8 @@ vigenereMain() {
 
 chiffrementVigenere() {
     #Initialisation de toutes les variables
-    sentence="Ma  ,phrase  69"
-    key="castor"
+    sentence="$1"
+    key="$2"
     ind=0
     res=""
     chara=""
@@ -79,14 +80,14 @@ chiffrementVigenere() {
             res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'A") + $(printf '%d' "'$char") - $(printf '%d' "'A") ) % 26 + $(printf '%d' "'A") )) )")       #Ajout du caractère crypté dans le résultat
             ((ind++))
         elif [[ "$char" =~ [0-9] ]]; then
-            res+=$((($char+$ind)%10))
+            res+=$((($char+$ind)%10))       #Ajout du chiffre crypté
             ((ind++))
         else
-            res+="$char"
+            res+="$char"        #Ajout des caractères non cryptables
         fi
     done
 
-    echo "$res"
+    echo "$res"     #Affichage de la phrase crypté
 }
 
-chiffrementVigenere
+chiffrementVigenere "ma phrase" "castor"
