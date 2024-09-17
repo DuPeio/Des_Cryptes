@@ -105,18 +105,33 @@ caesarChif(){
 
                 "2")
                     clear
+                    nbLignes=$(wc -l "$caesarCheminChif" | awk '{print $1}') #Le awk sert a récupérer seulement le chiffre sinon ya le nom du fichier aussi
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "      Quelles lignes du fichier voulez-vous chiffrer ?"
+                    echo "      Quelles lignes du fichier voulez-vous chiffrer ?" 
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                
-                    read choixLignesCaesar
 
                     # Il faut voir si les lignes sont valides 
+                    echo "        Quelle est le numéro de la première ligne ?"
+
                     
+                    read choixLignesCaesar1
+                    if [ $choixLignesCaesar1 -gt $nbLignes ]; then
+                        message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+                        caesarChif
+                    fi
+
+                    echo "        Quelle est le numéro de la dernière ligne ?"
+                    read choixLignesCaesar2
+                    if [ $choixLignesCaesar2 -gt $nbLignes ]; then
+                        message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+                        caesarChif
+                    fi
+
                     echo "_______________________________________________________________"
                     echo "                  Chiffrement en cours..."
                     echo "_______________________________________________________________"
-                    # Puis traduire 
+                    message="              Fichier chiffrer avec succès"
+                    chiffrementLignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminChif"
                     ;;
 
                 "3")
@@ -237,13 +252,27 @@ caesarDechif(){
                     ;;
 
                 "2")
+                    nbLignes=$(wc -l "$caesarCheminDechif" | awk '{print $1}')
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     # Doit choisir la clé de déchiffrement
                     echo "      Quelles lignes du fichier voulez-vous déchiffrer ?"
                     
-                    read choixLignesCaesar
+                    # Il faut voir si les lignes sont valides 
+                    echo "        Quelle est le numéro de la première ligne ?"
+
                     
-                    # Il faut voir si les lignes sont valides
+                    read choixLignesCaesar1
+                    if [ $choixLignesCaesar1 -gt $nbLignes ]; then
+                        message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+                        caesarDechif
+                    fi
+
+                    echo "        Quelle est le numéro de la dernière ligne ?"
+                    read choixLignesCaesar2
+                    if [ $choixLignesCaesar2 -gt $nbLignes ]; then
+                        message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+                        caesarDechif
+                    fi
 
                     echo "          Entrez la clé pour déchiffrer cette phrase"
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -252,7 +281,9 @@ caesarDechif(){
                     echo "_______________________________________________________________"
                     echo "                  Déchiffrement en cours..."
                     echo "_______________________________________________________________"
+                    message="              Fichier déchiffrer avec succès"
                     # Puis traduire 
+                    dechiffrementLignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminDechif" "$cleCaesarDechif"
                     ;;
 
                 "3")
@@ -355,6 +386,36 @@ chiffrementCasear(){
 	echo "$res"
 }
 
+
+chiffrementFichierCaesar(){
+    chemin="$1"
+    fichierChif=$(creerFichierCaesarChif "$chemin")    
+
+    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
+    do
+        ligneChif=$(chiffrementCasear "$ligne")
+        echo -e "$ligneChif" >> "$fichierChif"
+    done
+
+    caesarChif
+
+}
+
+chiffrementLignesFichierCaesar(){
+    ligne1="$1"
+    ligne2="$2"
+    chemin="$3"
+    fichierChif=$(creerFichierCaesarChif "$chemin")
+
+    sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne
+    do
+        ligneChif=$(chiffrementCasear "$ligne")
+        echo -e "$ligneChif" >> "$fichierChif"
+    done
+    caesarChif
+
+}
+
 dechiffrementCasearSimple(){
     local chaine="$1"
     dechiffrementCasear "$chaine" "$cleCaesarDechif"
@@ -405,20 +466,6 @@ dechiffrementCasear(){
 	echo "$res"
 }
 
-chiffrementFichierCaesar(){
-    chemin="$1"
-    fichierChif=$(creerFichierCaesarChif "$chemin")    
-
-    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
-    do
-        ligneChif=$(chiffrementCasear "$ligne")
-        echo -e "$ligneChif" >> "$fichierChif"
-    done
-
-    caesarChif
-
-}
-
 dechiffrementFichierCaesar(){
     chemin="$1"
     cle="$2"
@@ -430,6 +477,22 @@ dechiffrementFichierCaesar(){
         echo -e "$ligneDechif" >> "$fichierDechif"
     done
     
+    caesarDechif
+
+}
+
+dechiffrementLignesFichierCaesar(){
+    ligne1="$1"
+    ligne2="$2"
+    chemin="$3"
+    cle="$4"
+    fichierDechif=$(creerFichierCaesarDechif "$chemin")
+
+    sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne
+    do
+        ligneDechif=$(dechiffrementCasear "$ligne" "$cle")
+        echo -e "$ligneDechif" >> "$fichierDechif"
+    done
     caesarDechif
 
 }
