@@ -1,44 +1,48 @@
 #!/bin/bash
 
-
+message=""
 
 # Partie Peio : Code Ceasar
 # Menu 
 caesarMain() {
+    clear
+    echo -e "$message"
     echo "---------------------------------------------------------------"
     echo "                   Que voulez vous faire ?"
     echo "---------------------------------------------------------------"
-    echo "                     SaeShell2   Chiffrer (1)"
+    echo "                        Chiffrer (1)"
     echo "                       Dechiffrer (2)"
     echo "           Choisir un autre mode de chiffrement (3)"
     echo "                  Quitter le programme (4)"
 
     read choixCaesar
+    message=""
 
     case $choixCaesar in
-        "1")     
+        "1")
+            clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "        Vous avez choisi le chiffrement de données"
+            echo "         Vous avez choisi le chiffrement de données            "
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             caesarChif
             ;;
         "2")
+            clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "        Vous avez choisi le déchiffrement de données"
+            echo "         Vous avez choisi le déchiffrement de données          "
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             caesarDechif
             ;;
         "3")
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "                 Retour au menu principal..."
+            clear
+            message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu principal...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
             main
             ;;
         "4")
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "           Vous avez choisi de quitter le programme"
             quitter
             ;;
         *)
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo "              Choix invalide. Veuillez réessayer."
+            message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
             caesarMain
     esac
     # echo $choixCaesar //Pour test
@@ -48,6 +52,7 @@ cleCaesarChif=1 #Elle est en globale sinon elle se réinitialise à chaque fois 
 
 # Chiffrment choix
 caesarChif(){
+    echo -e "$message"
     echo "---------------------------------------------------------------"
     echo "                 Que souhaitez-vous faire ?"
     echo "---------------------------------------------------------------"
@@ -56,23 +61,28 @@ caesarChif(){
     echo "     Changer la clé de chiffrement, elle est égale à $cleCaesarChif (3)"
     echo "                 Retour au menu Caesar (4)"
 
+    message=""
+
     read choixCaesarChif
 
 
     case $choixCaesarChif in
-        "1")     
+        "1")
+            clear   
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo " Vous avez choisi de chiffrer le contenu d'un fichier externe"
             echo "           Entrez le chemin de votre fichier..."
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
             read caesarCheminChif
 
             if [ ! -e "$caesarCheminChif" ] || [ ! -f "$caesarCheminChif" ]; then
-                echo "Chemin incorrect..."
+                clear
+                message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Chemin incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                 caesarChif
             fi
             
-	    echo "---------------------------------------------------------------"
+	        echo "---------------------------------------------------------------"
             echo "Voulez vous chiffrer tout le fichier ou juste quelques lignes ?"
             echo "---------------------------------------------------------------"
             echo "                           Tout (1)"
@@ -83,37 +93,39 @@ caesarChif(){
 
             case $caesarChoixLignes in
                 "1")
-                    echo "   Un fichier contenant votre teste chiffré va être créer"
+                    clear
+                    echo "   Un fichier contenant votre text chiffré va être créer"
                     echo "_______________________________________________________________"
                     echo "            Chiffrement du fichier en cours..."
-                    
+                    echo "_______________________________________________________________"
+                    message="              Fichier chiffrer avec succès"
                     chiffrementFichierCaesar "$caesarCheminChif"
+                    
                     ;;
 
                 "2")
+                    clear
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     echo "      Quelles lignes du fichier voulez-vous chiffrer ?"
+                    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 
                     read choixLignesCaesar
-
-                    
 
                     # Il faut voir si les lignes sont valides 
                     
                     echo "_______________________________________________________________"
                     echo "                  Chiffrement en cours..."
+                    echo "_______________________________________________________________"
                     # Puis traduire 
                     ;;
 
                 "3")
-                    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "                 Retour au menu Caesar..."
+                    message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
                     caesarMain
                     ;;
 
                 *)
-                    echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                    echo "             Choix invalide. Veuillez réessayer."
+                    message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                     caesarChif
                     ;;
 
@@ -121,23 +133,29 @@ caesarChif(){
             ;;
         
         "2")     
+            clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "         Vous avez choisi de chiffrer une phrase"
             echo "       Entrez la phrase que vous souhaitez chiffrer..."
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
             read phraseCaesar
-            
             	
             echo "_______________________________________________________________"
             echo "                   Chiffrement en cours"
             chiffrementCasearSimple "$phraseCaesar"
+            echo "_______________________________________________________________"
+            
+            
             ;;
         
         "3")
+            clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "              Choisissez une clé de chiffrement"
             echo "                       Aléatoire (0)"
             echo "              Autre, entrez la valeur de la clé"
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
             read choixCleCaesarChiff
 
@@ -150,14 +168,13 @@ caesarChif(){
             ;;
 
         "4")
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "                  Retour au menu Caesar..."
+            message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
             caesarMain
             ;;
 
-        *)
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo "            Choix invalide. Veuillez réessayer."
+        *) 
+            clear
+            message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
             caesarChif
             ;;
 
@@ -166,12 +183,16 @@ caesarChif(){
 
 # Dechiffrement choix
 caesarDechif(){
+    clear
+    echo -e "$message"
     echo "---------------------------------------------------------------"
     echo "               Que souhaitez-vous déchiffrer ?"
     echo "---------------------------------------------------------------"
     echo "             Le contenu d'un fichier externe (1)"
     echo "                       Une phrase (2)"
     echo "                         Retour (3)" 
+
+    message=""
 
     read choixCaesarDechif
 
@@ -180,12 +201,13 @@ caesarDechif(){
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "Vous avez choisi de déchiffrer le contenu d'un fichier externe"
             echo "           Entrez le chemin de votre fichier..."
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
             read caesarCheminDechif
 
             if [ ! -e "$caesarCheminDechif" ] || [ ! -f "$caesarCheminDechif" ]; then
-                echo "+++++++++++++++++++"
-                echo "Chemin incorrect..."
+                clear
+                message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Chemin incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                 caesarDechif
             fi
             
@@ -203,41 +225,44 @@ caesarDechif(){
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     echo "      Entrez la clé pour déchiffrer le texte du fichier"
                     read cleCaesarDechif
+                    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
-                    echo "    Un fichier contenant votre teste dechiffré va être créer"
+                    echo "    Un fichier contenant votre text dechiffré va être créer"
                     echo "_______________________________________________________________"
                     echo "            Déchiffrement du fichier en cours"
-                    
+                    echo "_______________________________________________________________"
+                    message="              Fichier déchiffrer avec succès"
                     dechiffrementFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif"
+                    
                     ;;
 
                 "2")
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     # Doit choisir la clé de déchiffrement
                     echo "      Quelles lignes du fichier voulez-vous déchiffrer ?"
-                
+                    
                     read choixLignesCaesar
-
                     
                     # Il faut voir si les lignes sont valides
 
                     echo "          Entrez la clé pour déchiffrer cette phrase"
+                    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     read cleCaesarDechif 
                     
                     echo "_______________________________________________________________"
                     echo "                  Déchiffrement en cours..."
+                    echo "_______________________________________________________________"
                     # Puis traduire 
                     ;;
 
                 "3")
-                    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "                  Retour au menu Caesar..."
+                    message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
                     caesarMain
                     ;;
 
                 *)
-                    echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                    echo "              Choix invalide. Veuillez réessayer."
+                    clear
+                    message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                     caesarDechif
                     ;;
 
@@ -251,29 +276,30 @@ caesarDechif(){
             read phraseCaesar
 
             echo "         Entrez la clé pour déchiffrer cette phrase"
+
             read cleCaesarDechif
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             
             echo "_______________________________________________________________"
             echo "                 Déchiffrement en cours..."
             dechiffrementCasearSimple "$phraseCaesar" "$cleCaesarDechif"
+            echo "_______________________________________________________________"
+            
             ;;
         
         "3")
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "                   Retour au menu Caesar..."
+            message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
             caesarMain
             ;;
         
         *)
-            echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo "             Choix invalide. Veuillez réessayer."
-            caesardechif
+            clear
+            message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+            caesarDechif
             ;;
 
     esac
 }
-ggb
-
 
 chiffrementCasearSimple(){
     local chaine="$1"
