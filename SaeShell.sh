@@ -1,10 +1,10 @@
 #!/bin/bash
 
-
+source tools.sh
 source morse.sh
 source vigenere.sh
 source caesar.sh
-source tools.sh
+
 
 #Partie Globale : Main
 main() {
