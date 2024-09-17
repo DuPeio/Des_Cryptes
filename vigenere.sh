@@ -14,29 +14,7 @@ vigenereMain() {
 
     case $choixVigenere in
         "1")
-            echo "---------------------------------------------------------------"
-            echo "                 Veuillez choisir une clé:"
-            echo "---------------------------------------------------------------"
-            echo "                     Choisir une clé (1)"
-            echo "                 Utiliser une clé générée (2)"
-            echo "                         Retour (3)"
-            echo "                         Quitter (4)"
-
-            read choixCle
-
-            case $choixCle in
-                "1")
-                    ;;
-                "2")
-                    ;;
-                "3")
-                    ;;
-                "4")
-                    quitter
-                    ;;  
-                *)
-                    ;;
-            esac
+            chiffrerVigenere
             ;;
 
         "2")
@@ -47,13 +25,39 @@ vigenereMain() {
             ;;
 
         "4")
-            quitter
+            exit 0
             ;;
 
         *)
             echo "Veuillez choisir une action valide"
             vigenereMain
             return 0
+            ;;
+    esac
+}
+
+chiffrerVigenere() {
+    echo "---------------------------------------------------------------"
+    echo "                 Veuillez choisir une clé:"
+    echo "---------------------------------------------------------------"
+    echo "                     Choisir une clé (1)"
+    echo "                 Utiliser une clé générée (2)"
+    echo "                         Retour (3)"
+    echo "                         Quitter (4)"
+
+    read choixCle
+
+    case $choixCle in
+        "1")
+            ;;
+        "2")
+            ;;
+        "3")
+            ;;
+        "4")
+            exit 0
+            ;;  
+        *)
             ;;
     esac
 }
@@ -68,9 +72,21 @@ chiffrementVigenere() {
     len_key=${#key}
     len_sentence=${#sentence}
 
+    if ! [[ "$key" =~ .*[a-zA-Z]+.* ]]; then
+        vigenereMain
+    fi
+
     for (( i=0; i<len_sentence; i++ )); do
         chara=${key:ind % len_key:1}
         char=${sentence:i:1}
+
+        while ! [[ "$chara" =~ [a-zA-Z] ]]; do
+            ((ind++))
+            chara=${key:ind % len_key:1}
+        done
+        if [[ "$chara" =~ [A-Z] ]]; then
+            chara=$(echo "$chara" | tr '[:upper:]' '[:lower:]')
+        fi
 
         #Vérification si le caractère est une lettre minuscule, majuscule, ou un chiffre, sinon ajouter sans changement
         if [[ "$char" =~ [a-z] ]]; then
@@ -90,4 +106,6 @@ chiffrementVigenere() {
     echo "$res"     #Affichage de la phrase crypté
 }
 
-chiffrementVigenere "ma phrase" "castor"
+# chiffrementVigenere "lorem ipsum dolor" "castor"
+# chiffrementVigenere "lorem ipsum dolor" "CaSt69420or/."
+# chiffrementVigenere "lorem ipsum dolor" "69450"
