@@ -8,5 +8,9 @@ aleatoire(){
 
 # Fontion qui quitte le programme
 quitter(){
+    clear
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    echo "           Vous avez choisi de quitter le programme"
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     exit 0
 }
