@@ -1,14 +1,16 @@
 #!/bin/bash
 
+source tools.sh
+
 #Partie du GOAT (Dylan)
 vigenereMain() {
-    echo "---------------------------------------------------------------"
-    echo "                 Veuillez choisir une action:"
-    echo "---------------------------------------------------------------"
-    echo "                        Chiffrer (1)"
-    echo "                       Dechiffrer (2)"
-    echo "                         Retour (3)"
-    echo "                         Quitter (4)"
+    echo "+-------------------------------------------------------------+"
+    echo "|                Veuillez choisir une action                  |"
+    echo "+-------------------------------------------------------------+"
+    echo "|                       Chiffrer (1)                          |"
+    echo "|                      Dechiffrer (2)                         |"
+    echo "|                        Retour (3)                           |"
+    echo "•                       Quitter  (4)                          •"
 
     read choixVigenere
 
@@ -18,6 +20,7 @@ vigenereMain() {
             ;;
 
         "2")
+            dechiffrerVigenere
             ;;
 
         "3")
@@ -25,50 +28,89 @@ vigenereMain() {
             ;;
 
         "4")
-            exit 0
+            quitter
             ;;
 
         *)
             echo "Veuillez choisir une action valide"
             vigenereMain
-            return 0
             ;;
     esac
 }
 
 chiffrerVigenere() {
-    echo "---------------------------------------------------------------"
-    echo "                 Veuillez choisir une clé:"
-    echo "---------------------------------------------------------------"
-    echo "                     Choisir une clé (1)"
-    echo "                 Utiliser une clé générée (2)"
-    echo "                         Retour (3)"
-    echo "                         Quitter (4)"
+    echo "+-------------------------------------------------------------+"
+    echo "|                Veuillez choisir une action                  |"
+    echo "+-------------------------------------------------------------+"
+    echo "|                    Choisir une clé (1)                      |"
+    echo "|                Utiliser une clé générée (2)                 |"
+    echo "|                        Retour (3)                           |"
+    echo "•                       Quitter  (4)                          •"
 
-    read choixCle
+    read actionChif
 
-    case $choixCle in
+    case $actionChif in
         "1")
+            cle="$(choixCle)"
+            phrase="$(choixPhrase)"
+            chiffrementVigenere "$cle" "$phrase"
             ;;
         "2")
+            phrase="$(choixPhrase)"
             ;;
         "3")
+            vigenereMain
             ;;
         "4")
-            exit 0
+            quitter
             ;;  
         *)
+            chiffrerVigenere
             ;;
     esac
 }
 
+dechiffrerVigenere() {
+    echo "+-------------------------------------------------------------+"
+    echo "|                Veuillez choisir une action                  |"
+    echo "+-------------------------------------------------------------+"
+    echo "|                    Choisir une clé (1)                      |"
+    echo "|                        Retour (2)                           |"
+    echo "•                       Quitter  (3)                          •"
+
+    read actionDechif
+
+    case $actionDechif in
+        "1")
+            ;;
+        "2")
+            vigenereMain
+            ;;
+        "3")
+            quitter
+            ;;  
+        *)
+            chiffrerVigenere
+            ;;
+    esac
+}
+
+choixCle() {
+
+}
+
+choixPhrase() {
+
+}
+
 chiffrementVigenere() {
     #Initialisation de toutes les variables
-    sentence="$1"
-    key="$2"
+    key="$1"
+    sentence="$2"
     ind=0
     res=""
     chara=""
+    char=""
     len_key=${#key}
     len_sentence=${#sentence}
 
@@ -106,6 +148,8 @@ chiffrementVigenere() {
     echo "$res"     #Affichage de la phrase crypté
 }
 
-# chiffrementVigenere "lorem ipsum dolor" "castor"
-# chiffrementVigenere "lorem ipsum dolor" "CaSt69420or/."
-# chiffrementVigenere "lorem ipsum dolor" "69450"
+# vigenereMain
+
+# chiffrementVigenere "castor" "lorem ipsum dolor"
+# chiffrementVigenere "CaSt69420or/." "lorem ipsum dolor"
+# chiffrementVigenere "69450" "lorem ipsum dolor"
