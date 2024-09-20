@@ -1,51 +1,88 @@
 #!/bin/bash
-
 source tools.sh
 source morse.sh
 source vigenere.sh
 source caesar.sh
 
-
 #Partie Globale : Main
 main() {
-    # clear
-    echo "---------------------------------------------------------------"
-    echo "              Choisissez un mode de chiffrement"
-    echo "---------------------------------------------------------------"
-    echo "                        Code Morse (1)"
-    echo "                        Code Caesar (2)"
-    echo "                      Code de Vigenère (3)"
-    echo "                    Quitter le programme (4)"
+    clear
+    choixTab=("                          Code Morse" "                          Code Caesar" "                       Code de Vigenère"  "                      Quitter le programme")
+    choixIndice=0
+    choix="${choixTab[choixIndice]}"
+    
+    # while [ choisi -ne true ]; do
+    affichage(){
+        choix="${choixTab[choixIndice]}"
+        echo "---------------------------------------------------------------"
+        echo "              Choisissez un mode de chiffrement"
+        echo "---------------------------------------------------------------"
+        for elmt in "${choixTab[@]}"; do
+            if [ "$choix" = "$elmt" ]; then
+                echo "$elmt  <"
+            else
+                echo "$elmt"
+            fi
+        done
+        read -sn1 touche
+    }
+    
 
-    read choix
+    # echo "$choix" 
+    
+    affichage
+    while [ "$touche" != "" ]; do
+    
 
-    case $choix in
-        "1")     
+        if [ $touche = $'\x1b' ]; then
+            read -sn2 touche
+            case $touche in
+                "[A")
+                    if [ $choixIndice -gt 0 ]; then 
+                        clear
+                        choixIndice=$((choixIndice-1))
+                        affichage
+                    fi
+                    ;;
+                "[B")
+                    if [ $choixIndice -lt 3 ]; then 
+                        clear
+                        choixIndice=$((choixIndice+1))
+                        affichage
+                    fi
+                    ;;
+            esac
+        fi
+    done
+        # echo choix
+
+    # done
+
+    case $choixIndice in
+        "0")     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "             Vous avez choisi le Code Morse"
             morseMain
             ;;
-        "2")
+        "1")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "             Vous avez choisi le Code Caesar"
             caesarMain
             ;;
-        "3")
+        "2")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "            Vous avez choisi le Code de Vigenère"
             vigenereMain
             ;;
-        "4")
+        "3")
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "          Vous avez choisi de quitter le programme"
             quitter
             ;;
         *)
-            echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo "             Choix invalide. Veuillez réessayer."
+            # message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
             main
     esac
-    main
     # echo $choix //Pour test
 }
 
