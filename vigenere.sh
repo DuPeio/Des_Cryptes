@@ -72,6 +72,8 @@ chiffrerVigenere() {
             echo ""
             cle="$(genCle)"
             phrase="$(choixPhrase)"
+            clear
+            echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
             ;;
         "3")
@@ -191,7 +193,7 @@ chiffrementVigenere() {
         fi
     done
 
-    echo "$res"     #Affichage de la phrase crypté
+    echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase crypté
 }
 
 dechiffrementVigenere() {
