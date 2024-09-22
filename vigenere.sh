@@ -147,11 +147,10 @@ genCle() {
     local taille=$(((RANDOM + 1) % 69))
 
     for ((i=0; i<taille; i++)); do
-        printf "%03o \n" 97
-        # cle+=$(printf "%c" $((RANDOM % 26 + 97)))
+        cle+=$(printf "\\$(printf '%o' $((RANDOM % 26 + 97)))")
     done
-    # printf "%s" $cle >&2
-    # echo "$cle"
+    
+    echo "$cle"
 }
 
 chiffrementVigenere() {
@@ -164,7 +163,6 @@ chiffrementVigenere() {
     local char=""
     local len_key=${#key}
     local len_sentence=${#sentence}
-    printf "%s\n" $key >&2
 
     for (( i=0; i<len_sentence; i++ )); do
         chara=${key:ind % len_key:1}
@@ -201,7 +199,7 @@ dechiffrementVigenere() {
 }
 
 # vigenereMain
-# genCle
+genCle
 # choixCle
 
 # chiffrementVigenere "castor" "lorem ipsum dolor"
