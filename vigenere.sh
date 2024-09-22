@@ -149,7 +149,7 @@ genCle() {
     for ((i=0; i<taille; i++)); do
         cle+=$(printf "\\$(printf '%o' $((RANDOM % 26 + 97)))")
     done
-    
+
     echo "$cle"
 }
 
@@ -199,7 +199,7 @@ dechiffrementVigenere() {
 }
 
 # vigenereMain
-genCle
+# genCle
 # choixCle
 
 # chiffrementVigenere "castor" "lorem ipsum dolor"
