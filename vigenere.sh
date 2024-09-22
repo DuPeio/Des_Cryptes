@@ -3,9 +3,13 @@
 source tools.sh
 
 #Partie du GOAT (Dylan)
+
 vigenereMain() {
     clear
+    vigenereMain_
+}
 
+vigenereMain_() {
     echo "+-------------------------------------------------------------+"
     echo "|                Veuillez choisir une action                  |"
     echo "+-------------------------------------------------------------+"
@@ -39,7 +43,7 @@ vigenereMain() {
 
         *)
             echo "Veuillez choisir une action valide"
-            vigenereMain
+            vigenereMain_
             ;;
     esac
 }
@@ -77,13 +81,19 @@ chiffrerVigenere() {
             chiffrementVigenere "$cle" "$phrase"
             ;;
         "3")
-            vigenereMain
+            vigenereMain_
             ;;
         "4")
             quitter
             ;;  
         *)
-            echo "Veuillez choisir une action valide"
+            echo ""
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            echo "               Veuillez choisir une action valide"
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            echo ""
+            sleep 1
+            clear
             chiffrerVigenere
             ;;
     esac
@@ -104,7 +114,7 @@ dechiffrerVigenere() {
         "1")
             ;;
         "2")
-            vigenereMain
+            vigenereMain_
             ;;
         "3")
             quitter
