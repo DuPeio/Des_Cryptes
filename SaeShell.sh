@@ -38,18 +38,20 @@ main() {
             read -sn2 touche
             case $touche in
                 "[A")
-                    if [ $choixIndice -gt 0 ]; then 
-                        clear
-                        choixIndice=$((choixIndice-1))
-                        affichage
+                    clear
+                    choixIndice=$((choixIndice-1))
+                    if [ $choixIndice -lt 0 ]; then 
+                        choixIndice=0
                     fi
+                    affichage
                     ;;
                 "[B")
-                    if [ $choixIndice -lt 3 ]; then 
-                        clear
-                        choixIndice=$((choixIndice+1))
-                        affichage
+                    clear
+                    choixIndice=$((choixIndice+1))
+                    if [ $choixIndice -gt 3 ]; then 
+                        choixIndice=3
                     fi
+                    affichage
                     ;;
                 "*")
                     ;;
