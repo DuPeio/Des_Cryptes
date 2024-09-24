@@ -8,22 +8,6 @@ caesarMain() {
     choixIndiceMain=0
     choixMain="${choixTabMain[choixIndiceMain]}"
 
-    affichageMain(){
-        echo -e "$message"
-        choixMain="${choixTabMain[choixIndiceMain]}"
-        echo "---------------------------------------------------------------"
-        echo "                    Que voulez vous faire ?"
-        echo "---------------------------------------------------------------"
-        for elmt in "${choixTabMain[@]}"; do
-            if [ "$choixMain" = "$elmt" ]; then
-                echo -e "\033[1;35m$elmt  <\033[0m"
-            else
-                echo "$elmt"
-            fi
-        done
-        read -sn1 touche
-    }
-
     affichageMain
     while [ "$touche" != "" ]; do
     
@@ -93,22 +77,6 @@ caesarChif(){
     choixIndiceChif=0
     choixChif="${choixTabChif[choixIndiceChif]}"
     
-    affichageChif(){
-        echo -e "$message"
-        choixChif="${choixTabChif[choixIndiceChif]}"
-        echo "---------------------------------------------------------------"
-        echo "                 Que souhaitez-vous faire ?"
-        echo "---------------------------------------------------------------"
-        for elmt in "${choixTabChif[@]}"; do
-            if [ "$choixChif" = "$elmt" ]; then
-                echo -e "\033[1;35m$elmt  <\033[0m"
-            else
-                echo "$elmt"
-            fi
-        done
-        read -sn1 touche
-    }
-
     affichageChif
     while [ "$touche" != "" ]; do
     
@@ -158,22 +126,6 @@ caesarChif(){
             choixTabChifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
             choixIndiceChifLig=0
             choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
-
-
-            affichageChifLig(){
-                choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
-                echo "---------------------------------------------------------------"
-                echo "Voulez vous chiffrer tout le fichier ou juste quelques lignes ?"
-                echo "---------------------------------------------------------------"
-                for elmt in "${choixTabChifLig[@]}"; do
-                    if [ "$choixChifLig" = "$elmt" ]; then
-                        echo -e "\033[1;35m$elmt  <\033[0m"
-                    else
-                        echo "$elmt"
-                    fi
-                done
-                read -sn1 touche
-            }
 
             affichageChifLig
             while [ "$touche" != "" ]; do
@@ -645,3 +597,54 @@ creerFichierCaesarDechif(){
     echo "---------------------|Nouveau Dechiffrement|---------------------" >> "$fichierDechif"
     echo "$fichierDechif"
 }
+
+
+# Gérer les affichages des menus
+affichageMain(){
+        echo -e "$message"
+        choixMain="${choixTabMain[choixIndiceMain]}"
+        echo "---------------------------------------------------------------"
+        echo "                    Que voulez vous faire ?"
+        echo "---------------------------------------------------------------"
+        for elmt in "${choixTabMain[@]}"; do
+            if [ "$choixMain" = "$elmt" ]; then
+                echo -e "\033[1;35m$elmt  <\033[0m"
+            else
+                echo "$elmt"
+            fi
+        done
+        read -sn1 touche
+    }
+
+
+affichageChif(){
+    echo -e "$message"
+    choixChif="${choixTabChif[choixIndiceChif]}"
+    echo "---------------------------------------------------------------"
+    echo "                 Que souhaitez-vous faire ?"
+    echo "---------------------------------------------------------------"
+    for elmt in "${choixTabChif[@]}"; do
+        if [ "$choixChif" = "$elmt" ]; then
+            echo -e "\033[1;35m$elmt  <\033[0m"
+        else
+            echo "$elmt"
+        fi
+    done
+    read -sn1 touche
+}
+
+affichageChifLig(){
+    choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
+    echo "---------------------------------------------------------------"
+    echo "Voulez vous chiffrer tout le fichier ou juste quelques lignes ?"
+    echo "---------------------------------------------------------------"
+    for elmt in "${choixTabChifLig[@]}"; do
+        if [ "$choixChifLig" = "$elmt" ]; then
+            echo -e "\033[1;35m$elmt  <\033[0m"
+        else
+            echo "$elmt"
+        fi
+    done
+    read -sn1 touche
+}
+
