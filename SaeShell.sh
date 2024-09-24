@@ -19,7 +19,7 @@ main() {
         echo "---------------------------------------------------------------"
         for elmt in "${choixTab[@]}"; do
             if [ "$choix" = "$elmt" ]; then
-                echo "$elmt  <"
+                echo -e "\033[33m$elmt  <\033[0m"
             else
                 echo "$elmt"
             fi
