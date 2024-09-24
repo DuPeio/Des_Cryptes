@@ -83,10 +83,8 @@ main() {
             quitter
             ;;
         *)
-            # message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
             main
     esac
-    # echo $choix //Pour test
 }
 
 main
