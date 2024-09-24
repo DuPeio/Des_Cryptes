@@ -57,9 +57,6 @@ main() {
             esac
         fi
     done
-        # echo choix
-
-    # done
 
     case $choixIndice in
         "0")     
