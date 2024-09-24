@@ -4,6 +4,9 @@ source tools.sh
 
 #Partie du GOAT (Dylan)
 
+cle=""
+phrase=""
+
 vigenereMain() {
     clear
     vigenereMain_
@@ -20,6 +23,7 @@ vigenereMain_() {
 
     echo ""
     local choixVigenere=""
+    cle=""
     read choixVigenere
 
     clear
@@ -42,7 +46,13 @@ vigenereMain_() {
             ;;
 
         *)
-            echo "Veuillez choisir une action valide"
+            echo ""
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            echo "               Veuillez choisir une action valide"
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            echo ""
+            sleep 1
+            clear
             vigenereMain_
             ;;
     esac
@@ -59,23 +69,23 @@ chiffrerVigenere() {
 
     echo ""
     local actionChif=""
-    local cle=""
-    local phrase=""
     read actionChif
 
     clear
 
     case $actionChif in
         "1")
-            cle="$(choixCle)"
-            phrase="$(choixPhrase)"
-            echo "$cle"
+            choixCle
+            clear
+            choixPhrase
+            clear
+            echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
             ;;
         "2")
             echo ""
-            cle="$(genCle)"
-            phrase="$(choixPhrase)"
+            genCle
+            choixPhrase
             clear
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
@@ -110,8 +120,12 @@ dechiffrerVigenere() {
     local actionDechif=""
     read actionDechif
 
+    clear
+
     case $actionDechif in
         "1")
+            choixCle
+            choixPhrase
             ;;
         "2")
             vigenereMain_
@@ -127,42 +141,48 @@ dechiffrerVigenere() {
 }
 
 choixCle() {
-    local cle=""
-    
-    printf "Veuillez choisir une clé: " >&2
-    read cle
+    local choix=""
 
-    while ! [[ "$cle" =~ ^[a-zA-Z]+$ ]]; do
+    printf "Veuillez choisir une clé: "
+    read choix
+
+    while ! [[ "$choix" =~ ^[a-zA-Z]+$ ]]; do
         clear
-        cle=""
-        printf "La clé doit contenir uniquement des lettres\n\n" >&2
-        printf "Veuillez choisir une clé: " >&2
-        read cle
-        printf "\n" >&2
+        choix=""
+        echo ""
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo "         La clé doit contenir uniquement des lettres"
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo ""
+        sleep 1
+        clear
+        printf "Veuillez choisir une clé: "
+        read choix
+        echo "\n"
     done
 
-    echo "$cle"
+    cle=$choix
 }
 
 choixPhrase() {
-    local phrase=""
+    local phrs=""
     
-    printf "Veuillez écrire une phrase: " >&2
-    read phrase
-    printf "\n" >&2
+    printf "Veuillez écrire une phrase: "
+    read phrs
+    echo "\n"
 
-    echo "$phrase"
+    phrase=$phrs
 }
 
 genCle() {
-    local cle=""
+    local res=""
     local taille=$(((RANDOM + 1) % 69))
 
     for ((i=0; i<taille; i++)); do
-        cle+=$(printf "\\$(printf '%o' $((RANDOM % 26 + 97)))")
+        res+=$(printf "\\$(printf '%o' $((RANDOM % 26 + 97)))")
     done
 
-    echo "$cle"
+    cle=$res
 }
 
 chiffrementVigenere() {
@@ -210,7 +230,7 @@ dechiffrementVigenere() {
     echo "test"
 }
 
-# vigenereMain
+vigenereMain
 # genCle
 # choixCle
 
