@@ -92,22 +92,59 @@ cleCaesarChif=1 #Elle est en globale sinon elle se réinitialise à chaque fois 
 
 # Chiffrment choix
 caesarChif(){
-    echo -e "$message"
-    echo "---------------------------------------------------------------"
-    echo "                 Que souhaitez-vous faire ?"
-    echo "---------------------------------------------------------------"
-    echo "         Chiffrer le contenu d'un fichier externe (1)"
-    echo "                  Chiffrer une phrase (2)"
-    echo "     Changer la clé de chiffrement, elle est égale à $cleCaesarChif (3)"
-    echo "                 Retour au menu Caesar (4)"
+    choixTabChif=("            Chiffrer le contenu d'un fichier externe" "                     Chiffrer une phrase" "     Changer la clé de chiffrement, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
+    choixIndiceChif=0
+    choixChif="${choixTabChif[choixIndiceChif]}"
 
+    echo -e "$message"
     message=""
 
-    read choixCaesarChif
+    affichageChif(){
+        choixChif="${choixTabChif[choixIndiceChif]}"
+        echo "---------------------------------------------------------------"
+        echo "                 Que souhaitez-vous faire ?"
+        echo "---------------------------------------------------------------"
+        for elmt in "${choixTabChif[@]}"; do
+            if [ "$choixChif" = "$elmt" ]; then
+                echo -e "\033[1;35m$elmt  <\033[0m"
+            else
+                echo "$elmt"
+            fi
+        done
+        read -sn1 touche
+    }
 
+    affichageChif
+    while [ "$touche" != "" ]; do
+    
 
-    case $choixCaesarChif in
-        "1")
+        if [ $touche = $'\x1b' ]; then
+            read -sn2 touche
+            case $touche in
+                "[A")
+                    clear
+                    choixIndiceChif=$((choixIndiceChif-1))
+                    if [ $choixIndiceChif -lt 0 ]; then 
+                        choixIndiceChif=3
+                    fi
+                    affichageChif
+                    ;;
+                "[B")
+                    clear
+                    choixIndiceChif=$((choixIndiceChif+1))
+                    if [ $choixIndiceChif -gt 3 ]; then 
+                        choixIndiceChif=0
+                    fi
+                    affichageChif
+                    ;;
+                "*")
+                    ;;
+            esac
+        fi
+    done
+
+    case $choixIndiceChif in
+        "0")
             clear   
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo " Vous avez choisi de chiffrer le contenu d'un fichier externe"
@@ -187,7 +224,7 @@ caesarChif(){
             esac
             ;;
         
-        "2")     
+        "1")     
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "         Vous avez choisi de chiffrer une phrase"
@@ -204,7 +241,7 @@ caesarChif(){
             
             ;;
         
-        "3")
+        "2")
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "              Choisissez une clé de chiffrement"
@@ -222,7 +259,7 @@ caesarChif(){
             caesarChif
             ;;
 
-        "4")
+        "3")
             message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
             caesarMain
             ;;
