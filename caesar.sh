@@ -159,17 +159,57 @@ caesarChif(){
                 caesarChif
             fi
             
-	        echo "---------------------------------------------------------------"
-            echo "Voulez vous chiffrer tout le fichier ou juste quelques lignes ?"
-            echo "---------------------------------------------------------------"
-            echo "                           Tout (1)"
-            echo "                 Choisissez les lignes (2)"
-            echo "                           Retour (3)"
+            choixTabChifLig=("                             Tout" "                    Choisissez les lignes" "                             Retour")
+            choixIndiceChifLig=0
+            choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
 
-            read caesarChoixLignes
 
-            case $caesarChoixLignes in
-                "1")
+            affichageChifLig(){
+                choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
+                echo "---------------------------------------------------------------"
+                echo "Voulez vous chiffrer tout le fichier ou juste quelques lignes ?"
+                echo "---------------------------------------------------------------"
+                for elmt in "${choixTabChifLig[@]}"; do
+                    if [ "$choixChifLig" = "$elmt" ]; then
+                        echo -e "\033[1;35m$elmt  <\033[0m"
+                    else
+                        echo "$elmt"
+                    fi
+                done
+                read -sn1 touche
+            }
+
+            affichageChifLig
+            while [ "$touche" != "" ]; do
+            
+
+                if [ $touche = $'\x1b' ]; then
+                    read -sn2 touche
+                    case $touche in
+                        "[A")
+                            clear
+                            choixIndiceChifLig=$((choixIndiceChifLig-1))
+                            if [ $choixIndiceChifLig -lt 0 ]; then 
+                                choixIndiceChifLig=3
+                            fi
+                            affichageChifLig
+                            ;;
+                        "[B")
+                            clear
+                            choixIndiceChif=$((choixIndiceChif+1))
+                            if [ $choixIndiceChifLig -gt 3 ]; then 
+                                choixIndiceChifLig=0
+                            fi
+                            affichageChifLig
+                            ;;
+                        "*")
+                            ;;
+                    esac
+                fi
+            done
+
+            case $choixIndiceChifLig in
+                "0")
                     clear
                     echo "   Un fichier contenant votre text chiffré va être créer"
                     echo "_______________________________________________________________"
@@ -180,7 +220,7 @@ caesarChif(){
                     
                     ;;
 
-                "2")
+                "1")
                     clear
                     nbLignes=$(wc -l "$caesarCheminChif" | awk '{print $1}') #Le awk sert a récupérer seulement le chiffre sinon ya le nom du fichier aussi
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -211,7 +251,7 @@ caesarChif(){
                     chiffrementLignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminChif"
                     ;;
 
-                "3")
+                "2")
                     message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu de chiffrement....\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
                     caesarChif
                     ;;

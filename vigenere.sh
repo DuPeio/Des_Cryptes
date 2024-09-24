@@ -230,7 +230,7 @@ dechiffrementVigenere() {
     echo "test"
 }
 
-vigenereMain
+# vigenereMain
 # genCle
 # choixCle
 
