@@ -6,39 +6,79 @@ message=""
 # Menu 
 caesarMain() {
     clear
-    echo -e "$message"
-    echo "---------------------------------------------------------------"
-    echo "                   Que voulez vous faire ?"
-    echo "---------------------------------------------------------------"
-    echo "                        Chiffrer (1)"
-    echo "                       Dechiffrer (2)"
-    echo "           Choisir un autre mode de chiffrement (3)"
-    echo "                  Quitter le programme (4)"
+    choixTabMain=("                            Chiffrer" "                           Dechiffrer" "               Choisir un autre mode de chiffrement" "                      Quitter le programme")
+    choixIndiceMain=0
+    choixMain="${choixTabMain[choixIndiceMain]}"
 
-    read choixCaesar
+    echo -e "$message"
     message=""
 
-    case $choixCaesar in
-        "1")
+    affichageMain(){
+        choixMain="${choixTabMain[choixIndiceMain]}"
+        echo "---------------------------------------------------------------"
+        echo "                    Que voulez vous faire ?"
+        echo "---------------------------------------------------------------"
+        for elmt in "${choixTabMain[@]}"; do
+            if [ "$choixMain" = "$elmt" ]; then
+                echo -e "\033[33m$elmt  <\033[0m"
+            else
+                echo "$elmt"
+            fi
+        done
+        read -sn1 touche
+    }
+
+    affichageMain
+    while [ "$touche" != "" ]; do
+    
+
+        if [ $touche = $'\x1b' ]; then
+            read -sn2 touche
+            case $touche in
+                "[A")
+                    clear
+                    choixIndiceMain=$((choixIndiceMain-1))
+                    if [ $choixIndiceMain -lt 0 ]; then 
+                        choixIndiceMain=3
+                    fi
+                    affichageMain
+                    ;;
+                "[B")
+                    clear
+                    choixIndiceMain=$((choixIndiceMain+1))
+                    if [ $choixIndiceMain -gt 3 ]; then 
+                        choixIndiceMain=0
+                    fi
+                    affichageMain
+                    ;;
+                "*")
+                    ;;
+            esac
+        fi
+    done
+
+
+    case $choixIndiceMain in
+        "0")
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "         Vous avez choisi le chiffrement de données            "
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             caesarChif
             ;;
-        "2")
+        "1")
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "         Vous avez choisi le déchiffrement de données          "
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             caesarDechif
             ;;
-        "3")
+        "2")
             clear
             message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu principal...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
             main
             ;;
-        "4")
+        "3")
             quitter
             ;;
         *)

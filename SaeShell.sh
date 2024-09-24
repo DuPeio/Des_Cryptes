@@ -28,7 +28,6 @@ main() {
     }
     
 
-    # echo "$choix" 
     
     affichage
     while [ "$touche" != "" ]; do
