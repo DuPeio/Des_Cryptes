@@ -190,7 +190,7 @@ caesarChif(){
                             ;;
                         "[B")
                             clear
-                            choixIndiceChif=$((choixIndiceChif+1))
+                            choixIndiceChifLig=$((choixIndiceChifLig+1))
                             if [ $choixIndiceChifLig -gt 2 ]; then 
                                 choixIndiceChifLig=0
                             fi
@@ -201,7 +201,7 @@ caesarChif(){
                     esac
                 fi
             done
-
+            message=""
             case $choixIndiceChifLig in
                 "0")
                     clear

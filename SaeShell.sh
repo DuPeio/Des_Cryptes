@@ -60,24 +60,16 @@ main() {
 
     case $choixIndice in
         "0")     
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "             Vous avez choisi le Code Morse"
             morseMain
             main
             ;;
         "1")
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "             Vous avez choisi le Code Caesar"
             caesarMain
             ;;
         "2")
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "            Vous avez choisi le Code de Vigenère"
             vigenereMain
             ;;
         "3")
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "          Vous avez choisi de quitter le programme"
             quitter
             ;;
         *)
