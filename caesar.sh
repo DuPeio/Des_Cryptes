@@ -1,7 +1,5 @@
 #!/bin/bash
 
-message=""
-
 # Partie Peio : Code Ceasar
 # Menu 
 caesarMain() {
@@ -10,10 +8,8 @@ caesarMain() {
     choixIndiceMain=0
     choixMain="${choixTabMain[choixIndiceMain]}"
 
-    echo -e "$message"
-    message=""
-
     affichageMain(){
+        echo -e "$message"
         choixMain="${choixTabMain[choixIndiceMain]}"
         echo "---------------------------------------------------------------"
         echo "                    Que voulez vous faire ?"
@@ -57,6 +53,7 @@ caesarMain() {
         fi
     done
 
+    message=""
 
     case $choixIndiceMain in
         "0")
@@ -95,11 +92,9 @@ caesarChif(){
     choixTabChif=("            Chiffrer le contenu d'un fichier externe" "                     Chiffrer une phrase" "     Changer la clé de chiffrement, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
     choixIndiceChif=0
     choixChif="${choixTabChif[choixIndiceChif]}"
-
-    echo -e "$message"
-    message=""
-
+    
     affichageChif(){
+        echo -e "$message"
         choixChif="${choixTabChif[choixIndiceChif]}"
         echo "---------------------------------------------------------------"
         echo "                 Que souhaitez-vous faire ?"
@@ -143,6 +138,7 @@ caesarChif(){
         fi
     done
 
+    message=""
     case $choixIndiceChif in
         "0")
             clear   
@@ -159,7 +155,7 @@ caesarChif(){
                 caesarChif
             fi
             
-            choixTabChifLig=("                             Tout" "                    Choisissez les lignes" "                             Retour")
+            choixTabChifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
             choixIndiceChifLig=0
             choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
 
@@ -181,8 +177,6 @@ caesarChif(){
 
             affichageChifLig
             while [ "$touche" != "" ]; do
-            
-
                 if [ $touche = $'\x1b' ]; then
                     read -sn2 touche
                     case $touche in
@@ -190,14 +184,14 @@ caesarChif(){
                             clear
                             choixIndiceChifLig=$((choixIndiceChifLig-1))
                             if [ $choixIndiceChifLig -lt 0 ]; then 
-                                choixIndiceChifLig=3
+                                choixIndiceChifLig=2
                             fi
                             affichageChifLig
                             ;;
                         "[B")
                             clear
                             choixIndiceChif=$((choixIndiceChif+1))
-                            if [ $choixIndiceChifLig -gt 3 ]; then 
+                            if [ $choixIndiceChifLig -gt 2 ]; then 
                                 choixIndiceChifLig=0
                             fi
                             affichageChifLig
