@@ -51,6 +51,8 @@ main() {
                         affichage
                     fi
                     ;;
+                "*")
+                    ;;
             esac
         fi
     done
