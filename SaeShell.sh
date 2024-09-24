@@ -41,7 +41,7 @@ main() {
                     clear
                     choixIndice=$((choixIndice-1))
                     if [ $choixIndice -lt 0 ]; then 
-                        choixIndice=0
+                        choixIndice=3
                     fi
                     affichage
                     ;;
@@ -49,7 +49,7 @@ main() {
                     clear
                     choixIndice=$((choixIndice+1))
                     if [ $choixIndice -gt 3 ]; then 
-                        choixIndice=3
+                        choixIndice=0
                     fi
                     affichage
                     ;;
