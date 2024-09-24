@@ -20,7 +20,7 @@ caesarMain() {
         echo "---------------------------------------------------------------"
         for elmt in "${choixTabMain[@]}"; do
             if [ "$choixMain" = "$elmt" ]; then
-                echo -e "\033[33m$elmt  <\033[0m"
+                echo -e "\033[1;35m$elmt  <\033[0m"
             else
                 echo "$elmt"
             fi
