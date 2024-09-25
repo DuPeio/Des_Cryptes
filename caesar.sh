@@ -4,7 +4,7 @@
 # Menu 
 caesarMain() {
     clear
-    choixTabMain=("                            Chiffrer" "                           Dechiffrer" "               Choisir un autre mode de chiffrement" "                      Quitter le programme")
+    choixTabMain=("                            Coder" "                           Décoder" "               Choisir un autre mode de codage" "                      Quitter le programme")
     choixIndiceMain=0
     choixMain="${choixTabMain[choixIndiceMain]}"
 
@@ -32,6 +32,7 @@ caesarMain() {
                     affichageMain
                     ;;
                 "*")
+                    affichageMain
                     ;;
             esac
         fi
@@ -43,20 +44,19 @@ caesarMain() {
         "0")
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "         Vous avez choisi le chiffrement de données            "
+            echo "           Vous avez choisi de coder vos données            "
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             caesarChif
             ;;
         "1")
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "         Vous avez choisi le déchiffrement de données          "
+            echo "           Vous avez choisi de décoder vos données             "
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             caesarDechif
             ;;
         "2")
             clear
-            message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu principal...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
             main
             ;;
         "3")
@@ -73,7 +73,7 @@ cleCaesarChif=1 #Elle est en globale sinon elle se réinitialise à chaque fois 
 
 # Chiffrment choix
 caesarChif(){
-    choixTabChif=("            Chiffrer le contenu d'un fichier externe" "                     Chiffrer une phrase" "     Changer la clé de chiffrement, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
+    choixTabChif=("            Coder le contenu d'un fichier externe" "                     Coder une phrase" "     Changer la clé de codage, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
     choixIndiceChif=0
     choixChif="${choixTabChif[choixIndiceChif]}"
     
@@ -101,6 +101,7 @@ caesarChif(){
                     affichageChif
                     ;;
                 "*")
+                    affichageChif
                     ;;
             esac
         fi
@@ -111,7 +112,7 @@ caesarChif(){
         "0")
             clear   
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo " Vous avez choisi de chiffrer le contenu d'un fichier externe"
+            echo "  Vous avez choisi de coder le contenu d'un fichier externe"
             echo "           Entrez le chemin de votre fichier..."
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
@@ -149,6 +150,7 @@ caesarChif(){
                             affichageChifLig
                             ;;
                         "*")
+                            affichageChifLig
                             ;;
                     esac
                 fi
@@ -157,11 +159,9 @@ caesarChif(){
             case $choixIndiceChifLig in
                 "0")
                     clear
-                    echo "   Un fichier contenant votre text chiffré va être créer"
+                    echo "       Un fichier contenant votre texte codé va être créer"
                     echo "_______________________________________________________________"
-                    echo "            Chiffrement du fichier en cours..."
-                    echo "_______________________________________________________________"
-                    message="              Fichier chiffrer avec succès"
+                    message="              Fichier codé avec succès"
                     chiffrementFichierCaesar "$caesarCheminChif"
                     
                     ;;
@@ -170,7 +170,7 @@ caesarChif(){
                     clear
                     nbLignes=$(wc -l "$caesarCheminChif" | awk '{print $1}') #Le awk sert a récupérer seulement le chiffre sinon ya le nom du fichier aussi
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "      Quelles lignes du fichier voulez-vous chiffrer ?" 
+                    echo "        Quelles lignes du fichier voulez-vous coder ?" 
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
                     # Il faut voir si les lignes sont valides 
@@ -191,14 +191,15 @@ caesarChif(){
                     fi
 
                     echo "_______________________________________________________________"
-                    echo "                  Chiffrement en cours..."
+                    echo "                       Codage en cours..."
                     echo "_______________________________________________________________"
-                    message="              Fichier chiffrer avec succès"
+                    message="                 Fichier codé avec succès"
                     chiffrementLignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminChif"
                     ;;
 
                 "2")
-                    message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu de chiffrement....\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+                    clear
+                    message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu de codage....\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
                     caesarChif
                     ;;
 
@@ -213,16 +214,15 @@ caesarChif(){
         "1")     
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "         Vous avez choisi de chiffrer une phrase"
-            echo "       Entrez la phrase que vous souhaitez chiffrer..."
+            echo "          Vous avez choisi de coder une phrase"
+            echo "       Entrez la phrase que vous souhaitez coder..."
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
             read phraseCaesar
             	
             echo "_______________________________________________________________"
-            echo "                   Chiffrement en cours"
+            echo "                  Voici votre phrase codée"
             chiffrementCasearSimple "$phraseCaesar"
-            echo "_______________________________________________________________"
             
             
             ;;
@@ -230,7 +230,7 @@ caesarChif(){
         "2")
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "              Choisissez une clé de chiffrement"
+            echo "                Choisissez une clé de codage"
             echo "                       Aléatoire (0)"
             echo "              Autre, entrez la valeur de la clé"
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -246,7 +246,7 @@ caesarChif(){
             ;;
 
         "3")
-            message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+            message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                     Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
             caesarMain
             ;;
 
@@ -261,24 +261,50 @@ caesarChif(){
 
 # Dechiffrement choix
 caesarDechif(){
-    clear
-    echo -e "$message"
-    echo "---------------------------------------------------------------"
-    echo "               Que souhaitez-vous déchiffrer ?"
-    echo "---------------------------------------------------------------"
-    echo "             Le contenu d'un fichier externe (1)"
-    echo "                       Une phrase (2)"
-    echo "                         Retour (3)" 
+    choixTabDechif=("                Le contenu d'un fichier externe" "                         Une phrase" "                   Retour au menu Caesar")
+    choixIndiceDechif=0
+    choixDechif="${choixTabDechif[choixIndiceDechif]}"
+    
+    affichageDechif
+    while [ "$touche" != "" ]; do
+    
+
+        if [ $touche = $'\x1b' ]; then
+            read -sn2 touche
+            case $touche in
+                "[A")
+                    clear
+                    choixIndiceDechif=$((choixIndiceDechif-1))
+                    if [ $choixIndiceDechif -lt 0 ]; then 
+                        choixIndiceDechif=2
+                    fi
+                    affichageDechif
+                    ;;
+                "[B")
+                    clear
+                    choixIndiceDechif=$((choixIndiceDechif+1))
+                    if [ $choixIndiceDechif -gt 2 ]; then 
+                        choixIndiceDechif=0
+                    fi
+                    affichageDechif
+                    ;;
+                "*")
+                    affichageDechif
+                    ;;
+            esac
+        fi
+    done
+
 
     message=""
 
-    read choixCaesarDechif
 
-    case $choixCaesarDechif in
-        "1")     
+    case $choixIndiceDechif in
+        "0")
+            clear     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "Vous avez choisi de déchiffrer le contenu d'un fichier externe"
-            echo "           Entrez le chemin de votre fichier..."
+            echo "  Vous avez choisi de décoder le contenu d'un fichier externe"
+            echo "             Entrez le chemin de votre fichier..."
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
             read caesarCheminDechif
@@ -289,36 +315,59 @@ caesarDechif(){
                 caesarDechif
             fi
             
-	        echo "-----------------------------------------------------------------"
-            echo "Voulez vous déchiffrer tout le fichier ou juste quelques lignes ?"
-            echo "-----------------------------------------------------------------"
-            echo "                          Tout (1)"
-            echo "                  Choisissez les lignes (2)"
-            echo "                         Retour (3)"
+            
+            choixTabDechifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
+            choixIndiceDechifLig=0
+            choixDechifLig="${choixTabDechifLig[choixIndiceDechifLig]}"
 
-            read caesarChoixLignes
-
-            case $caesarChoixLignes in
-                "1")     
+            affichageDechifLig
+            while [ "$touche" != "" ]; do
+                if [ $touche = $'\x1b' ]; then
+                    read -sn2 touche
+                    case $touche in
+                        "[A")
+                            clear
+                            choixIndiceDechifLig=$((choixIndiceDechifLig-1))
+                            if [ $choixIndiceDechifLig -lt 0 ]; then 
+                                choixIndiceDechifLig=2
+                            fi
+                            affichageDechifLig
+                            ;;
+                        "[B")
+                            clear
+                            choixIndiceDechifLig=$((choixIndiceDechifLig+1))
+                            if [ $choixIndiceDechifLig -gt 2 ]; then 
+                                choixIndiceDechifLig=0
+                            fi
+                            affichageDechifLig
+                            ;;
+                        "*")
+                            affichageDechifLig
+                            ;;
+                    esac
+                fi
+            done
+            message=""
+            clear
+            case $choixIndiceDechifLig in
+                "0")     
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    echo "      Entrez la clé pour déchiffrer le texte du fichier"
+                    echo "       Entrez la clé pour décoder le texte du fichier"
                     read cleCaesarDechif
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
-                    echo "    Un fichier contenant votre text dechiffré va être créer"
+                    echo "     Un fichier contenant votre texte decodé va être créé     "
                     echo "_______________________________________________________________"
-                    echo "            Déchiffrement du fichier en cours"
-                    echo "_______________________________________________________________"
-                    message="              Fichier déchiffrer avec succès"
+                    message="                Fichier décodé avec succès"
                     dechiffrementFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif"
                     
                     ;;
 
-                "2")
+                "1")
                     nbLignes=$(wc -l "$caesarCheminDechif" | awk '{print $1}')
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     # Doit choisir la clé de déchiffrement
-                    echo "      Quelles lignes du fichier voulez-vous déchiffrer ?"
+                    echo "      Quelles lignes du fichier voulez-vous décoder ?"
                     
                     # Il faut voir si les lignes sont valides 
                     echo "        Quelle est le numéro de la première ligne ?"
@@ -337,20 +386,17 @@ caesarDechif(){
                         caesarDechif
                     fi
 
-                    echo "          Entrez la clé pour déchiffrer cette phrase"
+                    echo "          Entrez la clé pour décoder cette phrase"
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     read cleCaesarDechif 
                     
                     echo "_______________________________________________________________"
-                    echo "                  Déchiffrement en cours..."
-                    echo "_______________________________________________________________"
-                    message="              Fichier déchiffrer avec succès"
-                    # Puis traduire 
+                    message="              Fichier décodé avec succès"
                     dechiffrementLignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminDechif" "$cleCaesarDechif"
                     ;;
 
-                "3")
-                    message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu de déchiffrement...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+                "2")
+                    message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                   Retour au menu de décodage...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
                     caesarDechif
                     ;;
 
@@ -363,26 +409,29 @@ caesarDechif(){
             esac
             ;;
         
-        "2")
+        "1")
+            clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "         Vous avez choisi de déchiffrer une phrase"
-            echo "       Entrez la phrase que vous souhaitez déchiffrer..."
+            echo "           Vous avez choisi de décoder une phrase"
+            echo "         Entrez la phrase que vous souhaitez décoder.."
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             read phraseCaesar
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"            
+            echo "           Entrez la clé pour décoder cette phrase"
+            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
-            echo "         Entrez la clé pour déchiffrer cette phrase"
 
             read cleCaesarDechif
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             
             echo "_______________________________________________________________"
-            echo "                 Déchiffrement en cours..."
+            echo "                Voici votre phrase décodée"
             dechiffrementCasearSimple "$phraseCaesar" "$cleCaesarDechif"
-            echo "_______________________________________________________________"
-            
             ;;
         
-        "3")
-            message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+        "2")
+            clear
+            message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                     Retour au menu Caesar...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
             caesarMain
             ;;
         
@@ -575,7 +624,7 @@ creerFichierCaesarChif(){
     fi
     touch "$fichierChif"
     chmod 777 "$fichierChif"
-    echo "---------------------|Nouveau Chiffrement|---------------------" >> "$fichierChif"
+    echo "---------------------|Nouveau Codage|---------------------" >> "$fichierChif"
     echo "$fichierChif"
 }
 
@@ -594,7 +643,7 @@ creerFichierCaesarDechif(){
     fi
     touch "$fichierDechif"
     chmod 777 "$fichierDechif"
-    echo "---------------------|Nouveau Dechiffrement|---------------------" >> "$fichierDechif"
+    echo "---------------------|Nouveau Décodage|---------------------" >> "$fichierDechif"
     echo "$fichierDechif"
 }
 
@@ -621,7 +670,7 @@ affichageChif(){
     echo -e "$message"
     choixChif="${choixTabChif[choixIndiceChif]}"
     echo "---------------------------------------------------------------"
-    echo "                 Que souhaitez-vous faire ?"
+    echo "                   Que souhaitez-vous coder ?"
     echo "---------------------------------------------------------------"
     for elmt in "${choixTabChif[@]}"; do
         if [ "$choixChif" = "$elmt" ]; then
@@ -634,9 +683,10 @@ affichageChif(){
 }
 
 affichageChifLig(){
+    clear
     choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
     echo "---------------------------------------------------------------"
-    echo "Voulez vous chiffrer tout le fichier ou juste quelques lignes ?"
+    echo " Voulez vous coder tout le fichier ou juste quelques lignes ?  "
     echo "---------------------------------------------------------------"
     for elmt in "${choixTabChifLig[@]}"; do
         if [ "$choixChifLig" = "$elmt" ]; then
@@ -648,3 +698,35 @@ affichageChifLig(){
     read -sn1 touche
 }
 
+
+affichageDechif(){
+    echo -e "$message"
+    choixDechif="${choixTabDechif[choixIndiceDechif]}"
+    echo "---------------------------------------------------------------"
+    echo "                 Que souhaitez-vous décoder ?"
+    echo "---------------------------------------------------------------"
+    for elmt in "${choixTabDechif[@]}"; do
+        if [ "$choixDechif" = "$elmt" ]; then
+            echo -e "\033[1;35m$elmt  <\033[0m"
+        else
+            echo "$elmt"
+        fi
+    done
+    read -sn1 touche
+}
+
+affichageDechifLig(){
+    clear
+    choixDechifLig="${choixTabDechifLig[choixIndiceDechifLig]}"
+    echo "---------------------------------------------------------------"
+    echo " Voulez vous décoder tout le fichier ou juste quelques lignes ?"
+    echo "---------------------------------------------------------------"
+    for elmt in "${choixTabDechifLig[@]}"; do
+        if [ "$choixDechifLig" = "$elmt" ]; then
+            echo -e "\033[1;35m$elmt  <\033[0m"
+        else
+            echo "$elmt"
+        fi
+    done
+    read -sn1 touche
+}

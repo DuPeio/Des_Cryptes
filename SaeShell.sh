@@ -15,7 +15,7 @@ main() {
     affichage(){
         choix="${choixTab[choixIndice]}"
         echo "---------------------------------------------------------------"
-        echo "              Choisissez un mode de chiffrement"
+        echo "                Choisissez un mode de codage"
         echo "---------------------------------------------------------------"
         for elmt in "${choixTab[@]}"; do
             if [ "$choix" = "$elmt" ]; then
