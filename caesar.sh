@@ -194,7 +194,7 @@ caesarChif(){
                     echo "                       Codage en cours..."
                     echo "_______________________________________________________________"
                     message="                 Fichier codé avec succès"
-                    chiffrementLignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminChif"
+                    lignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminChif"
                     ;;
 
                 "2")
@@ -392,7 +392,7 @@ caesarDechif(){
                     
                     echo "_______________________________________________________________"
                     message="              Fichier décodé avec succès"
-                    dechiffrementLignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminDechif" "$cleCaesarDechif"
+                    lignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminDechif" "$cleCaesarDechif"
                     ;;
 
                 "2")
@@ -501,7 +501,7 @@ chiffrementCasear(){
 
 chiffrementFichierCaesar(){
     chemin="$1"
-    fichierChif=$(creerFichierCaesar "$chemin" "1")    
+    fichierChif=$(creerFichierCaesar "$chemin" "true")    
 
     cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
     do
@@ -513,20 +513,7 @@ chiffrementFichierCaesar(){
 
 }
 
-chiffrementLignesFichierCaesar(){
-    ligne1="$1"
-    ligne2="$2"
-    chemin="$3"
-    fichierChif=$(creerFichierCaesar "$chemin" "1")
 
-    sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne
-    do
-        ligneChif=$(chiffrementCasear "$ligne")
-        echo -e "$ligneChif" >> "$fichierChif"
-    done
-    caesarChif
-
-}
 
 dechiffrementCasearSimple(){
     local chaine="$1"
@@ -581,7 +568,7 @@ dechiffrementCasear(){
 dechiffrementFichierCaesar(){
     chemin="$1"
     cle="$2"
-    fichierDechif=$(creerFichierCaesar "$chemin" "0")    
+    fichierDechif=$(creerFichierCaesar "$chemin" "false")    
 
     cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
     do
@@ -593,21 +580,36 @@ dechiffrementFichierCaesar(){
 
 }
 
-dechiffrementLignesFichierCaesar(){
+lignesFichierCaesar(){
     ligne1="$1"
     ligne2="$2"
     chemin="$3"
     cle="$4"
-    fichierDechif=$(creerFichierCaesar "$chemin" "0")
+    
+    if [ -z $cle ];then
+        fichier=$(creerFichierCaesar "$chemin" "true")
+    else
+        fichier=$(creerFichierCaesar "$chemin" "false")
+    fi
+    
 
     sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne
     do
-        ligneDechif=$(dechiffrementCasear "$ligne" "$cle")
-        echo -e "$ligneDechif" >> "$fichierDechif"
+        if [ -z $cle ];then
+            ligneC=$(chiffrementCasear "$ligne")
+        else
+            ligneC=$(dechiffrementCasear "$ligne" "$cle")
+        fi
+        echo -e "$ligneC" >> "$fichier"
     done
-    caesarDechif
 
+    if [ -z $cle ];then
+        caesarChif
+    else
+        caesarDechif
+    fi
 }
+
 
 creerFichierCaesar(){
     chemin="$1"
@@ -618,7 +620,7 @@ creerFichierCaesar(){
     nomSansExt="${nomFichier%.*}"
     extension="${nomFichier##*.}"
 
-    if [ $chif ];then
+    if [ "$chif" = "true" ];then
 
         if [ "$nomFichier" != "$extension" ]; then
             fichierChif="${dossierFichier}/${nomSansExt}Chiffrer.${extension}"
