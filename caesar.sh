@@ -666,7 +666,7 @@ affichageChif(){
     echo -e "$message"
     choixChif="${choixTabChif[choixIndiceChif]}"
     echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m                   Que souhaitez-vous coder ?\033[0m"
+    echo -e "\033[1;33m                   Que souhaitez-vous faire ?\033[0m"
     echo "---------------------------------------------------------------"
     for elmt in "${choixTabChif[@]}"; do
         if [ "$choixChif" = "$elmt" ]; then
