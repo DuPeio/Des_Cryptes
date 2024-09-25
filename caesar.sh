@@ -624,7 +624,7 @@ creerFichierCaesarChif(){
     fi
     touch "$fichierChif"
     chmod 777 "$fichierChif"
-    echo "---------------------|Nouveau Codage|---------------------" >> "$fichierChif"
+    echo -e "\033[1;33m ---------------------|Nouveau Codage|---------------------\033[0m" >> "$fichierChif"
     echo "$fichierChif"
 }
 
@@ -643,7 +643,7 @@ creerFichierCaesarDechif(){
     fi
     touch "$fichierDechif"
     chmod 777 "$fichierDechif"
-    echo "---------------------|Nouveau Décodage|---------------------" >> "$fichierDechif"
+    echo -e "\033[1;33m ---------------------|Nouveau Décodage|---------------------\033[0m" >> "$fichierDechif"
     echo "$fichierDechif"
 }
 
@@ -653,7 +653,7 @@ affichageMain(){
         echo -e "$message"
         choixMain="${choixTabMain[choixIndiceMain]}"
         echo "---------------------------------------------------------------"
-        echo "                    Que voulez vous faire ?"
+        echo -e "\033[1;33m                     Que voulez vous faire ?\033[0m"
         echo "---------------------------------------------------------------"
         for elmt in "${choixTabMain[@]}"; do
             if [ "$choixMain" = "$elmt" ]; then
@@ -670,7 +670,7 @@ affichageChif(){
     echo -e "$message"
     choixChif="${choixTabChif[choixIndiceChif]}"
     echo "---------------------------------------------------------------"
-    echo "                   Que souhaitez-vous coder ?"
+    echo -e "\033[1;33m                   Que souhaitez-vous coder ?\033[0m"
     echo "---------------------------------------------------------------"
     for elmt in "${choixTabChif[@]}"; do
         if [ "$choixChif" = "$elmt" ]; then
@@ -686,7 +686,7 @@ affichageChifLig(){
     clear
     choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
     echo "---------------------------------------------------------------"
-    echo " Voulez vous coder tout le fichier ou juste quelques lignes ?  "
+    echo -e "\033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m"
     echo "---------------------------------------------------------------"
     for elmt in "${choixTabChifLig[@]}"; do
         if [ "$choixChifLig" = "$elmt" ]; then
@@ -703,7 +703,7 @@ affichageDechif(){
     echo -e "$message"
     choixDechif="${choixTabDechif[choixIndiceDechif]}"
     echo "---------------------------------------------------------------"
-    echo "                 Que souhaitez-vous décoder ?"
+    echo -e "\033[1;33m                 Que souhaitez-vous décoder ?\033[0m"
     echo "---------------------------------------------------------------"
     for elmt in "${choixTabDechif[@]}"; do
         if [ "$choixDechif" = "$elmt" ]; then
@@ -719,7 +719,7 @@ affichageDechifLig(){
     clear
     choixDechifLig="${choixTabDechifLig[choixIndiceDechifLig]}"
     echo "---------------------------------------------------------------"
-    echo " Voulez vous décoder tout le fichier ou juste quelques lignes ?"
+    echo -e "\033[1;33m Voulez vous décoder tout le fichier ou juste quelques lignes ?\033[0m"
     echo "---------------------------------------------------------------"
     for elmt in "${choixTabDechifLig[@]}"; do
         if [ "$choixDechifLig" = "$elmt" ]; then
