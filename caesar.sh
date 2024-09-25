@@ -501,7 +501,7 @@ chiffrementCasear(){
 
 chiffrementFichierCaesar(){
     chemin="$1"
-    fichierChif=$(creerFichierCaesarChif "$chemin")    
+    fichierChif=$(creerFichierCaesar "$chemin" "1")    
 
     cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
     do
@@ -517,7 +517,7 @@ chiffrementLignesFichierCaesar(){
     ligne1="$1"
     ligne2="$2"
     chemin="$3"
-    fichierChif=$(creerFichierCaesarChif "$chemin")
+    fichierChif=$(creerFichierCaesar "$chemin" "1")
 
     sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne
     do
@@ -581,7 +581,7 @@ dechiffrementCasear(){
 dechiffrementFichierCaesar(){
     chemin="$1"
     cle="$2"
-    fichierDechif=$(creerFichierCaesarDechif "$chemin")    
+    fichierDechif=$(creerFichierCaesar "$chemin" "0")    
 
     cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
     do
@@ -598,7 +598,7 @@ dechiffrementLignesFichierCaesar(){
     ligne2="$2"
     chemin="$3"
     cle="$4"
-    fichierDechif=$(creerFichierCaesarDechif "$chemin")
+    fichierDechif=$(creerFichierCaesar "$chemin" "0")
 
     sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne
     do
@@ -609,42 +609,38 @@ dechiffrementLignesFichierCaesar(){
 
 }
 
-creerFichierCaesarChif(){
+creerFichierCaesar(){
     chemin="$1"
+    chif="$2"
     nomFichier=$(basename "$chemin")
     dossierFichier=$(dirname "$chemin")
 
     nomSansExt="${nomFichier%.*}"
     extension="${nomFichier##*.}"
 
-    if [ "$nomFichier" != "$extension" ]; then
-        fichierChif="${dossierFichier}/${nomSansExt}Chiffrer.${extension}"
-    else
-        fichierChif="${dossierFichier}/${nomSansExt}Chiffrer"
+    if [ $chif ];then
+
+        if [ "$nomFichier" != "$extension" ]; then
+            fichierChif="${dossierFichier}/${nomSansExt}Chiffrer.${extension}"
+        else
+            fichierChif="${dossierFichier}/${nomSansExt}Chiffrer"
+        fi
+        touch "$fichierChif"
+        chmod 777 "$fichierChif"
+        echo "---------------------|Nouveau Codage|---------------------" >> "$fichierChif"
+        echo "$fichierChif"
+    else 
+
+        if [ "$nomFichier" != "$extension" ]; then
+            fichierDechif="${dossierFichier}/${nomSansExt}Dechiffrer.${extension}"
+        else
+            fichierDechif="${dossierFichier}/${nomSansExt}Dechiffrer"
+        fi
+        touch "$fichierDechif"
+        chmod 777 "$fichierDechif"
+        echo "---------------------|Nouveau Décodage|---------------------" >> "$fichierDechif"
+        echo "$fichierDechif"
     fi
-    touch "$fichierChif"
-    chmod 777 "$fichierChif"
-    echo -e "\033[1;33m ---------------------|Nouveau Codage|---------------------\033[0m" >> "$fichierChif"
-    echo "$fichierChif"
-}
-
-creerFichierCaesarDechif(){
-    chemin="$1"
-    nomFichier=$(basename "$chemin")
-    dossierFichier=$(dirname "$chemin")
-
-    nomSansExt="${nomFichier%.*}"
-    extension="${nomFichier##*.}"
-
-    if [ "$nomFichier" != "$extension" ]; then
-        fichierDechif="${dossierFichier}/${nomSansExt}Dechiffrer.${extension}"
-    else
-        fichierDechif="${dossierFichier}/${nomSansExt}Dechiffrer"
-    fi
-    touch "$fichierDechif"
-    chmod 777 "$fichierDechif"
-    echo -e "\033[1;33m ---------------------|Nouveau Décodage|---------------------\033[0m" >> "$fichierDechif"
-    echo "$fichierDechif"
 }
 
 
