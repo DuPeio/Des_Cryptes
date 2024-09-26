@@ -163,7 +163,7 @@ caesarChif(){
                     echo "       Un fichier contenant votre texte codé va être créer"
                     echo "_______________________________________________________________"
                     message="              Fichier codé avec succès"
-                    chiffrementFichierCaesar "$caesarCheminChif"
+                    codeDecodeFichierCaesar "$caesarCheminChif"
                     
                     ;;
 
@@ -360,7 +360,7 @@ caesarDechif(){
                     echo "     Un fichier contenant votre texte decodé va être créé     "
                     echo "_______________________________________________________________"
                     message="                Fichier décodé avec succès"
-                    dechiffrementFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif"
+                    codeDecodeFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif"
                     
                     ;;
 
@@ -446,25 +446,13 @@ caesarDechif(){
 }
 
 codeSimple(){ #Cette fonction me permet de coder puis de rappeler la fonction CaesarChif
-    chaine="$1"
-    codeDecodeCaesar "$chaine"
+    chaine="$1" #On récupère l'argument à coder
+    codeDecodeCaesar "$chaine" #On applique la fonciton
     caesarChif
 }
 
 
-chiffrementFichierCaesar(){
-    chemin="$1"
-    fichierChif=$(creerFichierCaesar "$chemin" "true")    
 
-    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
-    do
-        ligneChif=$(codeDecodeCaesar "$ligne")
-        echo -e "$ligneChif" >> "$fichierChif"
-    done
-
-    caesarChif
-
-}
 
 
 
@@ -472,6 +460,35 @@ decodeSimple(){
     chaine="$1"
     codeDecodeCaesar "$chaine" "$cleCaesarDechif"
     caesarDechif
+}
+
+
+codeDecodeFichierCaesar(){
+    chemin="$1"
+    cle="$2"
+    if [ $cle ];then
+        fichier=$(creerFichierCaesar "$chemin" "false")
+    else
+        fichier=$(creerFichierCaesar "$chemin" "true")   
+    fi
+
+    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]; do
+        if [ $cle ];then
+        
+            ligneC=$(codeDecodeCaesar "$ligne" "$cle")
+        
+        else
+            ligneC=$(codeDecodeCaesar "$ligne" )
+        fi
+        echo -e "$ligneC" >> "$fichier"
+    done
+    
+    
+    if [ $cle ];then
+        caesarDechif
+    else
+        caesarChif
+    fi
 }
 
 codeDecodeCaesar(){
@@ -537,20 +554,7 @@ codeDecodeCaesar(){
 	echo "$res"
 }
 
-dechiffrementFichierCaesar(){
-    chemin="$1"
-    cle="$2"
-    fichierDechif=$(creerFichierCaesar "$chemin" "false")    
 
-    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
-    do
-        ligneDechif=$(codeDecodeCaesar "$ligne" "$cle")
-        echo -e "$ligneDechif" >> "$fichierDechif"
-    done
-    
-    caesarDechif
-
-}
 
 lignesFichierCaesar(){
     ligne1="$1"
