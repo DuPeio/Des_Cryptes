@@ -222,7 +222,7 @@ caesarChif(){
             	
             echo "_______________________________________________________________"
             echo "                  Voici votre phrase codée"
-            chiffrementCasearSimple "$phraseCaesar"
+            codeSimple "$phraseCaesar"
             
             
             ;;
@@ -426,7 +426,7 @@ caesarDechif(){
             
             echo "_______________________________________________________________"
             echo "                Voici votre phrase décodée"
-            dechiffrementCasearSimple "$phraseCaesar" "$cleCaesarDechif"
+            decodeSimple "$phraseCaesar" "$cleCaesarDechif"
             ;;
         
         "2")
@@ -444,59 +444,12 @@ caesarDechif(){
     esac
 }
 
-chiffrementCasearSimple(){
-    local chaine="$1"
-    chiffrementCasear "$chaine"
+codeSimple(){
+    chaine="$1"
+    codeDecodeCaesar "$chaine"
     caesarChif
 }
 
-
-chiffrementCasear(){
-#Valeur Ascii [0-127]
-#[a-z] => 97-122
-#[A-Z] => 65-90
-#[0-9] => 48-57
-	local chaine="$1"
-	res=""
-	#Avoir la taille de la chaine => ${#chaine}
-	for ((i=0; i<${#chaine}; i++)); do
-	
-		lettre=${chaine:$i:1} #Récupérer la lettre à la position i=> ${chaine:$i:1}
-		#echo "$lettre"
-		
-		asciiLettre=$(printf "%d" "'$lettre") #la ' permet de montrer que $lettre est un caractère
-		
-		#Lettres majuscules
-		if [ $asciiLettre -ge 65 ] && [ $asciiLettre -le 90 ]; then
-			asciiLettre=$((asciiLettre+cleCaesarChif)) #Pour additionner en bash, il faut utiliser (( ))
-			while [ $asciiLettre -gt 90 ]; do
-				asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler 
-			done
-			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
-		
-		#Lettres minuscules
-		elif [ $asciiLettre -ge 97 ] && [ $asciiLettre -le 122 ]; then
-			asciiLettre=$((asciiLettre+cleCaesarChif))
-			while [ $asciiLettre -gt 122 ]; do
-				asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler 
-			done
-			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
-		
-		#Chiffres
-		elif [ $asciiLettre -ge 48 ] && [ $asciiLettre -le 57 ]; then
-			asciiLettre=$((asciiLettre+cleCaesarChif))
-			while [ $asciiLettre -gt 57 ]; do
-				asciiLettre=$((asciiLettre-10)) #Au cas où ça dépasse, on fait -10 pour boucler 
-			done
-			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
-		fi
-		 
-		#echo "$asciiLettre"
-        
-		res+=$lettre
-	done
-	echo "$res"
-}
 
 
 chiffrementFichierCaesar(){
@@ -505,7 +458,7 @@ chiffrementFichierCaesar(){
 
     cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
     do
-        ligneChif=$(chiffrementCasear "$ligne")
+        ligneChif=$(codeDecodeCaesar "$ligne")
         echo -e "$ligneChif" >> "$fichierChif"
     done
 
@@ -515,13 +468,13 @@ chiffrementFichierCaesar(){
 
 
 
-dechiffrementCasearSimple(){
+decodeSimple(){
     local chaine="$1"
-    dechiffrementCasear "$chaine" "$cleCaesarDechif"
+    codeDecodeCaesar "$chaine" "$cleCaesarDechif"
     caesarDechif
 }
 
-dechiffrementCasear(){
+codeDecodeCaesar(){
     local chaine="$1"
     local cleCaesarDechif="$2"
 	res=""
@@ -535,31 +488,50 @@ dechiffrementCasear(){
 		
 		#Lettres majuscules
 		if [ $asciiLettre -ge 65 ] && [ $asciiLettre -le 90 ]; then
-			asciiLettre=$((asciiLettre-cleCaesarDechif)) 
-			while [ $asciiLettre -lt 65 ]; do
-				asciiLettre=$((asciiLettre+26)) 
-			done
+            if [ -z $cleCaesarDechif ];then
+                asciiLettre=$((asciiLettre+cleCaesarChif)) #Pour additionner en bash, il faut utiliser (( ))
+                while [ $asciiLettre -gt 90 ]; do
+                    asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler 
+                done
+            else
+                asciiLettre=$((asciiLettre-cleCaesarDechif)) 
+                while [ $asciiLettre -lt 65 ]; do
+                    asciiLettre=$((asciiLettre+26)) 
+                done
+            fi
+			
 			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
 		
 		#Lettres minuscules
 		elif [ $asciiLettre -ge 97 ] && [ $asciiLettre -le 122 ]; then
-			asciiLettre=$((asciiLettre-cleCaesarDechif))
-			while [ $asciiLettre -lt 97 ]; do
-				asciiLettre=$((asciiLettre+26)) 
-			done
+            if [ -z $cleCaesarDechif ];then
+                asciiLettre=$((asciiLettre+cleCaesarChif))
+                while [ $asciiLettre -gt 122 ]; do
+                    asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler 
+                done
+            else
+                asciiLettre=$((asciiLettre-cleCaesarDechif))
+                while [ $asciiLettre -lt 97 ]; do
+                    asciiLettre=$((asciiLettre+26)) 
+                done
+            fi
 			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
 		
 		#Chiffres
 		elif [ $asciiLettre -ge 48 ] && [ $asciiLettre -le 57 ]; then
-			asciiLettre=$((asciiLettre-cleCaesarDechif))
-			while [ $asciiLettre -lt 48 ]; do
-				asciiLettre=$((asciiLettre+10)) 
-			done
+            if [ -z $cleCaesarDechif ];then
+                asciiLettre=$((asciiLettre+cleCaesarChif))
+                while [ $asciiLettre -gt 57 ]; do
+                    asciiLettre=$((asciiLettre-10)) #Au cas où ça dépasse, on fait -10 pour boucler 
+                done
+            else
+                asciiLettre=$((asciiLettre-cleCaesarDechif))
+                while [ $asciiLettre -lt 48 ]; do
+                    asciiLettre=$((asciiLettre+10)) 
+                done
+            fi
 			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
 		fi
-		 
-		#echo "$asciiLettre"
-		
 		res+=$lettre
 	done
 	echo "$res"
@@ -572,7 +544,7 @@ dechiffrementFichierCaesar(){
 
     cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]
     do
-        ligneDechif=$(dechiffrementCasear "$ligne" "$cle")
+        ligneDechif=$(codeDecodeCaesar "$ligne" "$cle")
         echo -e "$ligneDechif" >> "$fichierDechif"
     done
     
@@ -596,9 +568,9 @@ lignesFichierCaesar(){
     sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne
     do
         if [ -z $cle ];then
-            ligneC=$(chiffrementCasear "$ligne")
+            ligneC=$(codeDecodeCaesar "$ligne")
         else
-            ligneC=$(dechiffrementCasear "$ligne" "$cle")
+            ligneC=$(codeDecodeCaesar "$ligne" "$cle")
         fi
         echo -e "$ligneC" >> "$fichier"
     done
