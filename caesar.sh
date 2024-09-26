@@ -168,7 +168,7 @@ caesarChif(){
 
                 "1")
                     clear
-                    nbLignes=$(wc -l "$caesarCheminChif" | awk '{print $1}') #Le awk sert a récupérer seulement le chiffre sinon ya le nom du fichier aussi
+                    nbLignes=$(wc -l < "$caesarCheminChif")
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     echo "        Quelles lignes du fichier voulez-vous coder ?" 
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -364,7 +364,7 @@ caesarDechif(){
                     ;;
 
                 "1")
-                    nbLignes=$(wc -l "$caesarCheminDechif" | awk '{print $1}')
+                    nbLignes=$(wc -l < "$caesarCheminDechif")
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     # Doit choisir la clé de déchiffrement
                     echo "      Quelles lignes du fichier voulez-vous décoder ?"
