@@ -130,7 +130,7 @@ caesarChif(){
             choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
 
             affichageChifLig
-            while [ "$touche" != "" ]; do
+            while [ "$touche" != "" ];do
                 if [ $touche = $'\x1b' ]; then
                     read -sn2 touche
                     case $touche in
@@ -445,12 +445,11 @@ caesarDechif(){
     esac
 }
 
-codeSimple(){
+codeSimple(){ #Cette fonction me permet de coder puis de rappeler la fonction CaesarChif
     chaine="$1"
     codeDecodeCaesar "$chaine"
     caesarChif
 }
-
 
 
 chiffrementFichierCaesar(){
