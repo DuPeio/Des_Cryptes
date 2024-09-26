@@ -469,14 +469,14 @@ chiffrementFichierCaesar(){
 
 
 decodeSimple(){
-    local chaine="$1"
+    chaine="$1"
     codeDecodeCaesar "$chaine" "$cleCaesarDechif"
     caesarDechif
 }
 
 codeDecodeCaesar(){
-    local chaine="$1"
-    local cleCaesarDechif="$2"
+    chaine="$1"
+    cleCaesarDechif="$2"
 	res=""
 	
 	for ((i=0; i<${#chaine}; i++)); do
