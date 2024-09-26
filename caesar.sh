@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#Pierre MAGIEU
 # Partie Peio : Code Ceasar
 # Menu 
 caesarMain() {

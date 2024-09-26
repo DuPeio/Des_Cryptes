@@ -4,6 +4,8 @@ source morse.sh
 source vigenere.sh
 source caesar.sh
 
+# Pierre MAGIEU, Sebastian CARON, Dylan BRUN
+
 #Partie Globale : Main
 main() {
     clear
