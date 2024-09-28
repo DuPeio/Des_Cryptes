@@ -6,19 +6,26 @@ source tools.sh
 
 cle=""
 phrase=""
+estFichier=0
+fichier=""
 
 actionInvalide() {
+    clear
     echo ""
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo "               Veuillez choisir une action valide"
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo ""
-    sleep 1
+    sleep 1.25
     clear
 }
 
 vigenereMain() {
     clear
+    cle=""
+    phrase=""
+    estFichier=0
+    fichier=""
     vigenereMain_
 }
 
@@ -57,7 +64,7 @@ vigenereMain_() {
 
         *)
             actionInvalide
-            vigenereMain_
+            vigenereMain
             ;;
     esac
 }
@@ -76,26 +83,42 @@ chiffrerVigenere() {
     read actionChif
 
     clear
+    estFile
+    clear
 
     case $actionChif in
         "1")
             choixCle
             clear
-            choixPhrase
-            clear
+            if [[ $estFichier == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichier
+                clear
+            fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
+            printf "\n"
+            continuerYN
             ;;
         "2")
             echo ""
             genCle
-            choixPhrase
-            clear
+            if [[ $estFichier == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichier
+                clear
+            fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
+            printf "\n"
+            continuerYN
             ;;
         "3")
-            vigenereMain_
+            vigenereMain
             ;;
         "4")
             quitter
@@ -119,14 +142,23 @@ dechiffrerVigenere() {
     read actionDechif
 
     clear
+    estFile
 
     case $actionDechif in
         "1")
             choixCle
-            choixPhrase
+            clear
+            if [[ $estFichier == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichier
+                clear
+            fi
+            dechiffrementVigenere "$cle" "$phrase"
             ;;
         "2")
-            vigenereMain_
+            vigenereMain
             ;;
         "3")
             quitter
@@ -136,6 +168,54 @@ dechiffrerVigenere() {
             dechiffrerVigenere
             ;;
     esac
+}
+
+continuerYN() {
+    local rep=""
+
+    printf "Voulez-vous quitter le programme ? (y/n) "
+    read rep
+    printf "\n"
+
+    clear
+
+    if [[ $rep == "y" || $rep == "Y" ]]; then
+        quitter
+    elif [[ $rep == "n" || $rep == "N" ]]; then
+        vigenereMain
+    else
+        actionInvalide
+        continuerYN
+    fi
+}
+
+estFile() {
+    local rep=""
+
+    printf "Voulez-vous choisir un fichier en entrée ? (y/n) "
+    read rep
+    printf "\n"
+
+    clear
+
+    if [[ $rep == "y" || $rep == "Y" ]]; then
+        estFichier=1
+    elif [[ $rep == "n" || $rep == "N" ]]; then
+        estFichier=0
+    else
+        actionInvalide
+        estFile
+    fi
+}
+
+choixFichier() {
+    local rep=""
+
+    printf "Veuillez choisir le nom ou chemin d'un fichier: "
+    read rep
+    printf "\n"
+
+    
 }
 
 choixCle() {
@@ -156,7 +236,7 @@ choixCle() {
         clear
         printf "Veuillez choisir une clé: "
         read choix
-        echo "\n"
+        printf "\n"
     done
 
     cle=$choix
@@ -167,7 +247,7 @@ choixPhrase() {
     
     printf "Veuillez écrire une phrase: "
     read phrs
-    echo "\n"
+    printf "\n"
 
     phrase=$phrs
 }
@@ -226,5 +306,5 @@ chiffrementVigenere() {
 }
 
 dechiffrementVigenere() {
-    echo "test"
+    echo "vide"
 }
