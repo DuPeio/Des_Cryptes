@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -A code_morse # Lettre : morse
+declare -A decode_morse # Morse : lettre
 
 # sed -i -e 's/\r$//' ./SaeShell.sh
 
@@ -14,6 +15,7 @@ do
         valeur="${BASH_REMATCH[2]}" # Deuxieme Groupe entre ()
         
         code_morse["$cle"]="$valeur" # Ajoute les éléments a la liste d'associatioon
+        decode_morse["$valeur"]="$cle"
     fi
 done < 'morse.json'
 
@@ -49,6 +51,7 @@ codeMorse() {
         val=""
         char="${string:$i:1}" # On recupere le char
         char=$(echo "$char" | tr '[:lower:]' '[:upper:]') # Ce char est mis en majuscule
+        
         for cle in "${!code_morse[@]}" # Pour chaque élément de la liste d'association
         do
             if [[ "$cle" == "$char" ]] # Si c'est l'élément que l'on cherche
@@ -103,15 +106,14 @@ decodeMorse() {
     do
         trouve=0
         txt=""
-        for cle in "${!code_morse[@]}" # On parcours la liste d'association
-        do
-            if [[ "${code_morse[$cle]}" == $val ]] # Si c'est notre code morse
-            then
-                trouve=1 # On indique qu'on l'a trouvé
-                txt=$cle  # On met la valeur txt à son équivalent texte
-                break
-            fi
-        done
+        
+        if [[ -n decode_morse[$val] ]] # Si c'est notre code morse
+        then
+            trouve=1 # On indique qu'on l'a trouvé
+            txt=$cle  # On met la valeur txt à son équivalent texte
+            break
+        fi
+
         if [ $trouve -eq 1 ] # Si on l'a trouvé
         then
             res="$res$txt" # On l'ajoute à la chaine resultat
