@@ -33,8 +33,9 @@ erreurFunc() {
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "              FICHIER SAUVEGARDE AVEC SUCCES !"
     fi
-    erreur=0
+    # erreur=0
 }
+
 codeMorse() {
     # Fonction qui à partir d'une string en parametre, retourne son équivalent en morse.
     nbErreurs=0
@@ -202,35 +203,104 @@ dechiffrementFichierMorse() {
 
 }
 
-morseMain(){
-    # Fonction qui permet d'afficher le menu de selection de chiffrement / déchiffrement pour le morse
+titre=""
+options=()
+choixMorse=0
+
+affichageScreen(){
     clear
-    echo "---------------------------------------------------------------"
-    echo "                          MORSE"
-    echo "---------------------------------------------------------------"
-    echo -ne "                        Chiffrer (1)    \tTEXT \t->\t MORSE\n"
-    echo -ne "                       Dechiffrer (2)   \tMORSE \t->\t TEXT\n"
-    echo ""
-    echo "                        Retour (4)"
+    choixMorse=0
+    taille=${#options[@]}
+    # touche="   "
 
-    erreurFunc $erreur # Affiche ou non un message
+    affichage(){
+        echo "---------------------------------------------------------------"
+        echo "$titre"
+        echo "---------------------------------------------------------------"
+        for (( i=0; i<$taille; i++ ))
+        do
+            elmt=${options[$i]}  
+            if [ $i -eq $choixMorse ]; then
+                echo -e "\033[33m$elmt  <\033[0m"
+            else
+                echo "$elmt"
+            fi
+        done
+        erreurFunc $erreur
+        read -sn1 touche
+    }
+    
 
-    echo -ne " VOTRE CHOIX : "
-    read choixMorse # Lit l'entrée de l'utilisateur
-    echo ""
+    
+    affichage
+    erreurFunc $erreur
+
+    while [ "$touche" != "" ]; do
+        if [ $touche = $'\x1b' ]; then
+            read -sn2 touche
+            case $touche in
+                "[A")
+                    clear
+                    choixMorse=$((choixMorse-1))
+                    while [ "${options[$choixMorse]}" == "" ]
+                    do
+                        choixMorse=$((choixMorse-1))
+                        if [ $choixMorse -lt 0 ]; then 
+                            choixMorse=$(($taille-1))
+                        fi
+                    done
+                    if [ $choixMorse -lt 0 ]; then 
+                        choixMorse=$(($taille-1))
+                    fi
+                    affichage
+                    ;;
+                "[B")
+                    clear
+                    choixMorse=$((choixMorse+1))
+                    while [ "${options[$choixMorse]}" == "" ]
+                    do
+                        choixMorse=$((choixMorse+1))
+                        if [ $choixMorse -gt $(($taille-1)) ]; then 
+                            choixMorse=0
+                        fi
+                    done
+                    if [ $choixMorse -gt $(($taille-1)) ]; then 
+                        choixMorse=0
+                    fi
+                    affichage
+                    ;;
+                "*")
+                    clear
+                    affichage
+                    ;;
+            esac
+        else
+            clear
+            affichage
+        fi
+    done
+    erreur=0
+
+}
+
+morseMain(){
+
+    options=("                        Chiffrer" "                       Dechiffrer" "" "                        Retour")
+    titre="                          MORSE"
+    affichageScreen
 
     case $choixMorse in
-        "1")     
+        "0")     
             clear
             morseMenu 0 # Lance un second sous menu en version chiffrer
             return 0 
             ;;
-        "2")
+        "1")
             clear
             morseMenu 1 # Lance un second sous menu en version déchiffrer
             return 0
             ;;
-        "4")
+        "3")
             clear # Ferme le menu
             ;;
         *)
@@ -335,26 +405,18 @@ morseMenu() {
 
     opt=$1 # 0 Chiffrement, 1 Dechiffrement
 
-    echo "---------------------------------------------------------------"
     if [ $opt -eq 0 ]
     then
-        echo "                    CHIFFREMENT MORSE"
+        titre="                    CHIFFREMENT MORSE"
     else
-        echo "                   DECHIFFREMENT MORSE"
+        titre="                   DECHIFFREMENT MORSE"
     fi
-    echo "---------------------------------------------------------------"
-    echo "                  Via Un Fichier Externe (1)   "
-    echo "                       Via l'Input (2)"
-    echo ""
-    echo "                        Retour (4)"
 
-    erreurFunc $erreur # Affiche un message si besoin
-    # erreur=0
-    echo -ne " VOTRE CHOIX : "
-    read choixMorse # Lit le choix utilisateur
-    echo ""
+    options=("                  Via Un Fichier Externe" "                       Via l'Input" "" "                        Retour")
+    affichageScreen
+
     case $choixMorse in
-        "1")
+        "0")
             morseFile # On lance le menu pour choisir les fichiers
             if [ $? != 0 ] # Si tout ne s'est pas passé correctement
             then
@@ -373,10 +435,10 @@ morseMenu() {
             erreur=3  # Valeur pour indiquer comme message que tout s'est passé correctement
             clear
             ;;
-        "2")
+        "1")
             morseInput $opt # Lance le menu code ou décode via l'input console
             ;;
-        "4")
+        "3")
             clear # On quitte le menu
             ;;
         *)
