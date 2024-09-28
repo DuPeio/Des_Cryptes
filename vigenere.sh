@@ -7,6 +7,16 @@ source tools.sh
 cle=""
 phrase=""
 
+actionInvalide() {
+    echo ""
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    echo "               Veuillez choisir une action valide"
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    echo ""
+    sleep 1
+    clear
+}
+
 vigenereMain() {
     clear
     vigenereMain_
@@ -46,13 +56,7 @@ vigenereMain_() {
             ;;
 
         *)
-            echo ""
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "               Veuillez choisir une action valide"
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo ""
-            sleep 1
-            clear
+            actionInvalide
             vigenereMain_
             ;;
     esac
@@ -97,13 +101,7 @@ chiffrerVigenere() {
             quitter
             ;;  
         *)
-            echo ""
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "               Veuillez choisir une action valide"
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo ""
-            sleep 1
-            clear
+            actionInvalide
             chiffrerVigenere
             ;;
     esac
@@ -134,7 +132,7 @@ dechiffrerVigenere() {
             quitter
             ;;  
         *)
-            echo "Veuillez choisir une action valide"
+            actionInvalide
             dechiffrerVigenere
             ;;
     esac
@@ -146,7 +144,7 @@ choixCle() {
     printf "Veuillez choisir une clé: "
     read choix
 
-    while ! [[ "$choix" =~ ^[a-zA-Z]+$ ]]; do
+    while ! [[ "$choix" =~ ^[a-zA-Z]+$ ]]; do       #Tant que le choix ne contient pas uniquement des lettres, alors on redemande de saisir une clé
         clear
         choix=""
         echo ""
@@ -176,7 +174,7 @@ choixPhrase() {
 
 genCle() {
     local res=""
-    local taille=$(((RANDOM + 1) % 69))
+    local taille=$((RANDOM % 69 + 1))
 
     for ((i=0; i<taille; i++)); do
         res+=$(printf "\\$(printf '%o' $((RANDOM % 26 + 97)))")
@@ -197,15 +195,16 @@ chiffrementVigenere() {
     local len_sentence=${#sentence}
 
     for (( i=0; i<len_sentence; i++ )); do
-        chara=${key:ind % len_key:1}
-        char=${sentence:i:1}
+        chara=${key:ind % len_key:1}        #caractère de key à l'index ind
+        char=${sentence:i:1}        #caractère de sentence à l'index i
 
+        #Tant que le caractère n'est pas utilisable en tant que clé, le prochain sera utilisé, et si on atteint la fin, on retourne au début
         while ! [[ "$chara" =~ [a-zA-Z] ]]; do
             ((ind++))
             chara=${key:ind % len_key:1}
         done
         if [[ "$chara" =~ [A-Z] ]]; then
-            chara=$(echo "$chara" | tr '[:upper:]' '[:lower:]')
+            chara=$(echo "$chara" | tr '[:upper:]' '[:lower:]')     #Passage de majuscule vers minuscule des lettres de la clé
         fi
 
         #Vérification si le caractère est une lettre minuscule, majuscule, ou un chiffre, sinon ajouter sans changement
