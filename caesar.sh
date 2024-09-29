@@ -445,15 +445,11 @@ caesarDechif(){
     esac
 }
 
-codeSimple(){ #Cette fonction me permet de coder puis de rappeler la fonction CaesarChif
-    chaine="$1" #On récupère l'argument à coder
-    codeDecodeCaesar "$chaine" #On applique la fonciton
-    caesarChif
+codeSimple(){  #Cette fonction me permet de coder puis de rappeler la fonction CaesarChif
+    chaine="$1"   #On récupère l'argument à coder
+    codeDecodeCaesar "$chaine"  #On applique la fonciton
+    caesarChif  
 }
-
-
-
-
 
 
 decodeSimple(){
