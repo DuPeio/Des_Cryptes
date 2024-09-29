@@ -49,19 +49,15 @@ vigenereMain_() {
         "1")
             chiffrerVigenere
             ;;
-
         "2")
             dechiffrerVigenere
             ;;
-
         "3")
             main
             ;;
-
         "4")
             quitter
             ;;
-
         *)
             actionInvalide
             vigenereMain
@@ -232,6 +228,10 @@ choixFichier() {
     fi
 }
 
+selectLigne() {
+    echo ""
+}
+
 choixCle() {
     local choix=""
 
@@ -285,8 +285,8 @@ chiffrementVigenere() {
     local res=""
     local chara=""
     local char=""
-    local len_key=${#key}
-    local len_sentence=${#sentence}
+    local len_key=${#key}       #taille de key
+    local len_sentence=${#sentence}     #taille de sentence
 
     for (( i=0; i<len_sentence; i++ )); do
         chara=${key:ind % len_key:1}        #caractère de key à l'index ind
