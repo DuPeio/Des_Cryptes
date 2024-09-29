@@ -5,29 +5,32 @@
 # Menu 
 caesarMain() {
     clear
+    # choix du menu principal Caesar
     choixTabMain=("                            Coder" "                           Décoder" "               Choisir un autre mode de codage" "                      Quitter le programme")
     choixIndiceMain=0
     choixMain="${choixTabMain[choixIndiceMain]}"
 
     affichageMain
-    while [ "$touche" != "" ]; do
-    
+    # Menu principal Caesar interractif 
+    while [ "$touche" != "" ]; do #La touche entrée permet de sortir de la boucle et de valider le choix
 
-        if [ $touche = $'\x1b' ]; then
+        if [ $touche = $'\x1b' ]; then 
             read -sn2 touche
             case $touche in
+            # Fleche du haut
                 "[A")
                     clear
                     choixIndiceMain=$((choixIndiceMain-1))
-                    if [ $choixIndiceMain -lt 0 ]; then 
+                    if [ $choixIndiceMain -lt 0 ]; then #Permet de faire boucler le menu interractif
                         choixIndiceMain=3
                     fi
                     affichageMain
                     ;;
+            # Fleche du bas
                 "[B")
                     clear
                     choixIndiceMain=$((choixIndiceMain+1))
-                    if [ $choixIndiceMain -gt 3 ]; then 
+                    if [ $choixIndiceMain -gt 3 ]; then #Permet de faire boucler le menu interractif
                         choixIndiceMain=0
                     fi
                     affichageMain
@@ -47,6 +50,7 @@ caesarMain() {
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "           Vous avez choisi de coder vos données            "
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            # Lancement menu prncipal du codage Caesar
             caesarChif
             ;;
         "1")
@@ -54,37 +58,41 @@ caesarMain() {
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "           Vous avez choisi de décoder vos données             "
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            # Lancement menu prncipal du décodage Caesar
             caesarDechif
             ;;
         "2")
+            # Retour au menu des différents types de codage
             clear
             main
             ;;
         "3")
+            # Quitte le programme avec un exit 0    
             quitter
             ;;
         *)
             message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+            # On boucle si il y une réponse qui n'est pas prévue
             caesarMain
     esac
-    # echo $choixCaesar //Pour test
 }
 
-cleCaesarChif=1 #Elle est en globale sinon elle se réinitialise à chaque fois que je lance caesarChif
+cleCaesarChif=1 #Elle est en globale sinon elle se réinitialise à chaque fois qu'on lance caesarChif
 
 # Chiffrment choix
 caesarChif(){
+    # choix du menu principal codage Caesar
     choixTabChif=("            Coder le contenu d'un fichier externe" "                     Coder une phrase" "     Changer la clé de codage, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
     choixIndiceChif=0
     choixChif="${choixTabChif[choixIndiceChif]}"
     
     affichageChif
+    # Menu principal codage Caesar interractif 
     while [ "$touche" != "" ]; do
-    
-
         if [ $touche = $'\x1b' ]; then
             read -sn2 touche
             case $touche in
+            # Flèche du haut
                 "[A")
                     clear
                     choixIndiceChif=$((choixIndiceChif-1))
@@ -93,6 +101,7 @@ caesarChif(){
                     fi
                     affichageChif
                     ;;
+            # Flèche du bas
                 "[B")
                     clear
                     choixIndiceChif=$((choixIndiceChif+1))
@@ -108,9 +117,11 @@ caesarChif(){
         fi
     done
 
+    # Réinitialise le message pour ne rien afficher
     message=""
     case $choixIndiceChif in
         "0")
+            # Coder un fichier
             clear   
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "  Vous avez choisi de coder le contenu d'un fichier externe"
@@ -125,15 +136,18 @@ caesarChif(){
                 caesarChif
             fi
             
+            # Choix du codage Caesar pour un fichier
             choixTabChifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
             choixIndiceChifLig=0
             choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
 
             affichageChifLig
+            # Menu interractif du codage Caesar pour un fichier
             while [ "$touche" != "" ];do
                 if [ $touche = $'\x1b' ]; then
                     read -sn2 touche
                     case $touche in
+                    # Flèche du haut
                         "[A")
                             clear
                             choixIndiceChifLig=$((choixIndiceChifLig-1))
@@ -142,6 +156,7 @@ caesarChif(){
                             fi
                             affichageChifLig
                             ;;
+                    # Flèche du bas
                         "[B")
                             clear
                             choixIndiceChifLig=$((choixIndiceChifLig+1))
@@ -156,20 +171,22 @@ caesarChif(){
                     esac
                 fi
             done
+
+             # Réinitialise le message pour ne rien afficher
             message=""
             case $choixIndiceChifLig in
                 "0")
+
                     clear
                     echo "       Un fichier contenant votre texte codé va être créer"
                     echo "_______________________________________________________________"
                     message="              Fichier codé avec succès"
-                    codeDecodeFichierCaesar "$caesarCheminChif"
-                    
+                    codeDecodeFichierCaesar "$caesarCheminChif" #Créer le fichier avec le contenu codé
                     ;;
 
                 "1")
                     clear
-                    nbLignes=$(wc -l < "$caesarCheminChif")
+                    nbLignes=$(wc -l < "$caesarCheminChif") # ON récupère le nombre de ligne que contient le fichier
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     echo "        Quelles lignes du fichier voulez-vous coder ?" 
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -195,12 +212,14 @@ caesarChif(){
                     echo "                       Codage en cours..."
                     echo "_______________________________________________________________"
                     message="                 Fichier codé avec succès"
+                    #Créer le fichier avec le lignes choisis codées
                     lignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminChif"
                     ;;
 
                 "2")
                     clear
                     message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                 Retour au menu de codage....\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+                    # Retour au menu de codage Caesar
                     caesarChif
                     ;;
 
@@ -213,22 +232,24 @@ caesarChif(){
             ;;
         
         "1")     
+        # Codage d'une phrase
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "          Vous avez choisi de coder une phrase"
             echo "       Entrez la phrase que vous souhaitez coder..."
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
-            read phraseCaesar
+            read phraseCaesar #Récupération de l'input de l'utilisateur
             	
             echo "_______________________________________________________________"
             echo "                  Voici votre phrase codée"
-            codeSimple "$phraseCaesar"
+            codeSimple "$phraseCaesar" #Codage de l'input
             
             
             ;;
         
         "2")
+        # Choisir une clé de codage
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "                Choisissez une clé de codage"
@@ -239,9 +260,9 @@ caesarChif(){
             read choixCleCaesarChiff
 
             if [ "$choixCleCaesarChiff" == "0" ]; then
-                cleCaesarChif=$(aleatoire)
+                cleCaesarChif=$(aleatoire) #Aleatoirement grâce à la fonction aleatoire()
             else
-                cleCaesarChif=$choixCleCaesarChiff
+                cleCaesarChif=$choixCleCaesarChiff #On récupère l'input de l'utilisateur
             fi
             caesarChif
             ;;
