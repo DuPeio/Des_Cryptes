@@ -6,9 +6,26 @@ source tools.sh
 
 cle=""
 phrase=""
+estFichier=0
+fichier=""
+
+actionInvalide() {
+    clear
+    echo ""
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    echo "               Veuillez choisir une action valide"
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    echo ""
+    sleep 1.25
+    clear
+}
 
 vigenereMain() {
     clear
+    cle=""
+    phrase=""
+    estFichier=0
+    fichier=""
     vigenereMain_
 }
 
@@ -32,28 +49,18 @@ vigenereMain_() {
         "1")
             chiffrerVigenere
             ;;
-
         "2")
             dechiffrerVigenere
             ;;
-
         "3")
             main
             ;;
-
         "4")
             quitter
             ;;
-
         *)
-            echo ""
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "               Veuillez choisir une action valide"
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo ""
-            sleep 1
-            clear
-            vigenereMain_
+            actionInvalide
+            vigenereMain
             ;;
     esac
 }
@@ -72,38 +79,48 @@ chiffrerVigenere() {
     read actionChif
 
     clear
+    estFile
+    clear
 
     case $actionChif in
         "1")
             choixCle
             clear
-            choixPhrase
-            clear
+            if [[ $estFichier == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichier
+                clear
+            fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
+            printf "\n"
+            continuerYN
             ;;
         "2")
             echo ""
             genCle
-            choixPhrase
-            clear
+            if [[ $estFichier == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichier
+                clear
+            fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
+            printf "\n"
+            continuerYN
             ;;
         "3")
-            vigenereMain_
+            vigenereMain
             ;;
         "4")
             quitter
             ;;  
         *)
-            echo ""
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo "               Veuillez choisir une action valide"
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            echo ""
-            sleep 1
-            clear
+            actionInvalide
             chiffrerVigenere
             ;;
     esac
@@ -121,23 +138,98 @@ dechiffrerVigenere() {
     read actionDechif
 
     clear
+    estFile
 
     case $actionDechif in
         "1")
             choixCle
-            choixPhrase
+            clear
+            if [[ $estFichier == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichier
+                clear
+            fi
+            dechiffrementVigenere "$cle" "$phrase"
             ;;
         "2")
-            vigenereMain_
+            vigenereMain
             ;;
         "3")
             quitter
             ;;  
         *)
-            echo "Veuillez choisir une action valide"
+            actionInvalide
             dechiffrerVigenere
             ;;
     esac
+}
+
+continuerYN() {
+    local rep=""
+
+    printf "Voulez-vous quitter le programme ? (y/n) "
+    read rep
+    printf "\n"
+
+    clear
+
+    if [[ $rep == "y" || $rep == "Y" ]]; then
+        quitter
+    elif [[ $rep == "n" || $rep == "N" ]]; then
+        vigenereMain
+    else
+        actionInvalide
+        continuerYN
+    fi
+}
+
+estFile() {
+    local rep=""
+
+    printf "Voulez-vous choisir un fichier en entrée ? (y/n) "
+    read rep
+    printf "\n"
+
+    clear
+
+    if [[ $rep == "y" || $rep == "Y" ]]; then
+        estFichier=1
+    elif [[ $rep == "n" || $rep == "N" ]]; then
+        estFichier=0
+    else
+        actionInvalide
+        estFile
+    fi
+}
+
+choixFichier() {
+    local rep=""
+
+    printf "Veuillez choisir le nom ou chemin d'un fichier: "
+    read rep
+    printf "\n"
+
+    rep="./$rep"
+
+    if [[ -f "$rep" ]]; then
+        fichier=$rep
+    else
+        clear
+        echo ""
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo "                    Le fichier n'existe pas"
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo ""
+        sleep 1
+        clear
+        choixFichier
+    fi
+}
+
+selectLigne() {
+    echo ""
 }
 
 choixCle() {
@@ -146,7 +238,7 @@ choixCle() {
     printf "Veuillez choisir une clé: "
     read choix
 
-    while ! [[ "$choix" =~ ^[a-zA-Z]+$ ]]; do
+    while ! [[ "$choix" =~ ^[a-zA-Z]+$ ]]; do       #Tant que le choix ne contient pas uniquement des lettres, alors on redemande de saisir une clé
         clear
         choix=""
         echo ""
@@ -158,7 +250,7 @@ choixCle() {
         clear
         printf "Veuillez choisir une clé: "
         read choix
-        echo "\n"
+        printf "\n"
     done
 
     cle=$choix
@@ -169,14 +261,14 @@ choixPhrase() {
     
     printf "Veuillez écrire une phrase: "
     read phrs
-    echo "\n"
+    printf "\n"
 
     phrase=$phrs
 }
 
 genCle() {
     local res=""
-    local taille=$(((RANDOM + 1) % 69))
+    local taille=$((RANDOM % 69 + 1))
 
     for ((i=0; i<taille; i++)); do
         res+=$(printf "\\$(printf '%o' $((RANDOM % 26 + 97)))")
@@ -193,19 +285,20 @@ chiffrementVigenere() {
     local res=""
     local chara=""
     local char=""
-    local len_key=${#key}
-    local len_sentence=${#sentence}
+    local len_key=${#key}       #taille de key
+    local len_sentence=${#sentence}     #taille de sentence
 
     for (( i=0; i<len_sentence; i++ )); do
-        chara=${key:ind % len_key:1}
-        char=${sentence:i:1}
+        chara=${key:ind % len_key:1}        #caractère de key à l'index ind
+        char=${sentence:i:1}        #caractère de sentence à l'index i
 
+        #Tant que le caractère n'est pas utilisable en tant que clé, le prochain sera utilisé, et si on atteint la fin, on retourne au début
         while ! [[ "$chara" =~ [a-zA-Z] ]]; do
             ((ind++))
             chara=${key:ind % len_key:1}
         done
         if [[ "$chara" =~ [A-Z] ]]; then
-            chara=$(echo "$chara" | tr '[:upper:]' '[:lower:]')
+            chara=$(echo "$chara" | tr '[:upper:]' '[:lower:]')     #Passage de majuscule vers minuscule des lettres de la clé
         fi
 
         #Vérification si le caractère est une lettre minuscule, majuscule, ou un chiffre, sinon ajouter sans changement
@@ -227,13 +320,5 @@ chiffrementVigenere() {
 }
 
 dechiffrementVigenere() {
-    echo "test"
+    echo "vide"
 }
-
-# vigenereMain
-# genCle
-# choixCle
-
-# chiffrementVigenere "castor" "lorem ipsum dolor"
-# chiffrementVigenere "CaSt69420or/." "lorem ipsum dolor"
-# chiffrementVigenere "69450" "lorem ipsum dolor"

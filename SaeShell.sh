@@ -55,8 +55,13 @@ main() {
                     affichage
                     ;;
                 "*")
+                    clear
+                    affichage
                     ;;
             esac
+        else
+            clear
+            affichage
         fi
     done
 
