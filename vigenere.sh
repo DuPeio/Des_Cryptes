@@ -215,7 +215,21 @@ choixFichier() {
     read rep
     printf "\n"
 
-    
+    rep="./"$rep
+
+    if [[ -f "$rep" ]]; then
+        fichier=$rep
+    else
+        clear
+        echo ""
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo "                    Le fichier n'existe pas"
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo ""
+        sleep 1
+        clear
+        choixFichier
+    fi
 }
 
 choixCle() {
