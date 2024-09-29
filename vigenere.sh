@@ -215,7 +215,7 @@ choixFichier() {
     read rep
     printf "\n"
 
-    rep="./"$rep
+    rep="./$rep"
 
     if [[ -f "$rep" ]]; then
         fichier=$rep
