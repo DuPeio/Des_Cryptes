@@ -129,7 +129,7 @@ caesarChif(){
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
             read caesarCheminChif
-
+            #Vérification que le fichier existe bien
             if [ ! -e "$caesarCheminChif" ] || [ ! -f "$caesarCheminChif" ]; then
                 clear
                 message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Chemin incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
@@ -186,7 +186,7 @@ caesarChif(){
 
                 "1")
                     clear
-                    nbLignes=$(wc -l < "$caesarCheminChif") # ON récupère le nombre de ligne que contient le fichier
+                    nbLignes=$(wc -l < "$caesarCheminChif") # On récupère le nombre de ligne que contient le fichier
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     echo "        Quelles lignes du fichier voulez-vous coder ?" 
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -244,8 +244,6 @@ caesarChif(){
             echo "_______________________________________________________________"
             echo "                  Voici votre phrase codée"
             codeSimple "$phraseCaesar" #Codage de l'input
-            
-            
             ;;
         
         "2")
@@ -283,17 +281,18 @@ caesarChif(){
 
 # Dechiffrement choix
 caesarDechif(){
+    # choix du menu principal décodage Caesar
     choixTabDechif=("                Le contenu d'un fichier externe" "                         Une phrase" "                   Retour au menu Caesar")
     choixIndiceDechif=0
     choixDechif="${choixTabDechif[choixIndiceDechif]}"
     
     affichageDechif
+     # Menu principal décodage Caesar interractif 
     while [ "$touche" != "" ]; do
-    
-
         if [ $touche = $'\x1b' ]; then
             read -sn2 touche
             case $touche in
+            # Flèche du haut
                 "[A")
                     clear
                     choixIndiceDechif=$((choixIndiceDechif-1))
@@ -302,6 +301,7 @@ caesarDechif(){
                     fi
                     affichageDechif
                     ;;
+                # Flèche du bas
                 "[B")
                     clear
                     choixIndiceDechif=$((choixIndiceDechif+1))
@@ -316,13 +316,11 @@ caesarDechif(){
             esac
         fi
     done
-
-
+ # Réinitialise le message pour ne rien afficher
     message=""
-
-
     case $choixIndiceDechif in
         "0")
+        # Décoder un fichier
             clear     
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "  Vous avez choisi de décoder le contenu d'un fichier externe"
@@ -330,24 +328,26 @@ caesarDechif(){
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
             read caesarCheminDechif
-
+            #Vérification que le fichier existe bien
             if [ ! -e "$caesarCheminDechif" ] || [ ! -f "$caesarCheminDechif" ]; then
                 clear
                 message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Chemin incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                 caesarDechif
             fi
             
-            
+             # Choix du codage Caesar pour un fichier
             choixTabDechifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
             choixIndiceDechifLig=0
             choixDechifLig="${choixTabDechifLig[choixIndiceDechifLig]}"
 
             affichageDechifLig
+            # Menu interractif du décodage Caesar pour un fichier
             while [ "$touche" != "" ]; do
                 if [ $touche = $'\x1b' ]; then
                     read -sn2 touche
                     case $touche in
                         "[A")
+                        # Flèche du haut
                             clear
                             choixIndiceDechifLig=$((choixIndiceDechifLig-1))
                             if [ $choixIndiceDechifLig -lt 0 ]; then 
@@ -355,6 +355,7 @@ caesarDechif(){
                             fi
                             affichageDechifLig
                             ;;
+                        # Flèche du bas
                         "[B")
                             clear
                             choixIndiceDechifLig=$((choixIndiceDechifLig+1))
@@ -369,6 +370,7 @@ caesarDechif(){
                     esac
                 fi
             done
+             # Réinitialise le message pour ne rien afficher
             message=""
             clear
             case $choixIndiceDechifLig in
@@ -381,14 +383,14 @@ caesarDechif(){
                     echo "     Un fichier contenant votre texte decodé va être créé     "
                     echo "_______________________________________________________________"
                     message="                Fichier décodé avec succès"
-                    codeDecodeFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif"
+                    codeDecodeFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif" #Créer le fichier avec le contenu décodé grâce à la clé
                     
                     ;;
 
                 "1")
-                    nbLignes=$(wc -l < "$caesarCheminDechif")
+                    nbLignes=$(wc -l < "$caesarCheminDechif") # Oc récupère le nombre de ligne que contient le fichier
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                    # Doit choisir la clé de déchiffrement
+                   
                     echo "      Quelles lignes du fichier voulez-vous décoder ?"
                     
                     # Il faut voir si les lignes sont valides 
@@ -407,18 +409,20 @@ caesarDechif(){
                         message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                         caesarDechif
                     fi
-
+                     # Doit choisir la clé de déchiffrement
                     echo "          Entrez la clé pour décoder cette phrase"
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     read cleCaesarDechif 
                     
                     echo "_______________________________________________________________"
                     message="              Fichier décodé avec succès"
+                    #Créer le fichier avec le lignes choisis décodées avec la clé
                     lignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminDechif" "$cleCaesarDechif"
                     ;;
 
                 "2")
                     message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                   Retour au menu de décodage...\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+                     # Retour au menu de décodage Caesar
                     caesarDechif
                     ;;
 
@@ -432,12 +436,13 @@ caesarDechif(){
             ;;
         
         "1")
+        # Décodage d'une phrase
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             echo "           Vous avez choisi de décoder une phrase"
             echo "         Entrez la phrase que vous souhaitez décoder.."
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            read phraseCaesar
+            read phraseCaesar  #Récupération de l'input de l'utilisateur
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"            
             echo "           Entrez la clé pour décoder cette phrase"
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -448,7 +453,7 @@ caesarDechif(){
             
             echo "_______________________________________________________________"
             echo "                Voici votre phrase décodée"
-            decodeSimple "$phraseCaesar" "$cleCaesarDechif"
+            decodeSimple "$phraseCaesar" "$cleCaesarDechif"  #décodage de l'input avec la clé
             ;;
         
         "2")
@@ -466,30 +471,31 @@ caesarDechif(){
     esac
 }
 
-codeSimple(){  #Cette fonction me permet de coder puis de rappeler la fonction CaesarChif
+codeSimple(){  #Cette fonction permet de coder puis de rappeler la fonction CaesarChif
     chaine="$1"   #On récupère l'argument à coder
-    codeDecodeCaesar "$chaine"  #On applique la fonciton
+    codeDecodeCaesar "$chaine"  #On applique la fonction
     caesarChif  
 }
 
 
-decodeSimple(){
-    chaine="$1"
-    codeDecodeCaesar "$chaine" "$cleCaesarDechif"
+decodeSimple(){ #Cette fonction permet de décoder puis de rappeler la fonction CaesarChif
+    chaine="$1"  #On récupère l'argument à décoder
+    cleCaesarDechif="$2" #On récupère la clé à décoder
+    codeDecodeCaesar "$chaine" "$cleCaesarDechif" #On applique la fonction
     caesarDechif
 }
 
 
-codeDecodeFichierCaesar(){
-    chemin="$1"
-    cle="$2"
-    if [ $cle ];then
-        fichier=$(creerFichierCaesar "$chemin" "false")
+codeDecodeFichierCaesar(){ #Fonction qui permet de coder et décoder un fichier
+    chemin="$1" #On récupère le fichier à décoder/coder
+    cle="$2" #On récupère la clé pour décoder
+    if [ $cle ];then # Si le cle n'est pas vide
+        fichier=$(creerFichierCaesar "$chemin" "false") # On décode
     else
-        fichier=$(creerFichierCaesar "$chemin" "true")   
+        fichier=$(creerFichierCaesar "$chemin" "true") # On code
     fi
 
-    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]; do
+    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]; do #Ligne par ligne 
         if [ $cle ];then
         
             ligneC=$(codeDecodeCaesar "$ligne" "$cle")
@@ -497,51 +503,48 @@ codeDecodeFichierCaesar(){
         else
             ligneC=$(codeDecodeCaesar "$ligne" )
         fi
-        echo -e "$ligneC" >> "$fichier"
+        echo -e "$ligneC" >> "$fichier" #On ecrit le résultat dans l'output
     done
     
-    
-    if [ $cle ];then
+    # On relance la boucle du menu du codage ou du décodage en fonction de la clé
+    if [ $cle ];then 
         caesarDechif
     else
         caesarChif
     fi
 }
 
-codeDecodeCaesar(){
-    chaine="$1"
-    cleCaesarDechif="$2"
-	res=""
+codeDecodeCaesar(){ #Fonction qui permet de coder et décoder
+    chaine="$1" #On récupère le fichier à décoder/coder
+    cleCaesarDechif="$2" #On récupère la clé pour décoder
+	res="" #Initialisation du résultat
 	
-	for ((i=0; i<${#chaine}; i++)); do
+	for ((i=0; i<${#chaine}; i++)); do #Boucle dans le mot...
 	
-		lettre=${chaine:$i:1}
-		#echo "$lettre"
+		lettre=${chaine:$i:1} #...Pour récupérer lettre par lettre
 		
-		asciiLettre=$(printf "%d" "'$lettre") 
+		asciiLettre=$(printf "%d" "'$lettre") #Récupération du code ascii de la lettre 
 		
 		#Lettres majuscules
 		if [ $asciiLettre -ge 65 ] && [ $asciiLettre -le 90 ]; then
-            if [ -z $cleCaesarDechif ];then
-                asciiLettre=$((asciiLettre+cleCaesarChif)) #Pour additionner en bash, il faut utiliser (( ))
+            if [ -z $cleCaesarDechif ];then # Si clé est vide, on code 
+                asciiLettre=$((asciiLettre+cleCaesarChif)) # Addition du code ascii de la lettre et de la clé de codage
                 while [ $asciiLettre -gt 90 ]; do
-                    asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler 
+                    asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler grâce au nombre de lettre de l'alphabet
                 done
-            else
-                asciiLettre=$((asciiLettre-cleCaesarDechif)) 
+            else #On décode 
+                asciiLettre=$((asciiLettre-cleCaesarDechif)) # Soustraction du code ascii de la lettre et de la clé de décodage
                 while [ $asciiLettre -lt 65 ]; do
-                    asciiLettre=$((asciiLettre+26)) 
+                    asciiLettre=$((asciiLettre+26)) #Au cas où ça dépasse, on fait +26 pour boucler grâce au nombre de lettre de l'alphabet
                 done
             fi
-			
-			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
-		
+
 		#Lettres minuscules
 		elif [ $asciiLettre -ge 97 ] && [ $asciiLettre -le 122 ]; then
             if [ -z $cleCaesarDechif ];then
                 asciiLettre=$((asciiLettre+cleCaesarChif))
                 while [ $asciiLettre -gt 122 ]; do
-                    asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler 
+                    asciiLettre=$((asciiLettre-26))
                 done
             else
                 asciiLettre=$((asciiLettre-cleCaesarDechif))
@@ -549,14 +552,13 @@ codeDecodeCaesar(){
                     asciiLettre=$((asciiLettre+26)) 
                 done
             fi
-			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
-		
+
 		#Chiffres
 		elif [ $asciiLettre -ge 48 ] && [ $asciiLettre -le 57 ]; then
             if [ -z $cleCaesarDechif ];then
                 asciiLettre=$((asciiLettre+cleCaesarChif))
                 while [ $asciiLettre -gt 57 ]; do
-                    asciiLettre=$((asciiLettre-10)) #Au cas où ça dépasse, on fait -10 pour boucler 
+                    asciiLettre=$((asciiLettre-10)) 
                 done
             else
                 asciiLettre=$((asciiLettre-cleCaesarDechif))
@@ -564,8 +566,9 @@ codeDecodeCaesar(){
                     asciiLettre=$((asciiLettre+10)) 
                 done
             fi
-			lettre=$(printf "\\$(printf '%03o' $asciiLettre)")
+			
 		fi
+        lettre=$(printf "\\$(printf '%03o' $asciiLettre)") # récupération de la lettre qui correspond au code ascii
 		res+=$lettre
 	done
 	echo "$res"
