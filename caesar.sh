@@ -707,5 +707,5 @@ affichageDechifLig(){
             echo "$elmt"
         fi
     done
-    read -sn1 touche # On relance la boucle d'coute des touches
+    read -sn1 touche # On relance la boucle d'ecoute des touches
 }
