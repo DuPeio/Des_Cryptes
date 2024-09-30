@@ -239,7 +239,8 @@ caesarChif(){
             	
             echo "_______________________________________________________________"
             echo "                  Voici votre phrase codée"
-            codeSimple "$phraseCaesar" #Codage de l'input
+            codeDecodeCaesar "$phraseCaesar"  #Codage de l'input
+            caesarChif  #Rappel de la fonction pour retourner au menu de codage
             ;;
         
         "2")
@@ -447,7 +448,8 @@ caesarDechif(){
             
             echo "_______________________________________________________________"
             echo "                Voici votre phrase décodée"
-            decodeSimple "$phraseCaesar" "$cleCaesarDechif"  #décodage de l'input avec la clé
+            codeDecodeCaesar "$phraseCaesar" "$cleCaesarDechif" #décodage de l'input avec la clé
+            caesarDechif #Retour au menu de décodage
             ;;
         
         "2")
@@ -463,20 +465,6 @@ caesarDechif(){
             ;;
 
     esac
-}
-
-codeSimple(){  #Cette fonction permet de coder puis de rappeler la fonction CaesarChif
-    chaine="$1"   #On récupère l'argument à coder
-    codeDecodeCaesar "$chaine"  #On applique la fonction
-    caesarChif  
-}
-
-
-decodeSimple(){ #Cette fonction permet de décoder puis de rappeler la fonction CaesarChif
-    chaine="$1"  #On récupère l'argument à décoder
-    cleCaesarDechif="$2" #On récupère la clé à décoder
-    codeDecodeCaesar "$chaine" "$cleCaesarDechif" #On applique la fonction
-    caesarDechif
 }
 
 
