@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Pouvoir utiliser les fonctions des autres fichiers
 source tools.sh
 source morse.sh
 source vigenere.sh

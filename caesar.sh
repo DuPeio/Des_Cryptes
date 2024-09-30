@@ -8,8 +8,6 @@ caesarMain() {
     # choix du menu principal Caesar
     choixTabMain=("                            Coder" "                           Décoder" "               Choisir un autre mode de codage" "                      Quitter le programme")
     choixIndiceMain=0
-    choixMain="${choixTabMain[choixIndiceMain]}"
-
     affichageMain
     # Menu principal Caesar interractif 
     while [ "$touche" != "" ]; do #La touche entrée permet de sortir de la boucle et de valider le choix
@@ -84,7 +82,6 @@ caesarChif(){
     # choix du menu principal codage Caesar
     choixTabChif=("            Coder le contenu d'un fichier externe" "                     Coder une phrase" "     Changer la clé de codage, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
     choixIndiceChif=0
-    choixChif="${choixTabChif[choixIndiceChif]}"
     
     affichageChif
     # Menu principal codage Caesar interractif 
@@ -139,7 +136,6 @@ caesarChif(){
             # Choix du codage Caesar pour un fichier
             choixTabChifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
             choixIndiceChifLig=0
-            choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
 
             affichageChifLig
             # Menu interractif du codage Caesar pour un fichier
@@ -284,7 +280,6 @@ caesarDechif(){
     # choix du menu principal décodage Caesar
     choixTabDechif=("                Le contenu d'un fichier externe" "                         Une phrase" "                   Retour au menu Caesar")
     choixIndiceDechif=0
-    choixDechif="${choixTabDechif[choixIndiceDechif]}"
     
     affichageDechif
      # Menu principal décodage Caesar interractif 
@@ -338,7 +333,6 @@ caesarDechif(){
              # Choix du codage Caesar pour un fichier
             choixTabDechifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
             choixIndiceDechifLig=0
-            choixDechifLig="${choixTabDechifLig[choixIndiceDechifLig]}"
 
             affichageDechifLig
             # Menu interractif du décodage Caesar pour un fichier
@@ -577,26 +571,26 @@ codeDecodeCaesar(){ #Fonction qui permet de coder et décoder
 
 
 lignesFichierCaesar(){
-    ligne1="$1"
-    ligne2="$2"
-    chemin="$3"
-    cle="$4"
+    ligne1="$1" #Récupération de la premiere ligne à coder/décoder
+    ligne2="$2" #Récupération de la dernière ligne à coder/décoder
+    chemin="$3" #Fichier à coder/décoder
+    cle="$4" #Récupération de la clé de décodage
     
-    if [ -z $cle ];then
-        fichier=$(creerFichierCaesar "$chemin" "true")
+    if [ -z $cle ];then  #Si la clé ne contient pas de valeur
+        fichier=$(creerFichierCaesar "$chemin" "true") #On créer l'output de codage
     else
-        fichier=$(creerFichierCaesar "$chemin" "false")
+        fichier=$(creerFichierCaesar "$chemin" "false") #On créer l'output de décodage
     fi
     
 
-    sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne
+    sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne  #On regarde ligne par ligne et on récupère la ligne
     do
         if [ -z $cle ];then
-            ligneC=$(codeDecodeCaesar "$ligne")
+            ligneC=$(codeDecodeCaesar "$ligne") #On la code
         else
-            ligneC=$(codeDecodeCaesar "$ligne" "$cle")
+            ligneC=$(codeDecodeCaesar "$ligne" "$cle") #On la décode
         fi
-        echo -e "$ligneC" >> "$fichier"
+        echo -e "$ligneC" >> "$fichier" #On l'envoie dans le fichier output
     done
 
     if [ -z $cle ];then
@@ -607,32 +601,34 @@ lignesFichierCaesar(){
 }
 
 
-creerFichierCaesar(){
-    chemin="$1"
-    chif="$2"
-    nomFichier=$(basename "$chemin")
-    dossierFichier=$(dirname "$chemin")
+creerFichierCaesar(){ #Permet de créer le fichier output 
+    chemin="$1" #Chemin de l'input
+    chif="$2" #Variable pour savoir si on veut un output ou le texte sera codé ou décodé
+    nomFichier=$(basename "$chemin") #Récupération du nom du fichier seul
+    dossierFichier=$(dirname "$chemin") #Récupération du chemin du dossier contenant l'input 
 
-    nomSansExt="${nomFichier%.*}"
-    extension="${nomFichier##*.}"
+    nomSansExt="${nomFichier%.*}" #On enlève les extensions 
+    extension="${nomFichier##*.}" #on le recupère dans cette variable
 
-    if [ "$chif" = "true" ];then
+    if [ "$chif" = "true" ];then #Si on veut coder
 
-        if [ "$nomFichier" != "$extension" ]; then
-            fichierChif="${dossierFichier}/${nomSansExt}Chiffrer.${extension}"
-        else
-            fichierChif="${dossierFichier}/${nomSansExt}Chiffrer"
+        #Création du fichier en ajoutant Coder
+        if [ "$nomFichier" != "$extension" ]; then #Si il n'y a pas d'extension au fichier
+            fichierChif="${dossierFichier}/${nomSansExt}Coder.${extension}"
+        else #Si il y en a une
+            fichierChif="${dossierFichier}/${nomSansExt}Coder"
         fi
-        touch "$fichierChif"
+        touch "$fichierChif" #Création du fichier
         chmod 777 "$fichierChif"
         echo "---------------------|Nouveau Codage|---------------------" >> "$fichierChif"
         echo "$fichierChif"
     else 
 
+        #Création du fichier en ajoutant Dhiffrer
         if [ "$nomFichier" != "$extension" ]; then
-            fichierDechif="${dossierFichier}/${nomSansExt}Dechiffrer.${extension}"
+            fichierDechif="${dossierFichier}/${nomSansExt}Decoder.${extension}"
         else
-            fichierDechif="${dossierFichier}/${nomSansExt}Dechiffrer"
+            fichierDechif="${dossierFichier}/${nomSansExt}Decoder"
         fi
         touch "$fichierDechif"
         chmod 777 "$fichierDechif"
@@ -643,84 +639,85 @@ creerFichierCaesar(){
 
 
 # Gérer les affichages des menus
+
 affichageMain(){
         echo -e "$message"
-        choixMain="${choixTabMain[choixIndiceMain]}"
+        choixMain="${choixTabMain[choixIndiceMain]}" #Element encours de selection 
         echo "---------------------------------------------------------------"
-        echo -e "\033[1;33m                     Que voulez vous faire ?\033[0m"
+        echo -e "\033[1;33m                     Que voulez vous faire ?\033[0m" #Message principal avec de la couleur
         echo "---------------------------------------------------------------"
-        for elmt in "${choixTabMain[@]}"; do
+        for elmt in "${choixTabMain[@]}"; do #Affichage des choix
             if [ "$choixMain" = "$elmt" ]; then
-                echo -e "\033[1;35m$elmt  <\033[0m"
+                echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
             else
                 echo "$elmt"
             fi
         done
-        read -sn1 touche
+        read -sn1 touche # On relance la boucle d'coute des touches
     }
 
 
 affichageChif(){
     echo -e "$message"
-    choixChif="${choixTabChif[choixIndiceChif]}"
+    choixChif="${choixTabChif[choixIndiceChif]}" #Element encours de selection 
     echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m                   Que souhaitez-vous faire ?\033[0m"
+    echo -e "\033[1;33m                   Que souhaitez-vous faire ?\033[0m" #Message principal avec de la couleur
     echo "---------------------------------------------------------------"
-    for elmt in "${choixTabChif[@]}"; do
+    for elmt in "${choixTabChif[@]}"; do #Affichage des choix
         if [ "$choixChif" = "$elmt" ]; then
-            echo -e "\033[1;35m$elmt  <\033[0m"
+            echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
         fi
     done
-    read -sn1 touche
+    read -sn1 touche # On relance la boucle d'coute des touches
 }
 
 affichageChifLig(){
     clear
-    choixChifLig="${choixTabChifLig[choixIndiceChifLig]}"
+    choixChifLig="${choixTabChifLig[choixIndiceChifLig]}" #Element encours de selection 
     echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m"
+    echo -e "\033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m" #Message principal avec de la couleur
     echo "---------------------------------------------------------------"
-    for elmt in "${choixTabChifLig[@]}"; do
+    for elmt in "${choixTabChifLig[@]}"; do #Affichage des choix
         if [ "$choixChifLig" = "$elmt" ]; then
-            echo -e "\033[1;35m$elmt  <\033[0m"
+            echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
         fi
     done
-    read -sn1 touche
+    read -sn1 touche # On relance la boucle d'coute des touches
 }
 
 
 affichageDechif(){
     echo -e "$message"
-    choixDechif="${choixTabDechif[choixIndiceDechif]}"
+    choixDechif="${choixTabDechif[choixIndiceDechif]}" #Element encours de selection 
     echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m                 Que souhaitez-vous décoder ?\033[0m"
+    echo -e "\033[1;33m                 Que souhaitez-vous décoder ?\033[0m" #Message principal avec de la couleur
     echo "---------------------------------------------------------------"
-    for elmt in "${choixTabDechif[@]}"; do
+    for elmt in "${choixTabDechif[@]}"; do #Affichage des choix
         if [ "$choixDechif" = "$elmt" ]; then
-            echo -e "\033[1;35m$elmt  <\033[0m"
+            echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
         fi
     done
-    read -sn1 touche
+    read -sn1 touche # On relance la boucle d'coute des touches
 }
 
 affichageDechifLig(){
     clear
-    choixDechifLig="${choixTabDechifLig[choixIndiceDechifLig]}"
+    choixDechifLig="${choixTabDechifLig[choixIndiceDechifLig]}" #Element encours de selection 
     echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m Voulez vous décoder tout le fichier ou juste quelques lignes ?\033[0m"
+    echo -e "\033[1;33m Voulez vous décoder tout le fichier ou juste quelques lignes ?\033[0m" #Message principal avec de la couleur
     echo "---------------------------------------------------------------"
-    for elmt in "${choixTabDechifLig[@]}"; do
+    for elmt in "${choixTabDechifLig[@]}"; do #Affichage des choix
         if [ "$choixDechifLig" = "$elmt" ]; then
-            echo -e "\033[1;35m$elmt  <\033[0m"
+            echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
         fi
     done
-    read -sn1 touche
+    read -sn1 touche # On relance la boucle d'coute des touches
 }
