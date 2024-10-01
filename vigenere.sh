@@ -10,6 +10,7 @@ estFichierInput=0
 estFichierOutput=0
 fichierInput=""
 fichierOutput=""
+outputChoice=0
 
 actionInvalide() {
     clear
@@ -254,11 +255,14 @@ choixFichierInput() {
 
         printf "Voulez-vous le créer ? (y/n) "
         read choixCreation
+        printf "\n"
+        clear
 
         while ! [[ $choixCreation =~ [yYnN]]]; do
             actionInvalide
             printf "Voulez-vous le créer ? (y/n) "
             read choixCreation
+            printf "\n"
         done
 
         if [[ $choixCreation =~ [yY] ]]; then
@@ -273,6 +277,7 @@ choixFichierInput() {
 choixFichierOutput() {
     local rep=""
     local choixCreation=""
+    local choixOutput=""
 
     printf "Veuillez choisir en sortie le nom ou chemin (relatif) d'un fichier: "
     read rep
@@ -283,7 +288,21 @@ choixFichierOutput() {
     fi
 
     if [[ -f "$rep" ]]; then
-        fichierOutput=$rep
+        fichierOutput="$rep"
+        printf "Voulez-vous écraser le fichier (1) ou ajouter la chaine chiffré à la fin (2) ?  "
+        read choixOutput
+        printf "\n"
+        while ! [[ $choixOutput =~ [12] ]]; do
+            actionInvalide
+            printf "Voulez-vous ajouter la chaine chiffré à la fin (1) ou écraser le fichier (2) ?  "
+            read choixOutput
+            printf "\n"
+        done
+        clear
+        if [[ $choixOutput == 2 ]]; then
+            outputChoice=1
+        fi
+
     else
         clear
         echo ""
@@ -296,11 +315,14 @@ choixFichierOutput() {
 
         printf "Voulez-vous le créer ? (y/n) "
         read choixCreation
+        printf "\n"
+        clear
 
         while ! [[ $choixCreation =~ [yYnN]]]; do
             actionInvalide
             printf "Voulez-vous le créer ? (y/n) "
             read choixCreation
+            printf "\n"
         done
 
         if [[ $choixCreation =~ [yY] ]]; then
@@ -315,7 +337,6 @@ choixFichierOutput() {
 selectLigne() {
     local ind = 0
     local phrs = ""
-
     
 
 
