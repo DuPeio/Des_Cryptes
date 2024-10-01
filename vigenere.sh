@@ -6,7 +6,8 @@ source tools.sh
 
 cle=""
 phrase=""
-estFichier=0
+estFichierInput=0
+estFichierOutput=0
 fichierInput=""
 fichierOutput=""
 
@@ -25,7 +26,7 @@ vigenereMain() {
     clear
     cle=""
     phrase=""
-    estFichier=0
+    estFichierInput=0
     fichierInput=""
     fichierOutput=""
     vigenereMain_
@@ -88,7 +89,7 @@ chiffrerVigenere() {
         "1")
             choixCle
             clear
-            if [[ $estFichier == 0 ]]; then
+            if [[ $estFichierInput == 0 ]]; then
                 choixPhrase
                 clear
             else
@@ -103,7 +104,7 @@ chiffrerVigenere() {
         "2")
             echo ""
             genCle
-            if [[ $estFichier == 0 ]]; then
+            if [[ $estFichierInput == 0 ]]; then
                 choixPhrase
                 clear
             else
@@ -146,7 +147,7 @@ dechiffrerVigenere() {
         "1")
             choixCle
             clear
-            if [[ $estFichier == 0 ]]; then
+            if [[ $estFichierInput == 0 ]]; then
                 choixPhrase
                 clear
             else
@@ -187,7 +188,7 @@ continuerYN() {
     fi
 }
 
-estFile() {
+estFileInput() {
     local rep=""
 
     printf "Voulez-vous choisir un fichier en entrée ? (y/n) "
@@ -197,12 +198,31 @@ estFile() {
     clear
 
     if [[ "$rep" =~ [Yy]]]; then
-        estFichier=1
+        estFichierInput=1
     elif [[ "$rep" =~ [Nn] ]]; then
-        estFichier=0
+        estFichierInput=0
     else
         actionInvalide
-        estFile
+        estFileInput
+    fi
+}
+
+estFileOutput() {
+    local rep=""
+
+    printf "Voulez-vous choisir un fichier en sortie ? (y/n) "
+    read rep
+    printf "\n"
+
+    clear
+
+    if [[ "$rep" =~ [Yy]]]; then
+        estFichierOutput=1
+    elif [[ "$rep" =~ [Nn] ]]; then
+        estFichierOutput=0
+    else
+        actionInvalide
+        estFileOutput
     fi
 }
 
@@ -290,7 +310,7 @@ choixFichierOutput() {
 selectLigne() {
     local ind = 0
     local phrs = ""
-    
+
     
 
 
