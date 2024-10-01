@@ -7,7 +7,8 @@ source tools.sh
 cle=""
 phrase=""
 estFichier=0
-fichier=""
+fichierInput=""
+fichierOutput=""
 
 actionInvalide() {
     clear
@@ -25,7 +26,8 @@ vigenereMain() {
     cle=""
     phrase=""
     estFichier=0
-    fichier=""
+    fichierInput=""
+    fichierOutput=""
     vigenereMain_
 }
 
@@ -90,7 +92,7 @@ chiffrerVigenere() {
                 choixPhrase
                 clear
             else
-                choixFichier
+                choixFichierInput
                 clear
             fi
             echo "Voici la clé: $cle"
@@ -105,7 +107,7 @@ chiffrerVigenere() {
                 choixPhrase
                 clear
             else
-                choixFichier
+                choixFichierInput
                 clear
             fi
             echo "Voici la clé: $cle"
@@ -148,7 +150,7 @@ dechiffrerVigenere() {
                 choixPhrase
                 clear
             else
-                choixFichier
+                choixFichierInput
                 clear
             fi
             dechiffrementVigenere "$cle" "$phrase"
@@ -194,9 +196,9 @@ estFile() {
 
     clear
 
-    if [[ $rep == "y" || $rep == "Y" ]]; then
+    if [[ "$rep" =~ [Yy]]]; then
         estFichier=1
-    elif [[ $rep == "n" || $rep == "N" ]]; then
+    elif [[ "$rep" =~ [Nn] ]]; then
         estFichier=0
     else
         actionInvalide
@@ -204,17 +206,19 @@ estFile() {
     fi
 }
 
-choixFichier() {
+choixFichierInput() {
     local rep=""
 
-    printf "Veuillez choisir le nom ou chemin d'un fichier: "
+    printf "Veuillez choisir en entrée le nom ou chemin (relatif) d'un fichier: "
     read rep
     printf "\n"
 
-    rep="./$rep"
+    if ! [[ "${rep:0:2}" == "./" ]]; then
+        rep="./$rep"
+    fi
 
     if [[ -f "$rep" ]]; then
-        fichier=$rep
+        fichierInput=$rep
     else
         clear
         echo ""
@@ -224,12 +228,77 @@ choixFichier() {
         echo ""
         sleep 1
         clear
-        choixFichier
+
+        printf "Voulez-vous le créer ? (y/n) "
+        read choixCreation
+
+        while ! [[ $choixCreation =~ [yYnN]]]; do
+            actionInvalide
+            printf "Voulez-vous le créer ? (y/n) "
+            read choixCreation
+        done
+
+        if [[ $choixCreation =~ [yY] ]]; then
+            fichierInput=$rep
+        else
+            choixFichierInput
+        fi
+    fi
+}
+
+choixFichierOutput() {
+    local rep=""
+    local choixCreation=""
+
+    printf "Veuillez choisir en sortie le nom ou chemin (relatif) d'un fichier: "
+    read rep
+    printf "\n"
+
+    if ! [[ "${rep:0:2}" == "./" ]]; then
+        rep="./$rep"
+    fi
+
+    if [[ -f "$rep" ]]; then
+        fichierOutput=$rep
+    else
+        clear
+        echo ""
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo "                    Le fichier n'existe pas"
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo ""
+        sleep 1
+        clear
+
+        printf "Voulez-vous le créer ? (y/n) "
+        read choixCreation
+
+        while ! [[ $choixCreation =~ [yYnN]]]; do
+            actionInvalide
+            printf "Voulez-vous le créer ? (y/n) "
+            read choixCreation
+        done
+
+        if [[ $choixCreation =~ [yY] ]]; then
+            fichierOutput=$rep
+        else
+            choixFichierOutput
+        fi
     fi
 }
 
 selectLigne() {
-    echo ""
+    local ind = 0
+    local phrs = ""
+    
+    
+
+
+    do
+        printf "Veuillez choisir la ligne que vous voulez chiffrer (0 à la dernière ligne): "
+        read ind
+        printf "\n"
+    done while [[ ind > ${wc -l $fichier} ]] < './testsFiles/test.in'
 }
 
 choixCle() {
