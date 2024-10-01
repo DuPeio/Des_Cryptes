@@ -104,6 +104,9 @@ chiffrerVigenere() {
         "2")
             echo ""
             genCle
+            estFileInput
+            clear
+
             if [[ $estFichierInput == 0 ]]; then
                 choixPhrase
                 clear
@@ -260,6 +263,7 @@ choixFichierInput() {
 
         if [[ $choixCreation =~ [yY] ]]; then
             fichierInput=$rep
+            touch $fichierInput
         else
             choixFichierInput
         fi
@@ -301,6 +305,7 @@ choixFichierOutput() {
 
         if [[ $choixCreation =~ [yY] ]]; then
             fichierOutput=$rep
+            touch $fichierOutput
         else
             choixFichierOutput
         fi
