@@ -10,16 +10,19 @@ caesarMain() {
     choixIndiceMain=0
     affichageMain
     # Menu principal Caesar interractif 
-    while [ "$touche" != "" ]; do #La touche entrée permet de sortir de la boucle et de valider le choix
+    while [ "$touche" != "" ] #La touche entrée permet de sortir de la boucle et de valider le choix
+    do 
 
-        if [ $touche = $'\x1b' ]; then 
+        if [ $touche = $'\x1b' ]
+        then 
             read -sn2 touche
             case $touche in
             # Fleche du haut
                 "[A")
                     clear
                     choixIndiceMain=$[choixIndiceMain-1]
-                    if [ $choixIndiceMain -lt 0 ]; then #Permet de faire boucler le menu interractif
+                    if [ $choixIndiceMain -lt 0 ] #Permet de faire boucler le menu interractif
+                    then 
                         choixIndiceMain=3
                     fi
                     affichageMain
@@ -28,7 +31,8 @@ caesarMain() {
                 "[B")
                     clear
                     choixIndiceMain=$[choixIndiceMain+1]
-                    if [ $choixIndiceMain -gt 3 ]; then #Permet de faire boucler le menu interractif
+                    if [ $choixIndiceMain -gt 3 ] #Permet de faire boucler le menu interractif
+                    then 
                         choixIndiceMain=0
                     fi
                     affichageMain
@@ -77,7 +81,7 @@ caesarMain() {
 
 cleCaesarChif=1 #Elle est en globale sinon elle se réinitialise à chaque fois qu'on lance caesarChif
 
-# Chiffrment choix
+# Codage choix
 caesarChif(){
     # choix du menu principal codage Caesar
     choixTabChif=("            Coder le contenu d'un fichier externe" "                     Coder une phrase" "     Changer la clé de codage, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
@@ -85,15 +89,18 @@ caesarChif(){
     
     affichageChif
     # Menu principal codage Caesar interractif 
-    while [ "$touche" != "" ]; do
-        if [ $touche = $'\x1b' ]; then
+    while [ "$touche" != "" ]
+    do
+        if [ $touche = $'\x1b' ]
+        then
             read -sn2 touche
             case $touche in
             # Flèche du haut
                 "[A")
                     clear
                     choixIndiceChif=$[choixIndiceChif-1]
-                    if [ $choixIndiceChif -lt 0 ]; then 
+                    if [ $choixIndiceChif -lt 0 ]
+                    then 
                         choixIndiceChif=3
                     fi
                     affichageChif
@@ -102,7 +109,8 @@ caesarChif(){
                 "[B")
                     clear
                     choixIndiceChif=$[choixIndiceChif+1]
-                    if [ $choixIndiceChif -gt 3 ]; then 
+                    if [ $choixIndiceChif -gt 3 ]
+                    then 
                         choixIndiceChif=0
                     fi
                     affichageChif
@@ -127,7 +135,8 @@ caesarChif(){
 
             read caesarCheminChif
             #Vérification que le fichier existe bien
-            if [ ! -e "$caesarCheminChif" ] || [ ! -f "$caesarCheminChif" ]; then
+            if [ ! -e "$caesarCheminChif" ] || [ ! -f "$caesarCheminChif" ]
+            then
                 clear
                 message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Chemin incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                 caesarChif
@@ -139,15 +148,18 @@ caesarChif(){
 
             affichageChifLig
             # Menu interractif du codage Caesar pour un fichier
-            while [ "$touche" != "" ];do
-                if [ $touche = $'\x1b' ]; then
+            while [ "$touche" != "" ]
+            do
+                if [ $touche = $'\x1b' ]
+                then
                     read -sn2 touche
                     case $touche in
                     # Flèche du haut
                         "[A")
                             clear
                             choixIndiceChifLig=$[choixIndiceChifLig-1]
-                            if [ $choixIndiceChifLig -lt 0 ]; then 
+                            if [ $choixIndiceChifLig -lt 0 ]
+                            then 
                                 choixIndiceChifLig=2
                             fi
                             affichageChifLig
@@ -156,7 +168,8 @@ caesarChif(){
                         "[B")
                             clear
                             choixIndiceChifLig=$[choixIndiceChifLig+1]
-                            if [ $choixIndiceChifLig -gt 2 ]; then 
+                            if [ $choixIndiceChifLig -gt 2 ]
+                            then 
                                 choixIndiceChifLig=0
                             fi
                             affichageChifLig
@@ -192,14 +205,16 @@ caesarChif(){
 
                     
                     read choixLignesCaesar1
-                    if [ $choixLignesCaesar1 -gt $nbLignes ]; then
+                    if [ $choixLignesCaesar1 -gt $nbLignes ]
+                    then
                         message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                         caesarChif
                     fi
 
                     echo "        Quelle est le numéro de la dernière ligne ?"
                     read choixLignesCaesar2
-                    if [ $choixLignesCaesar2 -gt $nbLignes ]; then
+                    if [ $choixLignesCaesar2 -gt $nbLignes ]
+                    then
                         message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                         caesarChif
                     fi
@@ -254,7 +269,8 @@ caesarChif(){
 
             read choixCleCaesarChiff
 
-            if [ "$choixCleCaesarChiff" == "0" ]; then
+            if [ "$choixCleCaesarChiff" == "0" ]
+            then
                 cleCaesarChif=$(aleatoire) #Aleatoirement grâce à la fonction aleatoire()
             else
                 cleCaesarChif=$choixCleCaesarChiff #On récupère l'input de l'utilisateur
@@ -276,7 +292,7 @@ caesarChif(){
     esac
 }
 
-# Dechiffrement choix
+# Decodage choix
 caesarDechif(){
     # choix du menu principal décodage Caesar
     choixTabDechif=("                Le contenu d'un fichier externe" "                         Une phrase" "                   Retour au menu Caesar")
@@ -284,15 +300,18 @@ caesarDechif(){
     
     affichageDechif
      # Menu principal décodage Caesar interractif 
-    while [ "$touche" != "" ]; do
-        if [ $touche = $'\x1b' ]; then
+    while [ "$touche" != "" ]
+    do
+        if [ $touche = $'\x1b' ]
+        then
             read -sn2 touche
             case $touche in
             # Flèche du haut
                 "[A")
                     clear
                     choixIndiceDechif=$[choixIndiceDechif-1]
-                    if [ $choixIndiceDechif -lt 0 ]; then 
+                    if [ $choixIndiceDechif -lt 0 ]
+                    then 
                         choixIndiceDechif=2
                     fi
                     affichageDechif
@@ -301,7 +320,8 @@ caesarDechif(){
                 "[B")
                     clear
                     choixIndiceDechif=$[choixIndiceDechif+1]
-                    if [ $choixIndiceDechif -gt 2 ]; then 
+                    if [ $choixIndiceDechif -gt 2 ]
+                    then 
                         choixIndiceDechif=0
                     fi
                     affichageDechif
@@ -325,7 +345,8 @@ caesarDechif(){
 
             read caesarCheminDechif
             #Vérification que le fichier existe bien
-            if [ ! -e "$caesarCheminDechif" ] || [ ! -f "$caesarCheminDechif" ]; then
+            if [ ! -e "$caesarCheminDechif" ] || [ ! -f "$caesarCheminDechif" ]
+            then
                 clear
                 message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Chemin incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                 caesarDechif
@@ -337,15 +358,18 @@ caesarDechif(){
 
             affichageDechifLig
             # Menu interractif du décodage Caesar pour un fichier
-            while [ "$touche" != "" ]; do
-                if [ $touche = $'\x1b' ]; then
+            while [ "$touche" != "" ]
+            do
+                if [ $touche = $'\x1b' ]
+                then
                     read -sn2 touche
                     case $touche in
                         "[A")
                         # Flèche du haut
                             clear
                             choixIndiceDechifLig=$[choixIndiceDechifLig-1]
-                            if [ $choixIndiceDechifLig -lt 0 ]; then 
+                            if [ $choixIndiceDechifLig -lt 0 ]
+                            then 
                                 choixIndiceDechifLig=2
                             fi
                             affichageDechifLig
@@ -354,7 +378,8 @@ caesarDechif(){
                         "[B")
                             clear
                             choixIndiceDechifLig=$[choixIndiceDechifLig+1]
-                            if [ $choixIndiceDechifLig -gt 2 ]; then 
+                            if [ $choixIndiceDechifLig -gt 2 ]
+                            then 
                                 choixIndiceDechifLig=0
                             fi
                             affichageDechifLig
@@ -393,18 +418,20 @@ caesarDechif(){
 
                     
                     read choixLignesCaesar1
-                    if [ $choixLignesCaesar1 -gt $nbLignes ]; then
+                    if [ $choixLignesCaesar1 -gt $nbLignes ]
+                    then
                         message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                         caesarDechif
                     fi
 
                     echo "        Quelle est le numéro de la dernière ligne ?"
                     read choixLignesCaesar2
-                    if [ $choixLignesCaesar2 -gt $nbLignes ]; then
+                    if [ $choixLignesCaesar2 -gt $nbLignes ]
+                    then
                         message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                         caesarDechif
                     fi
-                     # Doit choisir la clé de déchiffrement
+                     # Doit choisir la clé de décodage
                     echo "          Entrez la clé pour décoder cette phrase"
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     read cleCaesarDechif 
@@ -471,14 +498,17 @@ caesarDechif(){
 codeDecodeFichierCaesar(){ #Fonction qui permet de coder et décoder un fichier
     chemin="$1" #On récupère le fichier à décoder/coder
     cle="$2" #On récupère la clé pour décoder
-    if [ $cle ];then # Si le cle n'est pas vide
+    if [ $cle ] # Si le cle n'est pas vide
+    then 
         fichier=$(creerFichierCaesar "$chemin" "false") # On décode
     else
         fichier=$(creerFichierCaesar "$chemin" "true") # On code
     fi
 
-    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]]; do #Ligne par ligne 
-        if [ $cle ];then
+    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]] #Ligne par ligne 
+    do 
+        if [ $cle ]
+        then
         
             ligneC=$(codeDecodeCaesar "$ligne" "$cle")
         
@@ -489,7 +519,8 @@ codeDecodeFichierCaesar(){ #Fonction qui permet de coder et décoder un fichier
     done
     
     # On relance la boucle du menu du codage ou du décodage en fonction de la clé
-    if [ $cle ];then 
+    if [ $cle ]
+    then 
         caesarDechif
     else
         caesarChif
@@ -501,50 +532,62 @@ codeDecodeCaesar(){ #Fonction qui permet de coder et décoder
     cleCaesarDechif="$2" #On récupère la clé pour décoder
 	res="" #Initialisation du résultat
 	
-	for ((i=0; i<${#chaine}; i++)); do #Boucle dans le mot...
+	for ((i=0; i<${#chaine}; i++)) #Boucle dans le mot...
+    do 
 	
 		lettre=${chaine:$i:1} #...Pour récupérer lettre par lettre
 		
 		asciiLettre=$(printf "%d" "'$lettre") #Récupération du code ascii de la lettre 
 		
 		#Lettres majuscules
-		if [ $asciiLettre -ge 65 ] && [ $asciiLettre -le 90 ]; then
+		if [ $asciiLettre -ge 65 ] && [ $asciiLettre -le 90 ]
+        then
             if [ -z $cleCaesarDechif ];then # Si clé est vide, on code 
                 asciiLettre=$[asciiLettre+cleCaesarChif] # Addition du code ascii de la lettre et de la clé de codage
-                while [ $asciiLettre -gt 90 ]; do
+                while [ $asciiLettre -gt 90 ]
+                do
                     asciiLettre=$[asciiLettre-26] #Au cas où ça dépasse, on fait -26 pour boucler grâce au nombre de lettre de l'alphabet
                 done
             else #On décode 
                 asciiLettre=$[asciiLettre-cleCaesarDechif] # Soustraction du code ascii de la lettre et de la clé de décodage
-                while [ $asciiLettre -lt 65 ]; do
+                while [ $asciiLettre -lt 65 ]
+                do
                     asciiLettre=$[asciiLettre+26] #Au cas où ça dépasse, on fait +26 pour boucler grâce au nombre de lettre de l'alphabet
                 done
             fi
 
 		#Lettres minuscules
-		elif [ $asciiLettre -ge 97 ] && [ $asciiLettre -le 122 ]; then
-            if [ -z $cleCaesarDechif ];then
+		elif [ $asciiLettre -ge 97 ] && [ $asciiLettre -le 122 ]
+        then
+            if [ -z $cleCaesarDechif ]
+            then
                 asciiLettre=$[asciiLettre+cleCaesarChif]
-                while [ $asciiLettre -gt 122 ]; do
+                while [ $asciiLettre -gt 122 ]
+                do
                     asciiLettre=$[asciiLettre-26]
                 done
             else
                 asciiLettre=$[asciiLettre-cleCaesarDechif]
-                while [ $asciiLettre -lt 97 ]; do
+                while [ $asciiLettre -lt 97 ]
+                do
                     asciiLettre=$[asciiLettre+26] 
                 done
             fi
 
 		#Chiffres
-		elif [ $asciiLettre -ge 48 ] && [ $asciiLettre -le 57 ]; then
-            if [ -z $cleCaesarDechif ];then
+		elif [ $asciiLettre -ge 48 ] && [ $asciiLettre -le 57 ]
+        then
+            if [ -z $cleCaesarDechif ]
+            then
                 asciiLettre=$[asciiLettre+cleCaesarChif]
-                while [ $asciiLettre -gt 57 ]; do
+                while [ $asciiLettre -gt 57 ]
+                do
                     asciiLettre=$[asciiLettre-10] 
                 done
             else
                 asciiLettre=$[asciiLettre-cleCaesarDechif]
-                while [ $asciiLettre -lt 48 ]; do
+                while [ $asciiLettre -lt 48 ]
+                do
                     asciiLettre=$[asciiLettre+10] 
                 done
             fi
@@ -564,7 +607,8 @@ lignesFichierCaesar(){
     chemin="$3" #Fichier à coder/décoder
     cle="$4" #Récupération de la clé de décodage
     
-    if [ -z $cle ];then  #Si la clé ne contient pas de valeur
+    if [ -z $cle ] #Si la clé ne contient pas de valeur
+    then  
         fichier=$(creerFichierCaesar "$chemin" "true") #On créer l'output de codage
     else
         fichier=$(creerFichierCaesar "$chemin" "false") #On créer l'output de décodage
@@ -573,7 +617,8 @@ lignesFichierCaesar(){
 
     sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne  #On regarde ligne par ligne et on récupère la ligne
     do
-        if [ -z $cle ];then
+        if [ -z $cle ]
+        then
             ligneC=$(codeDecodeCaesar "$ligne") #On la code
         else
             ligneC=$(codeDecodeCaesar "$ligne" "$cle") #On la décode
@@ -581,7 +626,8 @@ lignesFichierCaesar(){
         echo -e "$ligneC" >> "$fichier" #On l'envoie dans le fichier output
     done
 
-    if [ -z $cle ];then
+    if [ -z $cle ]
+    then
         caesarChif
     else
         caesarDechif
@@ -598,10 +644,12 @@ creerFichierCaesar(){ #Permet de créer le fichier output
     nomSansExt="${nomFichier%.*}" #On enlève les extensions 
     extension="${nomFichier##*.}" #on le recupère dans cette variable
 
-    if [ "$chif" = "true" ];then #Si on veut coder
+    if [ "$chif" = "true" ]
+    then #Si on veut coder
 
         #Création du fichier en ajoutant Coder
-        if [ "$nomFichier" != "$extension" ]; then #Si il n'y a pas d'extension au fichier
+        if [ "$nomFichier" != "$extension" ]  #Si il n'y a pas d'extension au fichier
+        then
             fichierChif="${dossierFichier}/${nomSansExt}Coder.${extension}"
         else #Si il y en a une
             fichierChif="${dossierFichier}/${nomSansExt}Coder"
@@ -612,8 +660,9 @@ creerFichierCaesar(){ #Permet de créer le fichier output
         echo "$fichierChif"
     else 
 
-        #Création du fichier en ajoutant Dhiffrer
-        if [ "$nomFichier" != "$extension" ]; then
+        #Création du fichier en ajoutant Decoder
+        if [ "$nomFichier" != "$extension" ]
+        then
             fichierDechif="${dossierFichier}/${nomSansExt}Decoder.${extension}"
         else
             fichierDechif="${dossierFichier}/${nomSansExt}Decoder"
@@ -634,8 +683,10 @@ affichageMain(){
         echo "---------------------------------------------------------------"
         echo -e "\033[1;33m                     Que voulez vous faire ?\033[0m" #Message principal avec de la couleur
         echo "---------------------------------------------------------------"
-        for elmt in "${choixTabMain[@]}"; do #Affichage des choix
-            if [ "$choixMain" = "$elmt" ]; then
+        for elmt in "${choixTabMain[@]}"
+        do #Affichage des choix
+            if [ "$choixMain" = "$elmt" ]
+            then
                 echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
             else
                 echo "$elmt"
@@ -651,8 +702,10 @@ affichageChif(){
     echo "---------------------------------------------------------------"
     echo -e "\033[1;33m                   Que souhaitez-vous faire ?\033[0m" #Message principal avec de la couleur
     echo "---------------------------------------------------------------"
-    for elmt in "${choixTabChif[@]}"; do #Affichage des choix
-        if [ "$choixChif" = "$elmt" ]; then
+    for elmt in "${choixTabChif[@]}"
+    do #Affichage des choix
+        if [ "$choixChif" = "$elmt" ]
+        then
             echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
@@ -667,8 +720,10 @@ affichageChifLig(){
     echo "---------------------------------------------------------------"
     echo -e "\033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m" #Message principal avec de la couleur
     echo "---------------------------------------------------------------"
-    for elmt in "${choixTabChifLig[@]}"; do #Affichage des choix
-        if [ "$choixChifLig" = "$elmt" ]; then
+    for elmt in "${choixTabChifLig[@]}"
+    do #Affichage des choix
+        if [ "$choixChifLig" = "$elmt" ]
+        then
             echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
@@ -684,8 +739,10 @@ affichageDechif(){
     echo "---------------------------------------------------------------"
     echo -e "\033[1;33m                 Que souhaitez-vous décoder ?\033[0m" #Message principal avec de la couleur
     echo "---------------------------------------------------------------"
-    for elmt in "${choixTabDechif[@]}"; do #Affichage des choix
-        if [ "$choixDechif" = "$elmt" ]; then
+    for elmt in "${choixTabDechif[@]}"
+    do #Affichage des choix
+        if [ "$choixDechif" = "$elmt" ]
+        then
             echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
@@ -700,8 +757,10 @@ affichageDechifLig(){
     echo "---------------------------------------------------------------"
     echo -e "\033[1;33m Voulez vous décoder tout le fichier ou juste quelques lignes ?\033[0m" #Message principal avec de la couleur
     echo "---------------------------------------------------------------"
-    for elmt in "${choixTabDechifLig[@]}"; do #Affichage des choix
-        if [ "$choixDechifLig" = "$elmt" ]; then
+    for elmt in "${choixTabDechifLig[@]}" 
+    do #Affichage des choix
+        if [ "$choixDechifLig" = "$elmt" ]
+        then
             echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
