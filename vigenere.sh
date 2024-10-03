@@ -201,7 +201,7 @@ estFileInput() {
 
     clear
 
-    if [[ "$rep" =~ [Yy]]]; then
+    if [[ "$rep" =~ [Yy] ]]; then
         estFichierInput=1
     elif [[ "$rep" =~ [Nn] ]]; then
         estFichierInput=0
@@ -220,7 +220,7 @@ estFileOutput() {
 
     clear
 
-    if [[ "$rep" =~ [Yy]]]; then
+    if [[ "$rep" =~ [Yy] ]]; then
         estFichierOutput=1
     elif [[ "$rep" =~ [Nn] ]]; then
         estFichierOutput=0
@@ -258,7 +258,7 @@ choixFichierInput() {
         printf "\n"
         clear
 
-        while ! [[ $choixCreation =~ [yYnN]]]; do
+        while ! [[ $choixCreation =~ [yYnN] ]]; do
             actionInvalide
             printf "Voulez-vous le créer ? (y/n) "
             read choixCreation
@@ -318,7 +318,7 @@ choixFichierOutput() {
         printf "\n"
         clear
 
-        while ! [[ $choixCreation =~ [yYnN]]]; do
+        while ! [[ $choixCreation =~ [yYnN] ]]; do
             actionInvalide
             printf "Voulez-vous le créer ? (y/n) "
             read choixCreation
@@ -335,16 +335,21 @@ choixFichierOutput() {
 }
 
 selectLigne() {
-    local ind = 0
-    local phrs = ""
-    
+    local ind=0
+    local phrs=""
+    fichierInput="./morse69.sh"
+    local nbLignes="$(wc -l $fichierInput)"
+    nbLignes=$(grep -oP '^[0-9]+' <<< $nbLignes)
+    ((nbLignes++))
+    echo "$nbLignes"
 
 
-    do
-        printf "Veuillez choisir la ligne que vous voulez chiffrer (0 à la dernière ligne): "
-        read ind
-        printf "\n"
-    done while [[ ind > ${wc -l $fichier} ]] < './testsFiles/test.in'
+
+    # do
+    #     printf "Veuillez choisir la ligne que vous voulez chiffrer (0 à la dernière ligne): "
+    #     read ind
+    #     printf "\n"
+    # done while [[ $ind < $nbLignes ]] < './testsFiles/test.in'
 }
 
 choixCle() {

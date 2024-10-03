@@ -6,7 +6,8 @@ source ./vigenere.sh
 # genCle
 # choixCle
 # continuerYN
-choixFichier
+# choixFichier
+selectLigne
 
 # chiffrementVigenere "castor" "lorem ipsum dolor"
 # chiffrementVigenere "CaSt69420or/." "lorem ipsum dolor"
