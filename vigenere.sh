@@ -337,9 +337,8 @@ choixFichierOutput() {
 selectLigne() {
     local ind=0
     local phrs=""
-    fichierInput="./morse69.sh"
-    local nbLignes="$(wc -l $fichierInput)"
-    nbLignes=$(grep -oP '^[0-9]+' <<< $nbLignes)
+    fichierInput="./morse.sh"
+    local nbLignes=$(grep -oP '^[0-9]+' <<< "$(wc -l $fichierInput)")
     ((nbLignes++))
     echo "$nbLignes"
 
