@@ -10,7 +10,7 @@ estFichierInput=0
 estFichierOutput=0
 fichierInput=""
 fichierOutput=""
-outputChoice=0
+outputChoice="ajouter"
 
 actionInvalide() {
     clear
@@ -300,7 +300,7 @@ choixFichierOutput() {
         done
         clear
         if [[ $choixOutput == 2 ]]; then
-            outputChoice=1
+            outputChoice="ecraser"
         fi
 
     else
@@ -431,7 +431,15 @@ chiffrementVigenere() {
         fi
     done
 
-    echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase crypté
+    if [[ "$estFichierOutput" ]]; then      #Vérifie si le type de output
+        if [[ "$outputChoice" == "ajouter" ]]; then     #Vérifie si le choix d'output dans un fichier
+            echo -e "$res" >> "$fichierOutput"      #Ajout de la phrase à la fin du fichier
+        else
+            echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout de la phrase
+        fi
+    else
+        echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase crypté
+    fi
 }
 
 dechiffrementVigenere() {
