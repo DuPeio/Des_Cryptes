@@ -18,7 +18,7 @@ caesarMain() {
             # Fleche du haut
                 "[A")
                     clear
-                    choixIndiceMain=$((choixIndiceMain-1))
+                    choixIndiceMain=$[choixIndiceMain-1]
                     if [ $choixIndiceMain -lt 0 ]; then #Permet de faire boucler le menu interractif
                         choixIndiceMain=3
                     fi
