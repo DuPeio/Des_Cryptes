@@ -27,7 +27,7 @@ caesarMain() {
             # Fleche du bas
                 "[B")
                     clear
-                    choixIndiceMain=$((choixIndiceMain+1))
+                    choixIndiceMain=$[choixIndiceMain+1]
                     if [ $choixIndiceMain -gt 3 ]; then #Permet de faire boucler le menu interractif
                         choixIndiceMain=0
                     fi
@@ -92,7 +92,7 @@ caesarChif(){
             # Flèche du haut
                 "[A")
                     clear
-                    choixIndiceChif=$((choixIndiceChif-1))
+                    choixIndiceChif=$[choixIndiceChif-1]
                     if [ $choixIndiceChif -lt 0 ]; then 
                         choixIndiceChif=3
                     fi
@@ -101,7 +101,7 @@ caesarChif(){
             # Flèche du bas
                 "[B")
                     clear
-                    choixIndiceChif=$((choixIndiceChif+1))
+                    choixIndiceChif=$[choixIndiceChif+1]
                     if [ $choixIndiceChif -gt 3 ]; then 
                         choixIndiceChif=0
                     fi
@@ -146,7 +146,7 @@ caesarChif(){
                     # Flèche du haut
                         "[A")
                             clear
-                            choixIndiceChifLig=$((choixIndiceChifLig-1))
+                            choixIndiceChifLig=$[choixIndiceChifLig-1]
                             if [ $choixIndiceChifLig -lt 0 ]; then 
                                 choixIndiceChifLig=2
                             fi
@@ -155,7 +155,7 @@ caesarChif(){
                     # Flèche du bas
                         "[B")
                             clear
-                            choixIndiceChifLig=$((choixIndiceChifLig+1))
+                            choixIndiceChifLig=$[choixIndiceChifLig+1]
                             if [ $choixIndiceChifLig -gt 2 ]; then 
                                 choixIndiceChifLig=0
                             fi
@@ -291,7 +291,7 @@ caesarDechif(){
             # Flèche du haut
                 "[A")
                     clear
-                    choixIndiceDechif=$((choixIndiceDechif-1))
+                    choixIndiceDechif=$[choixIndiceDechif-1]
                     if [ $choixIndiceDechif -lt 0 ]; then 
                         choixIndiceDechif=2
                     fi
@@ -300,7 +300,7 @@ caesarDechif(){
                 # Flèche du bas
                 "[B")
                     clear
-                    choixIndiceDechif=$((choixIndiceDechif+1))
+                    choixIndiceDechif=$[choixIndiceDechif+1]
                     if [ $choixIndiceDechif -gt 2 ]; then 
                         choixIndiceDechif=0
                     fi
@@ -344,7 +344,7 @@ caesarDechif(){
                         "[A")
                         # Flèche du haut
                             clear
-                            choixIndiceDechifLig=$((choixIndiceDechifLig-1))
+                            choixIndiceDechifLig=$[choixIndiceDechifLig-1]
                             if [ $choixIndiceDechifLig -lt 0 ]; then 
                                 choixIndiceDechifLig=2
                             fi
@@ -353,7 +353,7 @@ caesarDechif(){
                         # Flèche du bas
                         "[B")
                             clear
-                            choixIndiceDechifLig=$((choixIndiceDechifLig+1))
+                            choixIndiceDechifLig=$[choixIndiceDechifLig+1]
                             if [ $choixIndiceDechifLig -gt 2 ]; then 
                                 choixIndiceDechifLig=0
                             fi
@@ -510,42 +510,42 @@ codeDecodeCaesar(){ #Fonction qui permet de coder et décoder
 		#Lettres majuscules
 		if [ $asciiLettre -ge 65 ] && [ $asciiLettre -le 90 ]; then
             if [ -z $cleCaesarDechif ];then # Si clé est vide, on code 
-                asciiLettre=$((asciiLettre+cleCaesarChif)) # Addition du code ascii de la lettre et de la clé de codage
+                asciiLettre=$[asciiLettre+cleCaesarChif] # Addition du code ascii de la lettre et de la clé de codage
                 while [ $asciiLettre -gt 90 ]; do
-                    asciiLettre=$((asciiLettre-26)) #Au cas où ça dépasse, on fait -26 pour boucler grâce au nombre de lettre de l'alphabet
+                    asciiLettre=$[asciiLettre-26] #Au cas où ça dépasse, on fait -26 pour boucler grâce au nombre de lettre de l'alphabet
                 done
             else #On décode 
-                asciiLettre=$((asciiLettre-cleCaesarDechif)) # Soustraction du code ascii de la lettre et de la clé de décodage
+                asciiLettre=$[asciiLettre-cleCaesarDechif] # Soustraction du code ascii de la lettre et de la clé de décodage
                 while [ $asciiLettre -lt 65 ]; do
-                    asciiLettre=$((asciiLettre+26)) #Au cas où ça dépasse, on fait +26 pour boucler grâce au nombre de lettre de l'alphabet
+                    asciiLettre=$[asciiLettre+26] #Au cas où ça dépasse, on fait +26 pour boucler grâce au nombre de lettre de l'alphabet
                 done
             fi
 
 		#Lettres minuscules
 		elif [ $asciiLettre -ge 97 ] && [ $asciiLettre -le 122 ]; then
             if [ -z $cleCaesarDechif ];then
-                asciiLettre=$((asciiLettre+cleCaesarChif))
+                asciiLettre=$[asciiLettre+cleCaesarChif]
                 while [ $asciiLettre -gt 122 ]; do
-                    asciiLettre=$((asciiLettre-26))
+                    asciiLettre=$[asciiLettre-26]
                 done
             else
-                asciiLettre=$((asciiLettre-cleCaesarDechif))
+                asciiLettre=$[asciiLettre-cleCaesarDechif]
                 while [ $asciiLettre -lt 97 ]; do
-                    asciiLettre=$((asciiLettre+26)) 
+                    asciiLettre=$[asciiLettre+26] 
                 done
             fi
 
 		#Chiffres
 		elif [ $asciiLettre -ge 48 ] && [ $asciiLettre -le 57 ]; then
             if [ -z $cleCaesarDechif ];then
-                asciiLettre=$((asciiLettre+cleCaesarChif))
+                asciiLettre=$[asciiLettre+cleCaesarChif]
                 while [ $asciiLettre -gt 57 ]; do
-                    asciiLettre=$((asciiLettre-10)) 
+                    asciiLettre=$[asciiLettre-10] 
                 done
             else
-                asciiLettre=$((asciiLettre-cleCaesarDechif))
+                asciiLettre=$[asciiLettre-cleCaesarDechif]
                 while [ $asciiLettre -lt 48 ]; do
-                    asciiLettre=$((asciiLettre+10)) 
+                    asciiLettre=$[asciiLettre+10] 
                 done
             fi
 			
