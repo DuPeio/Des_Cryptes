@@ -233,7 +233,7 @@ estFileOutput() {
 choixFichierInput() {
     local rep=""
 
-    printf "Veuillez choisir en entrée le nom ou chemin (relatif) d'un fichier: "
+    printf "Veuillez choisir en entrée le nom ou chemin d'un fichier: "
     read rep
     printf "\n"
 
@@ -337,18 +337,42 @@ choixFichierOutput() {
 selectLigne() {
     local ind=0
     local phrs=""
+    local choixPhrase=0
     fichierInput="./morse.sh"
-    local nbLignes=$(grep -oP '^[0-9]+' <<< "$(wc -l $fichierInput)")
+    local nbLignes=$(printf "%d" "$(grep -oP '^[0-9]+' <<< "$(wc -l $fichierInput)")")
     ((nbLignes++))
     echo "$nbLignes"
 
+    printf "Voulez-vous chiffrer le fichier en entier (1) , ou juste une phrase (2) ?  "
+    read choixPhrase
+    printf "\n"
+    while ! [[ $choixPhrase =~ [12] ]]; do
+        actionInvalide
+        printf "Voulez-vous chiffrer le fichier en entier (1) , ou juste une phrase (2) ?  "
+        read choixPhrase
+        printf "\n"
+    done
 
+    if [[ $choixPhrase == 1 ]]; then
+        phrs=$(cat $fichierInput)
+    else
+        printf "Veuillez choisir la ligne que vous voulez chiffrer (de 1 à la dernière ligne): "
+        read ind
+        printf "\n"
+        while [[ $ind > $nbLignes ]]; do
+            actionInvalide
+            echo -e "$ind \n$nbLignes"
+            printf "Veuillez choisir la ligne que vous voulez chiffrer (de 1 à la dernière ligne): "
+            read ind
+            printf "\n"
+        done
 
-    # do
-    #     printf "Veuillez choisir la ligne que vous voulez chiffrer (0 à la dernière ligne): "
-    #     read ind
-    #     printf "\n"
-    # done while [[ $ind < $nbLignes ]] < './testsFiles/test.in'
+        for ((i = 0; i < $ind; i++)); do
+            read -r phrs
+        done < "$fichierInput"
+    fi
+
+    echo "$phrs"
 }
 
 choixCle() {
