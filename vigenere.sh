@@ -341,14 +341,13 @@ selectLigne() {
     fichierInput="./morse.sh"
     local nbLignes=$(printf "%d" "$(grep -oP '^[0-9]+' <<< "$(wc -l $fichierInput)")")
     ((nbLignes++))
-    echo "$nbLignes"
 
-    printf "Voulez-vous chiffrer le fichier en entier (1) , ou juste une phrase (2) ?  "
+    printf "Voulez-vous chiffrer/déchiffrer le fichier en entier (1), ou juste une ligne (2) ?  "
     read choixPhrase
     printf "\n"
     while ! [[ $choixPhrase =~ [12] ]]; do
         actionInvalide
-        printf "Voulez-vous chiffrer le fichier en entier (1) , ou juste une phrase (2) ?  "
+        printf "Voulez-vous chiffrer/déchiffrer le fichier en entier (1), ou juste une ligne (2) ?  "
         read choixPhrase
         printf "\n"
     done
@@ -356,13 +355,12 @@ selectLigne() {
     if [[ $choixPhrase == 1 ]]; then
         phrs=$(cat $fichierInput)
     else
-        printf "Veuillez choisir la ligne que vous voulez chiffrer (de 1 à la dernière ligne): "
+        printf "Veuillez choisir la ligne que vous voulez chiffrer/déchiffrer (de 1 à $nbLignes): "
         read ind
         printf "\n"
-        while [[ $ind > $nbLignes ]]; do
+        while (($ind > $nbLignes || $ind < 1)); do
             actionInvalide
-            echo -e "$ind \n$nbLignes"
-            printf "Veuillez choisir la ligne que vous voulez chiffrer (de 1 à la dernière ligne): "
+            printf "Veuillez choisir la ligne que vous voulez chiffrer/déchiffrer (de 1 à $nbLignes): "
             read ind
             printf "\n"
         done
@@ -371,8 +369,8 @@ selectLigne() {
             read -r phrs
         done < "$fichierInput"
     fi
-
-    echo "$phrs"
+    
+    phrase=$phrs
 }
 
 choixCle() {
