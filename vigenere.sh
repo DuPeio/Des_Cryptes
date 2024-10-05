@@ -289,12 +289,12 @@ choixFichierOutput() {
 
     if [[ -f "$rep" ]]; then
         fichierOutput="$rep"
-        printf "Voulez-vous écraser le fichier (1) ou ajouter la chaine chiffré à la fin (2) ?  "
+        printf "Voulez-vous écraser le fichier (1) ou ajouter la chaine de caractères à la fin (2) ?  "
         read choixOutput
         printf "\n"
         while ! [[ $choixOutput =~ [12] ]]; do
             actionInvalide
-            printf "Voulez-vous ajouter la chaine chiffré à la fin (1) ou écraser le fichier (2) ?  "
+            printf "Voulez-vous ajouter la chaine de caractères à la fin (1) ou écraser le fichier (2) ?  "
             read choixOutput
             printf "\n"
         done
@@ -338,6 +338,7 @@ selectLigne() {
     local ind=0
     local phrs=""
     local choixPhrase=0
+    fichierInput="./morse.sh"
     local nbLignes=$(printf "%d" "$(grep -oP '^[0-9]+' <<< "$(wc -l $fichierInput)")")
     ((nbLignes++))
 
