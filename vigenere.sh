@@ -338,7 +338,6 @@ selectLigne() {
     local ind=0
     local phrs=""
     local choixPhrase=0
-    fichierInput="./morse.sh"
     local nbLignes=$(printf "%d" "$(grep -oP '^[0-9]+' <<< "$(wc -l $fichierInput)")")
     ((nbLignes++))
 
@@ -353,7 +352,6 @@ selectLigne() {
     done
 
     if [[ $choixPhrase == 1 ]]; then
-        phrs=$(cat $fichierInput)
     else
         printf "Veuillez choisir la ligne que vous voulez chiffrer/déchiffrer (de 1 à $nbLignes): "
         read ind
@@ -371,7 +369,6 @@ selectLigne() {
     fi
 
     phrase=$phrs
-    echo $phrs
 }
 
 choixCle() {
