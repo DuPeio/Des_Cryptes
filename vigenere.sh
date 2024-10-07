@@ -28,6 +28,7 @@ vigenereMain() {
     cle=""
     phrase=""
     estFichierInput=0
+    estFichierOutput=0
     fichierInput=""
     fichierOutput=""
     vigenereMain_
@@ -83,7 +84,9 @@ chiffrerVigenere() {
     read actionChif
 
     clear
-    estFile
+    estFileInput
+    clear
+    estFileOutput
     clear
 
     case $actionChif in
@@ -105,7 +108,6 @@ chiffrerVigenere() {
         "2")
             echo ""
             genCle
-            estFileInput
             clear
 
             if [[ $estFichierInput == 0 ]]; then
@@ -455,15 +457,14 @@ chiffrementVigenere() {
         fi
     done
 
-    if [[ "$estFichierOutput" ]]; then      #Vérifie si le type de output
+    if [[ $estFichierOutput ]]; then      #Vérifie si le type de output
         if [[ "$outputChoice" == "ajouter" ]]; then     #Vérifie si le choix d'output dans un fichier
             echo -e "$res" >> "$fichierOutput"      #Ajout de la phrase à la fin du fichier
         else
             echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout de la phrase
         fi
-    else
-        echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase crypté
     fi
+    echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase crypté
 }
 
 dechiffrementVigenere() {

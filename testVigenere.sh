@@ -2,12 +2,12 @@
 
 source ./vigenere.sh
 
-# vigenereMain
+vigenereMain
 # genCle
 # choixCle
 # continuerYN
 # choixFichier
-selectLigne
+# selectLigne
 
 # chiffrementVigenere "castor" "lorem ipsum dolor"
 # chiffrementVigenere "CaSt69420or/." "lorem ipsum dolor"
