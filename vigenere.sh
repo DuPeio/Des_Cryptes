@@ -519,8 +519,6 @@ dechiffrementVigenere() {
         else
             echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout de la phrase
         fi
-        else
-        echo "Voici la phrase déchiffrée: $res"     #Affichage de la phrase décryptée
     fi
-
+    echo "Voici la phrase déchiffrée: $res"     #Affichage de la phrase décryptée
 }
