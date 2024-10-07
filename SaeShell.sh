@@ -3,7 +3,7 @@
 # Pouvoir utiliser les fonctions des autres fichiers
 source tools.sh
 source morse.sh
-source vigenere.sh
+source vigenere_demo.sh
 source caesar.sh
 
 # Pierre MAGIEU, Sebastian CARON, Dylan BRUN
@@ -77,6 +77,7 @@ main() {
             ;;
         "2")
             vigenereMain
+            main
             ;;
         "3")
             quitter
