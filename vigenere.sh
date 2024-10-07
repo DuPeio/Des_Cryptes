@@ -518,4 +518,5 @@ dechiffrementVigenere() {
     #     fi
     # fi
     # echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase crypté
+    echo ""
 }
