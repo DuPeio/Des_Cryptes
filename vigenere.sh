@@ -235,7 +235,7 @@ estFileOutput() {
 choixFichierInput() {
     local rep=""
 
-    printf "Veuillez choisir en entrée le nom ou chemin d'un fichier: "
+    printf "Veuillez choisir en entrée le nom ou chemin d\'un fichier: "
     read rep
     printf "\n"
 
@@ -249,7 +249,7 @@ choixFichierInput() {
         clear
         echo ""
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        echo "                    Le fichier n'existe pas"
+        echo "                    Le fichier n\'existe pas"
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         echo ""
         sleep 1
@@ -281,7 +281,7 @@ choixFichierOutput() {
     local choixCreation=""
     local choixOutput=""
 
-    printf "Veuillez choisir en sortie le nom ou chemin (relatif) d'un fichier: "
+    printf "Veuillez choisir en sortie le nom ou chemin (relatif) d\'un fichier: "
     read rep
     printf "\n"
 
@@ -309,7 +309,7 @@ choixFichierOutput() {
         clear
         echo ""
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        echo "                    Le fichier n'existe pas"
+        echo "                    Le fichier n\'existe pas"
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         echo ""
         sleep 1
@@ -354,7 +354,7 @@ selectLigne() {
     done
 
     if [[ $choixPhrase == 1 ]]; then
-        phrs=$(cat $fichierInput)
+        phrs="$(cat $fichierInput)"
     else
         printf "Veuillez choisir la ligne que vous voulez chiffrer/déchiffrer (de 1 à $nbLignes): "
         read ind
@@ -464,59 +464,63 @@ chiffrementVigenere() {
         else
             echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout de la phrase
         fi
+    else
+        echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase cryptée
     fi
-    echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase crypté
 }
 
 dechiffrementVigenere() {
-    # #Initialisation de toutes les variables
-    # local key="$1"
-    # local sentence="$2"
-    # local ind=0
-    # local res=""
-    # local chara=""
-    # local char=""
-    # local len_key=${#key}       #taille de key
-    # local len_sentence=${#sentence}     #taille de sentence
-    # local resAscii=0
+    #Initialisation de toutes les variables
+    local key="$1"
+    local sentence="$2"
+    local ind=0
+    local res=""
+    local chara=""
+    local char=""
+    local len_key=${#key}       #taille de key
+    local len_sentence=${#sentence}     #taille de sentence
+    local resAscii=0
 
-    # for (( i=0; i<len_sentence; i++ )); do
-    #     chara=${key:ind % len_key:1}        #caractère de key à l'index ind
-    #     char=${sentence:i:1}        #caractère de sentence à l'index i
+    for (( i=0; i<len_sentence; i++ )); do
+        chara=${key:ind % len_key:1}        #caractère de key à l'index ind
+        char=${sentence:i:1}        #caractère de sentence à l'index i
 
-    #     #Tant que le caractère n'est pas utilisable en tant que clé, le prochain sera utilisé, et si on atteint la fin, on retourne au début
-    #     while ! [[ "$chara" =~ [a-zA-Z] ]]; do
-    #         ((ind++))
-    #         chara=${key:ind % len_key:1}
-    #     done
-    #     if [[ "$chara" =~ [A-Z] ]]; then
-    #         chara=$(echo "$chara" | tr '[:upper:]' '[:lower:]')     #Passage de majuscule vers minuscule des lettres de la clé
-    #     fi
+        #Tant que le caractère n'est pas utilisable en tant que clé, le prochain sera utilisé, et si on atteint la fin, on retourne au début
+        while ! [[ "$chara" =~ [a-zA-Z] ]]; do
+            ((ind++))
+            chara=${key:ind % len_key:1}
+        done
+        if [[ "$chara" =~ [A-Z] ]]; then
+            chara=$(echo "$chara" | tr '[:upper:]' '[:lower:]')     #Passage de majuscule vers minuscule des lettres de la clé
+        fi
 
-    #     #Vérification si le caractère est une lettre minuscule, majuscule, ou un chiffre, sinon ajouter sans changement
-    #     if [[ "$char" =~ [a-z] ]]; then
-    #         resAscii=$(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") + $(printf '%d' "'$char") - $(printf '%d' "'a") ) % 26 + $(printf '%d' "'a") )) 
-    #         printf "%d\n" $resAscii
-    #         res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") + $(printf '%d' "'$char") - $(printf '%d' "'a") ) % 26 + $(printf '%d' "'a") )) )")       #Ajout du caractère crypté dans le résultat
-    #         ((ind++))
-    #     elif [[ "$char" =~ [A-Z] ]]; then
-    #         res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'A") + $(printf '%d' "'$char") - $(printf '%d' "'A") ) % 26 + $(printf '%d' "'A") )) )")       #Ajout du caractère crypté dans le résultat
-    #         ((ind++))
-    #     elif [[ "$char" =~ [0-9] ]]; then
-    #         res+=$((($char+$ind)%10))       #Ajout du chiffre crypté
-    #         ((ind++))
-    #     else
-    #         res+="$char"        #Ajout des caractères non cryptables
-    #     fi
-    # done
+        #Vérification si le caractère est une lettre minuscule, majuscule, ou un chiffre, sinon ajouter sans changement
+        if [[ "$char" =~ [a-z] ]]; then
+            resAscii=$(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") - $(printf '%d' "'$char") + $(printf '%d' "'a") ) ))
+            while ((resAcii < 0)); do
+                ((resAcii+=27))
+            done
+            res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") + $(printf '%d' "'$char") - $(printf '%d' "'a") ) % 26 + $(printf '%d' "'a") )) )")       #Ajout du caractère crypté dans le résultat
+            ((ind++))
+        elif [[ "$char" =~ [A-Z] ]]; then
+            res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'A") + $(printf '%d' "'$char") - $(printf '%d' "'A") ) % 26 + $(printf '%d' "'A") )) )")       #Ajout du caractère crypté dans le résultat
+            ((ind++))
+        elif [[ "$char" =~ [0-9] ]]; then
+            res+=$((($char+$ind)%10))       #Ajout du chiffre crypté
+            ((ind++))
+        else
+            res+="$char"        #Ajout des caractères non cryptables
+        fi
+    done
 
-    # if [[ $estFichierOutput ]]; then      #Vérifie si le type de output
-    #     if [[ "$outputChoice" == "ajouter" ]]; then     #Vérifie si le choix d'output dans un fichier
-    #         echo -e "$res" >> "$fichierOutput"      #Ajout de la phrase à la fin du fichier
-    #     else
-    #         echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout de la phrase
-    #     fi
-    # fi
-    # echo "Voici la phrase chiffrée: $res"     #Affichage de la phrase crypté
-    echo ""
+    if [[ $estFichierOutput ]]; then      #Vérifie si le type de output
+        if [[ "$outputChoice" == "ajouter" ]]; then     #Vérifie si le choix d'output dans un fichier
+            echo -e "$res" >> "$fichierOutput"      #Ajout de la phrase à la fin du fichier
+        else
+            echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout de la phrase
+        fi
+        else
+        echo "Voici la phrase déchiffrée: $res"     #Affichage de la phrase décryptée
+    fi
+
 }
