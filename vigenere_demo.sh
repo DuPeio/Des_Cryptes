@@ -109,6 +109,105 @@ chiffrementFichierVigenere() {
 
 }
 
+erreur=0 # Variable globale pour les messages dans les menus
+erreurFunc() { 
+    # Fonction pour afficher des messages dans le menu
+    if [ $1 == 1 ]
+    then
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "              Choix invalide. Veuillez réessayer."
+    elif [ $1 == 2 ]
+    then
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "                $choixFichierVig n'existe pas..."
+    elif [ $1 == 3 ]
+    then
+        echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        echo "              FICHIER SAUVEGARDE AVEC SUCCES !"
+    fi
+    # erreur=0
+}
+
+titre=""
+options=()
+choixVigenere=0
+
+affichageScreenVig(){
+    clear
+    choixVigenere=0
+    taille=${#options[@]}
+    # touche="   "
+
+    affichage(){
+        echo "---------------------------------------------------------------"
+        echo "$titre"
+        echo "---------------------------------------------------------------"
+        for (( i=0; i<$taille; i++ ))
+        do
+            elmt=${options[$i]}  
+            if [ $i -eq $choixVigenere ]; then
+                echo -e "\033[33m$elmt  <\033[0m"
+            else
+                echo "$elmt"
+            fi
+        done
+        erreurFunc $erreur
+        read -sn1 touche
+    }
+    
+
+    
+    affichage
+    erreurFunc $erreur
+
+    while [ "$touche" != "" ]; do
+        if [ $touche = $'\x1b' ]; then
+            read -sn2 touche
+            case $touche in
+                "[A")
+                    clear
+                    choixVigenere=$((choixVigenere-1))
+                    while [ "${options[$choixVigenere]}" == "" ]
+                    do
+                        choixVigenere=$((choixVigenere-1))
+                        if [ $choixVigenere -lt 0 ]; then 
+                            choixVigenere=$(($taille-1))
+                        fi
+                    done
+                    if [ $choixVigenere -lt 0 ]; then 
+                        choixVigenere=$(($taille-1))
+                    fi
+                    affichage
+                    ;;
+                "[B")
+                    clear
+                    choixVigenere=$((choixVigenere+1))
+                    while [ "${options[$choixVigenere]}" == "" ]
+                    do
+                        choixVigenere=$((choixVigenere+1))
+                        if [ $choixVigenere -gt $(($taille-1)) ]; then 
+                            choixVigenere=0
+                        fi
+                    done
+                    if [ $choixVigenere -gt $(($taille-1)) ]; then 
+                        choixVigenere=0
+                    fi
+                    affichage
+                    ;;
+                "*")
+                    clear
+                    affichage
+                    ;;
+            esac
+        else
+            clear
+            affichage
+        fi
+    done
+    erreur=0
+
+}
+
 choixFichierSortieVigVig="" # Variable globale pour le choix du fichier de sortie
 choixFichierVig="" # Variable globale pour le choix du fichier d'entrée
 vigenereFile() {
@@ -167,9 +266,9 @@ vigenereMain(){
 
     options=("                        Chiffrer" "                       Dechiffrer" "                        Retour" "                        Quitter")
     titre="                Veuillez choisir une action"
-    affichageScreen
+    affichageScreenVig
 
-    case $choixMorse in
+    case $choixVigenere in
         "0")     
             clear
             chiffrerVigenere
@@ -221,11 +320,11 @@ vigenereChiffrementInput() {
 
 chiffrerVigenere() {
 
-    options=("                    Choisir une clé" "                Générer une clé aléatoire" "                     Chiffrer un fichier" "                     Via l'Input" "                        Retour" "                        Quitter")
+    options=("               Choisir une clé" "               Générer une clé aléatoire" "               Afficher la clé" "               Chiffrer un fichier" "               Via l'Input" "               Retour" "               Quitter")
     titre="                Veuillez choisir une action"
-    affichageScreen
+    affichageScreenVig
 
-    case $choixMorse in
+    case $choixVigenere in
         "0")
             choixCle
             clear
@@ -247,6 +346,14 @@ chiffrerVigenere() {
             return 0
             ;;
         "2")
+            echo ""
+            echo "Voici la clé: $cle"
+            printf "\nAppuyez sur entree pour continuer...\n"
+            read qdsdkqdhqs
+            chiffrerVigenere
+            return 0
+            ;;
+        "3")
             vigenereFile
             if [ $? != 0 ] # Si tout ne s'est pas passé correctement
             then
@@ -257,13 +364,13 @@ chiffrerVigenere() {
             erreur=3
             clear
             ;;
-        "3")
+        "4")
             vigenereChiffrementInput
             ;;
-        "4")
+        "5")
             vigenereMain
             ;;
-        "5")
+        "6")
             quitter
             ;;  
         *)
