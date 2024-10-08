@@ -124,7 +124,7 @@ dechiffrementVigenere() {
         if [[ "$char" =~ [a-z] ]]; then
             resAscii=$(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") - $(printf '%d' "'$char") + $(printf '%d' "'a") ) ))
             while ((resAcii < 0)); do
-                ((resAcii+=27))
+                ((resAcii+=26))
             done
             res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") + $(printf '%d' "'$char") - $(printf '%d' "'a") ) % 26 + $(printf '%d' "'a") )) )")       #Ajout du caractère crypté dans le résultat
             ((ind++))
