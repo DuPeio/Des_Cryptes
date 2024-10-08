@@ -95,6 +95,53 @@ chiffrementVigenere() {
     echo "$res"     #Affichage de la phrase crypté
 }
 
+dechiffrementVigenere() {
+    #Initialisation de toutes les variables
+    local key="$1"
+    local sentence="$2"
+    local ind=0
+    local res=""
+    local chara=""
+    local char=""
+    local len_key=${#key}       #taille de key
+    local len_sentence=${#sentence}     #taille de sentence
+    local resAscii=0
+
+    for (( i=0; i<len_sentence; i++ )); do
+        chara=${key:ind % len_key:1}        #caractère de key à l'index ind
+        char=${sentence:i:1}        #caractère de sentence à l'index i
+
+        #Tant que le caractère n'est pas utilisable en tant que clé, le prochain sera utilisé, et si on atteint la fin, on retourne au début
+        while ! [[ "$chara" =~ [a-zA-Z] ]]; do
+            ((ind++))
+            chara=${key:ind % len_key:1}
+        done
+        if [[ "$chara" =~ [A-Z] ]]; then
+            chara=$(echo "$chara" | tr '[:upper:]' '[:lower:]')     #Passage de majuscule vers minuscule des lettres de la clé
+        fi
+
+        #Vérification si le caractère est une lettre minuscule, majuscule, ou un chiffre, sinon ajouter sans changement
+        if [[ "$char" =~ [a-z] ]]; then
+            resAscii=$(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") - $(printf '%d' "'$char") + $(printf '%d' "'a") ) ))
+            while ((resAcii < 0)); do
+                ((resAcii+=27))
+            done
+            res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") + $(printf '%d' "'$char") - $(printf '%d' "'a") ) % 26 + $(printf '%d' "'a") )) )")       #Ajout du caractère crypté dans le résultat
+            ((ind++))
+        elif [[ "$char" =~ [A-Z] ]]; then
+            res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'A") + $(printf '%d' "'$char") - $(printf '%d' "'A") ) % 26 + $(printf '%d' "'A") )) )")       #Ajout du caractère crypté dans le résultat
+            ((ind++))
+        elif [[ "$char" =~ [0-9] ]]; then
+            res+=$((($char+$ind)%10))       #Ajout du chiffre crypté
+            ((ind++))
+        else
+            res+="$char"        #Ajout des caractères non cryptables
+        fi
+    done
+
+    echo "$res"     #Affichage de la phrase décryptée
+}
+
 chiffrementFichierVigenere() {
     # Fonction qui permet de transformer le contenu du fichier en premier Parametre, en morse dans le second fichier en parametre
     # NB : Ne teste absolument pas si les fichiers sont valides ici (pas son role)
@@ -108,6 +155,20 @@ chiffrementFichierVigenere() {
     done
 
 }
+dechiffrementFichierVigenere() {
+    # Fonction qui permet de transformer le contenu du fichier en premier Parametre, en morse dans le second fichier en parametre
+    # NB : Ne teste absolument pas si les fichiers sont valides ici (pas son role)
+    fichierEntree=$1 # Le chemin vers le fichier d'entrée
+    fichierSortie=$2 # Le chemin vers le fichier de sortie
+
+    cat "$fichierEntree" | while read -r ligne || [[ -n "$ligne" ]] # Lit le fichier fichier ligne par ligne + derniere ligne
+    do
+        ligneVigenere=$(dechiffrementVigenere "$cle" "$ligne") # Convertit la ligne en version morse
+        echo -e "$ligneVigenere" >> "$fichierSortie" # Ajoute la version morse dans le fichier de sortie
+    done
+
+}
+
 
 erreur=0 # Variable globale pour les messages dans les menus
 erreurFunc() { 
@@ -276,7 +337,7 @@ vigenereMain(){
             ;;
         "1")
             clear
-            morseMenu 1 # Lance un second sous menu en version déchiffrer
+            dechiffrerVigenere
             return 0
             ;;
         "2")
@@ -313,6 +374,32 @@ vigenereChiffrementInput() {
                 ;;
             *)
                 chiffrementVigenere "$cle" "$line"
+                ;;
+        esac
+    done
+}
+vigenereDechiffrementInput() {
+    # Fonction qui lance le chiffrement ou déchiffrement selon l'option depuis l'input console
+
+    clear
+    echo "---------------------------------------------------------------"
+    echo "                 DECHIFFREMENT VIGENERE INPUT"
+    echo "                 POUR QUITTER FAITES /exit"
+    echo "              POUR AFFICHER LA CLE FAITES /key"
+    echo "---------------------------------------------------------------"
+    exit=0
+    while [ $exit -eq 0 ] # Tant que la condition de sortie n'est pas validée
+    do
+        read line # Lit la ligne dans la console
+        case $line in
+            "/exit")
+                exit=1 # Si cette ligne est égale à "/exit" on met exit à 1 pour sortir de la boucle
+                ;;
+            "/key")
+                echo "$cle"
+                ;;
+            *)
+                dechiffrementVigenere "$cle" "$line"
                 ;;
         esac
     done
@@ -371,6 +458,58 @@ chiffrerVigenere() {
             vigenereMain
             ;;
         "6")
+            quitter
+            ;;  
+        *)
+            erreur=1
+            chiffrerVigenere
+            ;;
+    esac
+}
+
+dechiffrerVigenere() {
+
+    options=("               Choisir une clé" "               Afficher la clé" "               Dechiffrer un fichier" "               Via l'Input" "               Retour" "               Quitter")
+    titre="                Veuillez choisir une action"
+    affichageScreenVig
+
+    case $choixVigenere in
+        "0")
+            choixCle
+            clear
+            echo "Voici la clé: $cle"
+            # chiffrementVigenere "$cle" "$phrase"
+            printf "\nAppuyez sur entree pour continuer...\n"
+            read qdsdkqdhqs
+            dechiffrerVigenere
+            return 0
+            ;;
+        "1")
+            echo ""
+            echo "Voici la clé: $cle"
+            printf "\nAppuyez sur entree pour continuer...\n"
+            read qdsdkqdhqs
+            dechiffrerVigenere
+            return 0
+            ;;
+        "2")
+            vigenereFile
+            if [ $? != 0 ] # Si tout ne s'est pas passé correctement
+            then
+                vigenereMain # on retourne au menu principal du morse
+                return 0
+            fi
+            dechiffrementFichierVigenere "$choixFichierVig" "$choixFichierSortieVig"
+            erreur=3
+            clear
+            ;;
+        "3")
+            vigenereDechiffrementInput
+            ;;
+        "4")
+            vigenereMain
+            ;;
+        "5")
             quitter
             ;;  
         *)
