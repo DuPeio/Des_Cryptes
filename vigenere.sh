@@ -480,6 +480,7 @@ dechiffrementVigenere() {
     local len_key=${#key}       #taille de key
     local len_sentence=${#sentence}     #taille de sentence
     local resAscii=0
+    local nb=0
 
     for (( i=0; i<len_sentence; i++ )); do
         chara=${key:ind % len_key:1}        #caractère de key à l'index ind
@@ -496,17 +497,27 @@ dechiffrementVigenere() {
 
         #Vérification si le caractère est une lettre minuscule, majuscule, ou un chiffre, sinon ajouter sans changement
         if [[ "$char" =~ [a-z] ]]; then
-            resAscii=$(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") - $(printf '%d' "'$char") + $(printf '%d' "'a") ) ))
-            while ((resAcii < 0)); do #while [ $resAcii -lt 0 ]; do
-                ((resAcii+=27))
+            resAscii=$(( ( ($(printf '%d' "'$char") - $(printf '%d' "'a")) - ($(printf '%d' "'$chara") - $(printf '%d' "'a")) ) ))
+            while ((resAscii < 0)); do
+                ((resAscii+=26))
             done
-            res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") + $(printf '%d' "'$char") - $(printf '%d' "'a") ) % 26 + $(printf '%d' "'a") )) )")       #Ajout du caractère crypté dans le résultat
+            ((resAscii+=$(printf '%d' "'a")))
+            res+=$(printf "\\$(printf '%03o' $resAscii)")      #Ajout du caractère crypté dans le résultat
             ((ind++))
         elif [[ "$char" =~ [A-Z] ]]; then
-            res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'A") + $(printf '%d' "'$char") - $(printf '%d' "'A") ) % 26 + $(printf '%d' "'A") )) )")       #Ajout du caractère crypté dans le résultat
+            resAscii=$(( ( ($(printf '%d' "'$char") - $(printf '%d' "'A")) - ($(printf '%d' "'$chara") - $(printf '%d' "'A")) ) ))
+            while ((resAscii < 0)); do
+                ((resAscii+=26))
+            done
+            ((resAscii+=$(printf '%d' "'A")))
+            res+=$(printf "\\$(printf '%03o' $resAscii)")      #Ajout du caractère crypté dans le résultat
             ((ind++))
         elif [[ "$char" =~ [0-9] ]]; then
-            res+=$((($char+$ind)%10))       #Ajout du chiffre crypté
+            nb=$((($char-$ind)))
+            while (($nb < 0)); do
+                ((nb+=10))
+            done
+            res+=$nb      #Ajout du chiffre crypté
             ((ind++))
         else
             res+="$char"        #Ajout des caractères non cryptables
@@ -519,6 +530,7 @@ dechiffrementVigenere() {
         else
             echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout de la phrase
         fi
+    else
+        echo "Voici la phrase déchiffrée: $res"     #Affichage de la phrase décryptée
     fi
-    echo "Voici la phrase déchiffrée: $res"     #Affichage de la phrase décryptée
 }
