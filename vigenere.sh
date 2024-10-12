@@ -12,6 +12,11 @@ fichierInput=""
 fichierOutput=""
 outputChoice="ajouter"
 
+#Création de la fonction pour les appels dans d'autres fonctions
+vigenereMain() {
+    echo ""
+}
+
 actionInvalide() {
     clear
     echo ""
@@ -23,158 +28,6 @@ actionInvalide() {
     clear
 }
 
-vigenereMain() {
-    clear
-    cle=""
-    phrase=""
-    estFichierInput=0
-    estFichierOutput=0
-    fichierInput=""
-    fichierOutput=""
-    vigenereMain_
-}
-
-vigenereMain_() {
-    echo "+-------------------------------------------------------------+"
-    echo "|                Veuillez choisir une action                  |"
-    echo "+-------------------------------------------------------------+"
-    echo "|                       Chiffrer (1)                          |"
-    echo "|                      Dechiffrer (2)                         |"
-    echo "|                        Retour (3)                           |"
-    echo "•                       Quitter  (4)                          •"
-
-    echo ""
-    local choixVigenere=""
-    cle=""
-    read choixVigenere
-
-    clear
-
-    case $choixVigenere in
-        "1")
-            chiffrerVigenere
-            ;;
-        "2")
-            dechiffrerVigenere
-            ;;
-        "3")
-            main
-            ;;
-        "4")
-            quitter
-            ;;
-        *)
-            actionInvalide
-            vigenereMain
-            ;;
-    esac
-}
-
-chiffrerVigenere() {
-    echo "+-------------------------------------------------------------+"
-    echo "|                Veuillez choisir une action                  |"
-    echo "+-------------------------------------------------------------+"
-    echo "|                    Choisir une clé (1)                      |"
-    echo "|                Utiliser une clé générée (2)                 |"
-    echo "|                        Retour (3)                           |"
-    echo "•                       Quitter  (4)                          •"
-
-    echo ""
-    local actionChif=""
-    read actionChif
-
-    clear
-    estFileInput
-    clear
-    estFileOutput
-    clear
-
-    case $actionChif in
-        "1")
-            choixCle
-            clear
-            if [[ $estFichierInput == 0 ]]; then
-                choixPhrase
-                clear
-            else
-                choixFichierInput
-                clear
-            fi
-            echo "Voici la clé: $cle"
-            chiffrementVigenere "$cle" "$phrase"
-            printf "\n"
-            continuerYN
-            ;;
-        "2")
-            echo ""
-            genCle
-            clear
-
-            if [[ $estFichierInput == 0 ]]; then
-                choixPhrase
-                clear
-            else
-                choixFichierInput
-                clear
-            fi
-            echo "Voici la clé: $cle"
-            chiffrementVigenere "$cle" "$phrase"
-            printf "\n"
-            continuerYN
-            ;;
-        "3")
-            vigenereMain
-            ;;
-        "4")
-            quitter
-            ;;  
-        *)
-            actionInvalide
-            chiffrerVigenere
-            ;;
-    esac
-}
-
-dechiffrerVigenere() {
-    echo "+-------------------------------------------------------------+"
-    echo "|                Veuillez choisir une action                  |"
-    echo "+-------------------------------------------------------------+"
-    echo "|                    Choisir une clé (1)                      |"
-    echo "|                        Retour (2)                           |"
-    echo "•                       Quitter  (3)                          •"
-
-    local actionDechif=""
-    read actionDechif
-
-    clear
-    estFile
-
-    case $actionDechif in
-        "1")
-            choixCle
-            clear
-            if [[ $estFichierInput == 0 ]]; then
-                choixPhrase
-                clear
-            else
-                choixFichierInput
-                clear
-            fi
-            dechiffrementVigenere "$cle" "$phrase"
-            ;;
-        "2")
-            vigenereMain
-            ;;
-        "3")
-            quitter
-            ;;  
-        *)
-            actionInvalide
-            dechiffrerVigenere
-            ;;
-    esac
-}
-
 continuerYN() {
     local rep=""
 
@@ -184,14 +37,38 @@ continuerYN() {
 
     clear
 
-    if [[ $rep == "y" || $rep == "Y" ]]; then
+    if [[ $rep =~ [Yy] ]]; then
         quitter
-    elif [[ $rep == "n" || $rep == "N" ]]; then
+    elif [[ $rep =~ [nN] ]]; then
         vigenereMain
     else
         actionInvalide
         continuerYN
     fi
+}
+
+choixCle() {
+    local choix=""
+
+    printf "Veuillez choisir une clé: "
+    read choix
+
+    while ! [[ "$choix" =~ ^[a-zA-Z]+$ ]]; do       #Tant que le choix ne contient pas uniquement des lettres, alors on redemande de saisir une clé
+        clear
+        choix=""
+        echo ""
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo "         La clé doit contenir uniquement des lettres"
+        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        echo ""
+        sleep 1
+        clear
+        printf "Veuillez choisir une clé: "
+        read choix
+        printf "\n"
+    done
+
+    cle=$choix
 }
 
 estFileInput() {
@@ -374,30 +251,6 @@ selectLigne() {
     phrase=$phrs
 }
 
-choixCle() {
-    local choix=""
-
-    printf "Veuillez choisir une clé: "
-    read choix
-
-    while ! [[ "$choix" =~ ^[a-zA-Z]+$ ]]; do       #Tant que le choix ne contient pas uniquement des lettres, alors on redemande de saisir une clé
-        clear
-        choix=""
-        echo ""
-        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        echo "         La clé doit contenir uniquement des lettres"
-        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        echo ""
-        sleep 1
-        clear
-        printf "Veuillez choisir une clé: "
-        read choix
-        printf "\n"
-    done
-
-    cle=$choix
-}
-
 choixPhrase() {
     local phrs=""
     
@@ -458,7 +311,7 @@ chiffrementVigenere() {
         fi
     done
 
-    if [[ $estFichierOutput ]]; then      #Vérifie si le type de output
+    if [[ $estFichierOutput == 1 ]]; then      #Vérifie si le type de output
         if [[ "$outputChoice" == "ajouter" ]]; then     #Vérifie si le choix d'output dans un fichier
             echo -e "$res" >> "$fichierOutput"      #Ajout de la phrase à la fin du fichier
         else
@@ -480,6 +333,7 @@ dechiffrementVigenere() {
     local len_key=${#key}       #taille de key
     local len_sentence=${#sentence}     #taille de sentence
     local resAscii=0
+    local nb=0
 
     for (( i=0; i<len_sentence; i++ )); do
         chara=${key:ind % len_key:1}        #caractère de key à l'index ind
@@ -497,28 +351,188 @@ dechiffrementVigenere() {
         #Vérification si le caractère est une lettre minuscule, majuscule, ou un chiffre, sinon ajouter sans changement
         if [[ "$char" =~ [a-z] ]]; then
             resAscii=$(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") - $(printf '%d' "'$char") + $(printf '%d' "'a") ) ))
-            while ((resAcii < 0)); do
-                ((resAcii+=27))
+            while ((resAscii < 0)); do
+                ((resAscii+=26))
             done
-            res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") + $(printf '%d' "'$char") - $(printf '%d' "'a") ) % 26 + $(printf '%d' "'a") )) )")       #Ajout du caractère crypté dans le résultat
+            res+=$(printf "\\$(printf '%03o' "$resAscii")")       #Ajout du caractère décrypté dans le résultat
             ((ind++))
+
         elif [[ "$char" =~ [A-Z] ]]; then
-            res+=$(printf "\\$(printf '%03o' $(( ( $(printf '%d' "'$chara") - $(printf '%d' "'A") + $(printf '%d' "'$char") - $(printf '%d' "'A") ) % 26 + $(printf '%d' "'A") )) )")       #Ajout du caractère crypté dans le résultat
+            resAscii=$(( ( $(printf '%d' "'$chara") - $(printf '%d' "'a") - $(printf '%d' "'$char") + $(printf '%d' "'a") ) ))
+            while ((resAcii < 0)); do
+                ((resAcii+=26))
+            done
+            res+=$(printf "\\$(printf '%03o' "$resAscii")")       #Ajout du caractère décrypté dans le résultat
             ((ind++))
+
         elif [[ "$char" =~ [0-9] ]]; then
-            res+=$((($char+$ind)%10))       #Ajout du chiffre crypté
+            ((nb=))
+            res+=$((($char+$ind)%10))       #Ajout du chiffre décrypté
             ((ind++))
         else
             res+="$char"        #Ajout des caractères non cryptables
         fi
     done
 
-    if [[ $estFichierOutput ]]; then      #Vérifie si le type de output
-        if [[ "$outputChoice" == "ajouter" ]]; then     #Vérifie si le choix d'output dans un fichier
-            echo -e "$res" >> "$fichierOutput"      #Ajout de la phrase à la fin du fichier
+    if [[ $estFichierOutput == 1 ]]; then      #Vérifie le type de output
+        if [[ "$outputChoice" == "ajouter" ]]; then     #Vérifie le choix d'output dans un fichier
+            echo -e "$res" >> "$fichierOutput"      #Ajout du texte décrypté à la fin du fichier
         else
-            echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout de la phrase
+            echo -e "$res" > "$fichierOutput"       #Ecrasement du fichier puis ajout du texte décrypté
         fi
+    else
+        echo "Voici la phrase déchiffrée: $res"     #Affichage de la phrase décryptée
     fi
-    echo "Voici la phrase déchiffrée: $res"     #Affichage de la phrase décryptée
+}
+
+chiffrerVigenere() {
+    echo "+-------------------------------------------------------------+"
+    echo "|                Veuillez choisir une action                  |"
+    echo "+-------------------------------------------------------------+"
+    echo "|                    Choisir une clé (1)                      |"
+    echo "|                Utiliser une clé générée (2)                 |"
+    echo "|                        Retour (3)                           |"
+    echo "•                       Quitter  (4)                          •"
+
+    echo ""
+    local actionChif=""
+    read actionChif
+
+    clear
+    estFileInput
+    clear
+    estFileOutput
+    clear
+
+    case $actionChif in
+        "1")
+            choixCle
+            clear
+            if [[ $estFichierInput == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichierInput
+                clear
+            fi
+            echo "Voici la clé: $cle"
+            chiffrementVigenere "$cle" "$phrase"
+            printf "\n"
+            continuerYN
+            ;;
+        "2")
+            echo ""
+            genCle
+            clear
+
+            if [[ $estFichierInput == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichierInput
+                clear
+            fi
+            echo "Voici la clé: $cle"
+            chiffrementVigenere "$cle" "$phrase"
+            printf "\n"
+            continuerYN
+            ;;
+        "3")
+            vigenereMain
+            ;;
+        "4")
+            quitter
+            ;;  
+        *)
+            actionInvalide
+            chiffrerVigenere
+            ;;
+    esac
+}
+
+dechiffrerVigenere() {
+    echo "+-------------------------------------------------------------+"
+    echo "|                Veuillez choisir une action                  |"
+    echo "+-------------------------------------------------------------+"
+    echo "|                    Choisir une clé (1)                      |"
+    echo "|                        Retour (2)                           |"
+    echo "•                       Quitter  (3)                          •"
+
+    local actionDechif=""
+    read actionDechif
+
+    clear
+    estFile
+
+    case $actionDechif in
+        "1")
+            choixCle
+            clear
+            if [[ $estFichierInput == 0 ]]; then
+                choixPhrase
+                clear
+            else
+                choixFichierInput
+                clear
+            fi
+            dechiffrementVigenere "$cle" "$phrase"
+            ;;
+        "2")
+            vigenereMain
+            ;;
+        "3")
+            quitter
+            ;;  
+        *)
+            actionInvalide
+            dechiffrerVigenere
+            ;;
+    esac
+}
+
+vigenereMain_() {
+    echo "+-------------------------------------------------------------+"
+    echo "|                Veuillez choisir une action                  |"
+    echo "+-------------------------------------------------------------+"
+    echo "|                       Chiffrer (1)                          |"
+    echo "|                      Dechiffrer (2)                         |"
+    echo "|                        Retour (3)                           |"
+    echo "•                       Quitter  (4)                          •"
+
+    echo ""
+    local choixVigenere=""
+    cle=""
+    read choixVigenere
+
+    clear
+
+    case $choixVigenere in
+        "1")
+            chiffrerVigenere
+            ;;
+        "2")
+            dechiffrerVigenere
+            ;;
+        "3")
+            main
+            ;;
+        "4")
+            quitter
+            ;;
+        *)
+            actionInvalide
+            vigenereMain
+            ;;
+    esac
+}
+
+vigenereMain() {
+    clear
+    cle=""
+    phrase=""
+    estFichierInput=0
+    estFichierOutput=0
+    fichierInput=""
+    fichierOutput=""
+    vigenereMain_
 }

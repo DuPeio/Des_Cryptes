@@ -2,7 +2,7 @@
 
 source ./vigenere.sh
 
-# vigenereMain
+vigenereMain
 # genCle
 # choixCle
 # continuerYN
@@ -12,4 +12,4 @@ source ./vigenere.sh
 # chiffrementVigenere "castor" "lorem ipsum dolor"
 # chiffrementVigenere "CaSt69420or/." "lorem ipsum dolor"
 # chiffrementVigenere "69450" "lorem ipsum dolor"
-dechiffrementVigenere "castor" "oa hafrue 48"
+# dechiffrementVigenere "castor" "oa hafrue 48"
