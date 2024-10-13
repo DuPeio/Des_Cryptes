@@ -367,7 +367,10 @@ morseFile() {
             echo -ne " NOM DU FICHIER DE SORTIE : "
             read choixFichierSortie # On lit le chemin
             echo ""
-            if [ -f "$choixFichierSortie" ] # Si le fichier existe déjà
+            if [ "$choixFichier" == "$choixFichierSortie" ]
+            then
+                echo "LE FICHIER DOIT ÊTRE DIFFERENT DE CELUI EN ENTREE !"
+            elif [ -f "$choixFichierSortie" ] # Si le fichier existe déjà
             then
                 echo -ne " CE FICHIER EXISTE DEJA, VOULEZ-VOUS LE SUPPRIMER ? (Y/N) : "
                 read supprimer # On demande s'il faut le remplacer
