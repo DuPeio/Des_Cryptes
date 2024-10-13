@@ -292,7 +292,7 @@ chiffrementVigenere() {
             ((char+=$(printf '%d' "'A")))
             res+=$(printf "\\$(printf '%03o' "$char" )")       #Ajout du caractère crypté dans le résultat
             ((ind++))
-
+            
         elif [[ "$char" =~ [0-9] ]]; then
             res+=$((($char+$ind)%10))       #Ajout du chiffre crypté
             ((ind++))
