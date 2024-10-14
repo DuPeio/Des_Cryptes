@@ -479,7 +479,9 @@ dechiffrerVigenere() {
                 choixFichierInput
                 clear
             fi
-            
+            if [[ $estFichierOutput == 1 ]]; then
+                choixFichierOutput
+            fi
             echo "Voici la clé: $cle"
             dechiffrementVigenere "$cle" "$phrase"
             ;;
