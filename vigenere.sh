@@ -397,6 +397,10 @@ chiffrerVigenere() {
         "1")
             choixCle
             clear
+            estFileInput
+            clear
+            estFileOutput
+            clear
             if [[ $estFichierInput == 0 ]]; then
                 choixPhrase
                 clear
@@ -404,10 +408,9 @@ chiffrerVigenere() {
                 choixFichierInput
                 clear
             fi
-            estFileInput
-            clear
-            estFileOutput
-            clear
+            if [[ $estFichierOutput == 1 ]]; then
+                choixFichierOutput
+            fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
             printf "\n"
@@ -417,7 +420,10 @@ chiffrerVigenere() {
             echo ""
             genCle
             clear
-
+            estFileInput
+            clear
+            estFileOutput
+            clear
             if [[ $estFichierInput == 0 ]]; then
                 choixPhrase
                 clear
@@ -425,10 +431,9 @@ chiffrerVigenere() {
                 choixFichierInput
                 clear
             fi
-            estFileInput
-            clear
-            estFileOutput
-            clear
+            if [[ $estFichierOutput == 1 ]]; then
+                choixFichierOutput
+            fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
             printf "\n"
@@ -463,6 +468,10 @@ dechiffrerVigenere() {
         "1")
             choixCle
             clear
+            estFileInput
+            clear
+            estFileOutput
+            clear
             if [[ $estFichierInput == 0 ]]; then
                 choixPhrase
                 clear
@@ -470,10 +479,7 @@ dechiffrerVigenere() {
                 choixFichierInput
                 clear
             fi
-            estFileInput
-            clear
-            estFileOutput
-            clear
+            
             echo "Voici la clé: $cle"
             dechiffrementVigenere "$cle" "$phrase"
             ;;
