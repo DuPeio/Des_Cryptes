@@ -98,6 +98,7 @@ choixFichierInput() {
 
     if [[ -f "$rep" ]]; then
         fichierInput=$rep
+        selectLigne
     else
         clear
         echo ""
@@ -484,6 +485,9 @@ dechiffrerVigenere() {
             fi
             echo "Voici la clé: $cle"
             dechiffrementVigenere "$cle" "$phrase"
+            printf "\n"
+
+            continuerYN
             ;;
         "2")
             vigenereMain
