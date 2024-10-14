@@ -3,7 +3,7 @@
 # Pouvoir utiliser les fonctions des autres fichiers
 source tools.sh
 source morse.sh
-source vigenere_demo.sh
+source vigenere.sh
 source caesar.sh
 
 # Pierre MAGIEU, Sebastian CARON, Dylan BRUN
