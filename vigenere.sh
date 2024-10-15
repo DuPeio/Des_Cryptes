@@ -546,5 +546,6 @@ vigenereMain() {
     estFichierOutput=0
     fichierInput=""
     fichierOutput=""
+    outputChoice="ajouter"
     vigenereMain_
 }
