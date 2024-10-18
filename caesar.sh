@@ -178,11 +178,16 @@ caesarChif(){
 
             read choixCleCaesarChiff
 
-            if [ "$choixCleCaesarChiff" == "0" ]
-            then
-                cleCaesarChif=$(aleatoire) #Aleatoirement grâce à la fonction aleatoire()
+            if [[ "$choixCleCaesarChiff" =~ ^[0-9]*$ ]]
+            then 
+                if [ "$choixCleCaesarChiff" == "0" ]
+                then
+                    cleCaesarChif=$(aleatoire) #Aleatoirement grâce à la fonction aleatoire()
+                else
+                    cleCaesarChif=$choixCleCaesarChiff #On récupère l'input de l'utilisateur
+                fi
             else
-                cleCaesarChif=$choixCleCaesarChiff #On récupère l'input de l'utilisateur
+                message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                Choix invalide. Veuillez réessayer.\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
             fi
             caesarChif
             ;;
@@ -248,13 +253,20 @@ caesarDechif(){
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     echo "       Entrez la clé pour décoder le texte du fichier"
                     read cleCaesarDechif
-                    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                    # On vérifie que la clé soit un nombre
+                    if [[ "$cleCaesarDechif" =~ ^[0-9]*$ ]]
+                    then
+                        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
-                    echo "     Un fichier contenant votre texte decodé va être créé     "
-                    echo "_______________________________________________________________"
-                    message="                Fichier décodé avec succès"
-                    codeDecodeFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif" #Créer le fichier avec le contenu décodé grâce à la clé
-                    
+                        echo "     Un fichier contenant votre texte decodé va être créé     "
+                        echo "_______________________________________________________________"
+                        message="                Fichier décodé avec succès"
+                        codeDecodeFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif" #Créer le fichier avec le contenu décodé grâce à la clé
+                    else
+                        message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect, un nombre est attendu...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+                        caesarDechif
+                    fi
+
                     ;;
 
                 "1")
@@ -285,11 +297,18 @@ caesarDechif(){
                     echo "          Entrez la clé pour décoder cette phrase"
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     read cleCaesarDechif 
+                    if [[ "$cleCaesarDechif" =~ ^[0-9]*$ ]]
+                    then
+                        echo "_______________________________________________________________"
+                        message="              Fichier décodé avec succès"
+                        #Créer le fichier avec le lignes choisis décodées avec la clé
+                        lignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminDechif" "$cleCaesarDechif"
+                    else
+                        message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect, un nombre est attendu...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+                        caesarDechif
+                    fi
                     
-                    echo "_______________________________________________________________"
-                    message="              Fichier décodé avec succès"
-                    #Créer le fichier avec le lignes choisis décodées avec la clé
-                    lignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminDechif" "$cleCaesarDechif"
+                    
                     ;;
 
                 "2")
@@ -321,11 +340,19 @@ caesarDechif(){
 
 
             read cleCaesarDechif
-            echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            
-            echo "_______________________________________________________________"
-            echo "                Voici votre phrase décodée"
-            codeDecodeCaesar "$phraseCaesar" "$cleCaesarDechif" #décodage de l'input avec la clé
+
+            if [[ "$cleCaesarDechif" =~ ^[0-9]*$ ]]
+            then
+                echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                
+                echo "_______________________________________________________________"
+                echo "                Voici votre phrase décodée"
+                codeDecodeCaesar "$phraseCaesar" "$cleCaesarDechif" #décodage de l'input avec la clé
+            else
+                message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect, un nombre est attendu...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+            fi
+
+
             caesarDechif #Retour au menu de décodage
             ;;
         
@@ -526,7 +553,6 @@ creerFichierCaesar(){ #Permet de créer le fichier output
 
 
 # Gérer les affichages des menus
-
 affichageCaesar(){
     echo -e "$message"
     local choix="${tab[indice]}" #Element encours de selection 
@@ -541,8 +567,8 @@ affichageCaesar(){
             echo "$elmt"
         fi
     done
-    read -sn1 touche
-     # On relance la boucle d'écoute des touches
+    read -sn1 touche # On relance la boucle d'écoute des touches
+     
 }
 
 menu(){
@@ -589,4 +615,4 @@ menu(){
             esac
         fi
     done
-}
+}   
