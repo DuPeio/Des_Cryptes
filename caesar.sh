@@ -6,47 +6,18 @@
 caesarMain() {
     clear
     # choix du menu principal Caesar
-    choixTabMain=("                            Coder" "                           Décoder" "               Choisir un autre mode de codage" "                      Quitter le programme")
-    choixIndiceMain=0
-    affichageMain
-    # Menu principal Caesar interractif 
-    while [ "$touche" != "" ] #La touche entrée permet de sortir de la boucle et de valider le choix
-    do 
+    tab=("                            Coder" "                           Décoder" "               Choisir un autre mode de codage" "                      Quitter le programme")
+    indice=0
+    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                    Que voulez vous faire ?\033[0m \n ---------------------------------------------------------------"
 
-        if [ $touche = $'\x1b' ]
-        then 
-            read -sn2 touche
-            case $touche in
-            # Fleche du haut
-                "[A")
-                    clear
-                    choixIndiceMain=$[choixIndiceMain-1]
-                    if [ $choixIndiceMain -lt 0 ] #Permet de faire boucler le menu interractif
-                    then 
-                        choixIndiceMain=3
-                    fi
-                    affichageMain
-                    ;;
-            # Fleche du bas
-                "[B")
-                    clear
-                    choixIndiceMain=$[choixIndiceMain+1]
-                    if [ $choixIndiceMain -gt 3 ] #Permet de faire boucler le menu interractif
-                    then 
-                        choixIndiceMain=0
-                    fi
-                    affichageMain
-                    ;;
-                "*")
-                    affichageMain
-                    ;;
-            esac
-        fi
-    done
+    affichageCaesar
+    # Menu principal Caesar interractif 
+    menu
+    
 
     message=""
 
-    case $choixIndiceMain in
+    case $indice in
         "0")
             clear
             echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -84,47 +55,17 @@ cleCaesarChif=1 #Elle est en globale sinon elle se réinitialise à chaque fois 
 # Codage choix
 caesarChif(){
     # choix du menu principal codage Caesar
-    choixTabChif=("            Coder le contenu d'un fichier externe" "                     Coder une phrase" "     Changer la clé de codage, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
-    choixIndiceChif=0
+    tab=("            Coder le contenu d'un fichier externe" "                     Coder une phrase" "     Changer la clé de codage, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
+    indice=0
+    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                   Que souhaitez-vous faire ?\033[0m \n ---------------------------------------------------------------"
     
-    affichageChif
+    affichageCaesar
     # Menu principal codage Caesar interractif 
-    while [ "$touche" != "" ]
-    do
-        if [ $touche = $'\x1b' ]
-        then
-            read -sn2 touche
-            case $touche in
-            # Flèche du haut
-                "[A")
-                    clear
-                    choixIndiceChif=$[choixIndiceChif-1]
-                    if [ $choixIndiceChif -lt 0 ]
-                    then 
-                        choixIndiceChif=3
-                    fi
-                    affichageChif
-                    ;;
-            # Flèche du bas
-                "[B")
-                    clear
-                    choixIndiceChif=$[choixIndiceChif+1]
-                    if [ $choixIndiceChif -gt 3 ]
-                    then 
-                        choixIndiceChif=0
-                    fi
-                    affichageChif
-                    ;;
-                "*")
-                    affichageChif
-                    ;;
-            esac
-        fi
-    done
+    menu
 
     # Réinitialise le message pour ne rien afficher
     message=""
-    case $choixIndiceChif in
+    case $indice in
         "0")
             # Coder un fichier
             clear   
@@ -143,47 +84,15 @@ caesarChif(){
             fi
             
             # Choix du codage Caesar pour un fichier
-            choixTabChifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
-            choixIndiceChifLig=0
-
-            affichageChifLig
+            tab=("                           Tout" "                  Choisissez les lignes" "                          Retour")
+            indice=0
+            messagePrincipal="---------------------------------------------------------------\n \033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m \n ---------------------------------------------------------------"
+            affichageCaesar
             # Menu interractif du codage Caesar pour un fichier
-            while [ "$touche" != "" ]
-            do
-                if [ $touche = $'\x1b' ]
-                then
-                    read -sn2 touche
-                    case $touche in
-                    # Flèche du haut
-                        "[A")
-                            clear
-                            choixIndiceChifLig=$[choixIndiceChifLig-1]
-                            if [ $choixIndiceChifLig -lt 0 ]
-                            then 
-                                choixIndiceChifLig=2
-                            fi
-                            affichageChifLig
-                            ;;
-                    # Flèche du bas
-                        "[B")
-                            clear
-                            choixIndiceChifLig=$[choixIndiceChifLig+1]
-                            if [ $choixIndiceChifLig -gt 2 ]
-                            then 
-                                choixIndiceChifLig=0
-                            fi
-                            affichageChifLig
-                            ;;
-                        "*")
-                            affichageChifLig
-                            ;;
-                    esac
-                fi
-            done
-
+            menu "x"
              # Réinitialise le message pour ne rien afficher
             message=""
-            case $choixIndiceChifLig in
+            case $indice in
                 "0")
 
                     clear
@@ -295,46 +204,17 @@ caesarChif(){
 # Decodage choix
 caesarDechif(){
     # choix du menu principal décodage Caesar
-    choixTabDechif=("                Le contenu d'un fichier externe" "                         Une phrase" "                   Retour au menu Caesar")
-    choixIndiceDechif=0
-    
-    affichageDechif
-     # Menu principal décodage Caesar interractif 
-    while [ "$touche" != "" ]
-    do
-        if [ $touche = $'\x1b' ]
-        then
-            read -sn2 touche
-            case $touche in
-            # Flèche du haut
-                "[A")
-                    clear
-                    choixIndiceDechif=$[choixIndiceDechif-1]
-                    if [ $choixIndiceDechif -lt 0 ]
-                    then 
-                        choixIndiceDechif=2
-                    fi
-                    affichageDechif
-                    ;;
-                # Flèche du bas
-                "[B")
-                    clear
-                    choixIndiceDechif=$[choixIndiceDechif+1]
-                    if [ $choixIndiceDechif -gt 2 ]
-                    then 
-                        choixIndiceDechif=0
-                    fi
-                    affichageDechif
-                    ;;
-                "*")
-                    affichageDechif
-                    ;;
-            esac
-        fi
-    done
+    tab=("                Le contenu d'un fichier externe" "                         Une phrase" "                   Retour au menu Caesar")
+    indice=0
+    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                 Que souhaitez-vous décoder ?\033[0m \n ---------------------------------------------------------------"
+
+    affichageCaesar
+    menu "e" # Menu principal décodage Caesar interractif 
+
+
  # Réinitialise le message pour ne rien afficher
     message=""
-    case $choixIndiceDechif in
+    case $indice in
         "0")
         # Décoder un fichier
             clear     
@@ -677,68 +557,75 @@ creerFichierCaesar(){ #Permet de créer le fichier output
 
 # Gérer les affichages des menus
 
-affichageMain(){
-        echo -e "$message"
-        choixMain="${choixTabMain[choixIndiceMain]}" #Element encours de selection 
-        echo "---------------------------------------------------------------"
-        echo -e "\033[1;33m                     Que voulez vous faire ?\033[0m" #Message principal avec de la couleur
-        echo "---------------------------------------------------------------"
-        for elmt in "${choixTabMain[@]}"
-        do #Affichage des choix
-            if [ "$choixMain" = "$elmt" ]
-            then
-                echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
-            else
-                echo "$elmt"
-            fi
-        done
-        read -sn1 touche # On relance la boucle d'coute des touches
-    }
-
-
-affichageChif(){
+affichageCaesar(){
     echo -e "$message"
-    choixChif="${choixTabChif[choixIndiceChif]}" #Element encours de selection 
-    echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m                   Que souhaitez-vous faire ?\033[0m" #Message principal avec de la couleur
-    echo "---------------------------------------------------------------"
-    for elmt in "${choixTabChif[@]}"
+    local choix="${tab[indice]}" #Element encours de selection 
+    echo -e "$messagePrincipal"
+    for elmt in "${tab[@]}"
+    
     do #Affichage des choix
-        if [ "$choixChif" = "$elmt" ]
+        if [ "$choix" = "$elmt" ]
         then
             echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
         else
             echo "$elmt"
         fi
     done
-    read -sn1 touche # On relance la boucle d'coute des touches
+    read -sn1 touche
+     # On relance la boucle d'écoute des touches
 }
 
-affichageChifLig(){
-    clear
-    choixChifLig="${choixTabChifLig[choixIndiceChifLig]}" #Element encours de selection 
-    echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m" #Message principal avec de la couleur
-    echo "---------------------------------------------------------------"
-    for elmt in "${choixTabChifLig[@]}"
-    do #Affichage des choix
-        if [ "$choixChifLig" = "$elmt" ]
-        then
-            echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
-        else
-            echo "$elmt"
+menu(){
+    if [ $1 ]
+    then 
+        taille=2
+    else
+        taille=3
+    fi
+    while [ "$touche" != "" ] #La touche entrée permet de sortir de la boucle et de valider le choix
+    do 
+
+        if [ $touche = $'\x1b' ]
+        then 
+            read -sn2 touche
+            case $touche in
+            # Fleche du haut
+                "[A")
+                    clear
+                    indice=$[indice-1]
+                    
+                    if [ $indice -lt 0 ] #Permet de faire boucler le menu interractif
+                    then 
+                        indice=$taille
+                    fi
+                    message=""
+                    affichageCaesar
+                    ;;
+            # Fleche du bas
+                "[B")
+                    clear
+                    indice=$[indice+1]
+                    if [ $indice -gt $taille ] #Permet de faire boucler le menu interractif
+                    then 
+                        indice=0
+                    fi
+                    message=""
+                    affichageCaesar 
+                    ;;
+                "*")
+                    message=""
+                    affichageCaesar 
+                    ;;
+            esac
         fi
     done
-    read -sn1 touche # On relance la boucle d'coute des touches
 }
 
 
 affichageDechif(){
     echo -e "$message"
     choixDechif="${choixTabDechif[choixIndiceDechif]}" #Element encours de selection 
-    echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m                 Que souhaitez-vous décoder ?\033[0m" #Message principal avec de la couleur
-    echo "---------------------------------------------------------------"
+    echo ""
     for elmt in "${choixTabDechif[@]}"
     do #Affichage des choix
         if [ "$choixDechif" = "$elmt" ]

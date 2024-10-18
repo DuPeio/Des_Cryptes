@@ -16,7 +16,7 @@ main() {
     choix="${choixTab[choixIndice]}"
     
     # while [ choisi -ne true ]; do
-    affichage(){
+    affichageMain(){
         choix="${choixTab[choixIndice]}"
         echo "---------------------------------------------------------------"
         echo "                Choisissez un mode de codage"
@@ -33,7 +33,7 @@ main() {
     
 
     
-    affichage
+    affichageMain
     while [ "$touche" != "" ]; do
     
 
@@ -46,7 +46,7 @@ main() {
                     if [ $choixIndice -lt 0 ]; then 
                         choixIndice=3
                     fi
-                    affichage
+                    affichageMain
                     ;;
                 "[B")
                     clear
@@ -54,16 +54,16 @@ main() {
                     if [ $choixIndice -gt 3 ]; then 
                         choixIndice=0
                     fi
-                    affichage
+                    affichageMain
                     ;;
                 "*")
                     clear
-                    affichage
+                    affichageMain
                     ;;
             esac
         else
             clear
-            affichage
+            affichageMain
         fi
     done
 
