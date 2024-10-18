@@ -233,47 +233,17 @@ caesarDechif(){
             fi
             
              # Choix du codage Caesar pour un fichier
-            choixTabDechifLig=("                           Tout" "                  Choisissez les lignes" "                          Retour")
-            choixIndiceDechifLig=0
+            tab=("                           Tout" "                  Choisissez les lignes" "                          Retour")
+            indice=0
+            messagePrincipal="---------------------------------------------------------------\n \033[1;33m Voulez vous décoder tout le fichier ou juste quelques lignes ?\033[0m \n ---------------------------------------------------------------"
 
-            affichageDechifLig
+            affichageCaesar
             # Menu interractif du décodage Caesar pour un fichier
-            while [ "$touche" != "" ]
-            do
-                if [ $touche = $'\x1b' ]
-                then
-                    read -sn2 touche
-                    case $touche in
-                        "[A")
-                        # Flèche du haut
-                            clear
-                            choixIndiceDechifLig=$[choixIndiceDechifLig-1]
-                            if [ $choixIndiceDechifLig -lt 0 ]
-                            then 
-                                choixIndiceDechifLig=2
-                            fi
-                            affichageDechifLig
-                            ;;
-                        # Flèche du bas
-                        "[B")
-                            clear
-                            choixIndiceDechifLig=$[choixIndiceDechifLig+1]
-                            if [ $choixIndiceDechifLig -gt 2 ]
-                            then 
-                                choixIndiceDechifLig=0
-                            fi
-                            affichageDechifLig
-                            ;;
-                        "*")
-                            affichageDechifLig
-                            ;;
-                    esac
-                fi
-            done
+            menu "e"
              # Réinitialise le message pour ne rien afficher
             message=""
             clear
-            case $choixIndiceDechifLig in
+            case $indice in
                 "0")     
                     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                     echo "       Entrez la clé pour décoder le texte du fichier"
@@ -619,39 +589,4 @@ menu(){
             esac
         fi
     done
-}
-
-
-affichageDechif(){
-    echo -e "$message"
-    choixDechif="${choixTabDechif[choixIndiceDechif]}" #Element encours de selection 
-    echo ""
-    for elmt in "${choixTabDechif[@]}"
-    do #Affichage des choix
-        if [ "$choixDechif" = "$elmt" ]
-        then
-            echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
-        else
-            echo "$elmt"
-        fi
-    done
-    read -sn1 touche # On relance la boucle d'coute des touches
-}
-
-affichageDechifLig(){
-    clear
-    choixDechifLig="${choixTabDechifLig[choixIndiceDechifLig]}" #Element encours de selection 
-    echo "---------------------------------------------------------------"
-    echo -e "\033[1;33m Voulez vous décoder tout le fichier ou juste quelques lignes ?\033[0m" #Message principal avec de la couleur
-    echo "---------------------------------------------------------------"
-    for elmt in "${choixTabDechifLig[@]}" 
-    do #Affichage des choix
-        if [ "$choixDechifLig" = "$elmt" ]
-        then
-            echo -e "\033[1;35m$elmt  <\033[0m" # En ajoutant de la couleur et une flèche sur l'élément sélectionné
-        else
-            echo "$elmt"
-        fi
-    done
-    read -sn1 touche # On relance la boucle d'ecoute des touches
 }
