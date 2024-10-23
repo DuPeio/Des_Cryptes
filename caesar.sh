@@ -133,7 +133,7 @@ caesarChif(){
                     echo "_______________________________________________________________"
                     message="                 Fichier codé avec succès"
                     #Créer le fichier avec le lignes choisis codées
-                    lignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminChif"
+                    codeDecodeFichierCaesar "$caesarCheminChif" "" "$choixLignesCaesar1" "$choixLignesCaesar2" 
                     ;;
 
                 "2")
@@ -302,7 +302,7 @@ caesarDechif(){
                         echo "_______________________________________________________________"
                         message="              Fichier décodé avec succès"
                         #Créer le fichier avec le lignes choisis décodées avec la clé
-                        lignesFichierCaesar "$choixLignesCaesar1" "$choixLignesCaesar2" "$caesarCheminDechif" "$cleCaesarDechif"
+                        codeDecodeFichierCaesar "$caesarCheminDechif" "$cleCaesarDechif" "$choixLignesCaesar1" "$choixLignesCaesar2" 
                     else
                         message="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n                   Choix incorrect, un nombre est attendu...\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
                         caesarDechif
@@ -372,37 +372,7 @@ caesarDechif(){
 }
 
 
-codeDecodeFichierCaesar(){ #Fonction qui permet de coder et décoder un fichier
-    chemin="$1" #On récupère le fichier à décoder/coder
-    cle="$2" #On récupère la clé pour décoder
-    if [ $cle ] # Si le cle n'est pas vide
-    then 
-        fichier=$(creerFichierCaesar "$chemin" "false") # On décode
-    else
-        fichier=$(creerFichierCaesar "$chemin" "true") # On code
-    fi
 
-    cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]] #Ligne par ligne 
-    do 
-        if [ $cle ]
-        then
-        
-            ligneC=$(codeDecodeCaesar "$ligne" "$cle")
-        
-        else
-            ligneC=$(codeDecodeCaesar "$ligne" )
-        fi
-        echo -e "$ligneC" >> "$fichier" #On ecrit le résultat dans l'output
-    done
-    
-    # On relance la boucle du menu du codage ou du décodage en fonction de la clé
-    if [ $cle ]
-    then 
-        caesarDechif
-    else
-        caesarChif
-    fi
-}
 
 codeDecodeCaesar(){ #Fonction qui permet de coder et décoder
     chaine="$1" #On récupère le fichier à décoder/coder
@@ -477,31 +447,65 @@ codeDecodeCaesar(){ #Fonction qui permet de coder et décoder
 }
 
 
+# codeDecodeFichierCaesar(){ #Fonction qui permet de coder et décoder un fichier
+#     chemin="$1" #On récupère le fichier à décoder/coder
+#     cle="$2" #On récupère la clé pour décoder
+#     if [ $cle ] # Si le cle n'est pas vide
+#     then 
+#         fichier=$(creerFichierCaesar "$chemin" "false") # On décode
+#     else
+#         fichier=$(creerFichierCaesar "$chemin" "true") # On code
+#     fi
 
-lignesFichierCaesar(){
-    ligne1="$1" #Récupération de la premiere ligne à coder/décoder
-    ligne2="$2" #Récupération de la dernière ligne à coder/décoder
-    chemin="$3" #Fichier à coder/décoder
-    cle="$4" #Récupération de la clé de décodage
     
+    
+#     # On relance la boucle du menu du codage ou du décodage en fonction de la clé
+#     if [ $cle ]
+#     then 
+#         caesarDechif
+#     else
+#         caesarChif
+#     fi
+# }
+
+
+codeDecodeFichierCaesar(){
+    chemin="$1" #Fichier à coder/décoder
+    cle="$2" #Récupération de la clé de décodage
+    ligne1="$3" #Récupération de la premiere ligne à coder/décoder
+    ligne2="$4" #Récupération de la dernière ligne à coder/décoder
+
     if [ -z $cle ] #Si la clé ne contient pas de valeur
     then  
         fichier=$(creerFichierCaesar "$chemin" "true") #On créer l'output de codage
     else
         fichier=$(creerFichierCaesar "$chemin" "false") #On créer l'output de décodage
     fi
-    
 
-    sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne  #On regarde ligne par ligne et on récupère la ligne
-    do
-        if [ -z $cle ]
-        then
-            ligneC=$(codeDecodeCaesar "$ligne") #On la code
-        else
-            ligneC=$(codeDecodeCaesar "$ligne" "$cle") #On la décode
-        fi
-        echo -e "$ligneC" >> "$fichier" #On l'envoie dans le fichier output
-    done
+    if [ -z $ligne1 -a -z $ligne2 ]
+    then
+        cat "$chemin" | while read -r ligne || [[ -n "$ligne" ]] #Ligne par ligne 
+        do 
+            if [ $cle ]
+            then
+                ligneC=$(codeDecodeCaesar "$ligne" "$cle")
+            else
+                ligneC=$(codeDecodeCaesar "$ligne" )
+            fi
+            echo -e "$ligneC" >> "$fichier" #On ecrit le résultat dans l'output
+        done
+    else
+        sed -n "${ligne1},${ligne2}p" "$chemin" | while read -r ligne  #On regarde ligne par ligne et on récupère la ligne
+        do
+            if [ -z $cle ]
+            then
+                ligneC=$(codeDecodeCaesar "$ligne") #On la code
+            else
+                ligneC=$(codeDecodeCaesar "$ligne" "$cle") #On la décode
+            fi
+            echo -e "$ligneC" >> "$fichier" #On l'envoie dans le fichier output
+        done
+    fi
 
     if [ -z $cle ]
     then
@@ -527,9 +531,9 @@ creerFichierCaesar(){ #Permet de créer le fichier output
         #Création du fichier en ajoutant Coder
         if [ "$nomFichier" != "$extension" ]  #Si il n'y a pas d'extension au fichier
         then
-            fichierChif="${dossierFichier}/${nomSansExt}Coder.${extension}"
+            fichierChif="${dossierFichier}/${nomSansExt}Code.${extension}"
         else #Si il y en a une
-            fichierChif="${dossierFichier}/${nomSansExt}Coder"
+            fichierChif="${dossierFichier}/${nomSansExt}Code"
         fi
         touch "$fichierChif" #Création du fichier
         chmod 777 "$fichierChif"
@@ -540,9 +544,9 @@ creerFichierCaesar(){ #Permet de créer le fichier output
         #Création du fichier en ajoutant Decoder
         if [ "$nomFichier" != "$extension" ]
         then
-            fichierDechif="${dossierFichier}/${nomSansExt}Decoder.${extension}"
+            fichierDechif="${dossierFichier}/${nomSansExt}Decode.${extension}"
         else
-            fichierDechif="${dossierFichier}/${nomSansExt}Decoder"
+            fichierDechif="${dossierFichier}/${nomSansExt}Decode"
         fi
         touch "$fichierDechif"
         chmod 777 "$fichierDechif"
