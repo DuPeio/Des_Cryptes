@@ -447,28 +447,6 @@ codeDecodeCaesar(){ #Fonction qui permet de coder et décoder
 }
 
 
-# codeDecodeFichierCaesar(){ #Fonction qui permet de coder et décoder un fichier
-#     chemin="$1" #On récupère le fichier à décoder/coder
-#     cle="$2" #On récupère la clé pour décoder
-#     if [ $cle ] # Si le cle n'est pas vide
-#     then 
-#         fichier=$(creerFichierCaesar "$chemin" "false") # On décode
-#     else
-#         fichier=$(creerFichierCaesar "$chemin" "true") # On code
-#     fi
-
-    
-    
-#     # On relance la boucle du menu du codage ou du décodage en fonction de la clé
-#     if [ $cle ]
-#     then 
-#         caesarDechif
-#     else
-#         caesarChif
-#     fi
-# }
-
-
 codeDecodeFichierCaesar(){
     chemin="$1" #Fichier à coder/décoder
     cle="$2" #Récupération de la clé de décodage
