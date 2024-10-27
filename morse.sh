@@ -22,15 +22,15 @@ done < 'morse.json'
 erreur=0 # Variable globale pour les messages dans les menus
 erreurFunc() { 
     # Fonction pour afficher des messages dans le menu
-    if [ $1 == 1 ]
+    if [ $1 -eq 1 ]
     then
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "              Choix invalide. Veuillez réessayer."
-    elif [ $1 == 2 ]
+    elif [ $1 -eq 2 ]
     then
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "                $choixFichier n'existe pas..."
-    elif [ $1 == 3 ]
+    elif [ $1 -eq 3 ]
     then
         echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
         echo "              FICHIER SAUVEGARDE AVEC SUCCES !"
