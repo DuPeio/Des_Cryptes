@@ -89,7 +89,7 @@ caesarChif(){
             messagePrincipal="---------------------------------------------------------------\n \033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m \n ---------------------------------------------------------------"
             affichageCaesar
             # Menu interractif du codage Caesar pour un fichier
-            menu "x"
+            menu "3"
              # Réinitialise le message pour ne rien afficher
             message=""
             case $indice in
