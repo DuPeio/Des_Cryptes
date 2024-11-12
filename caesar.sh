@@ -8,7 +8,7 @@ caesarMain() {
     # choix du menu principal Caesar
     tab=("                            Coder" "                           Décoder" "               Choisir un autre mode de codage" "                      Quitter le programme")
     indice=0
-    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                    Que voulez vous faire ?\033[0m \n ---------------------------------------------------------------"
+    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                    Que voulez vous faire ?\033[0m \n---------------------------------------------------------------"
 
     affichageCaesar
     # Menu principal Caesar interractif 
