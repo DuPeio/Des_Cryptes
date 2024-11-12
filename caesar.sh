@@ -57,7 +57,7 @@ caesarChif(){
     # choix du menu principal codage Caesar
     tab=("            Coder le contenu d'un fichier externe" "                     Coder une phrase" "     Changer la clé de codage, elle est égale à $cleCaesarChif" "                   Retour au menu Caesar")
     indice=0
-    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                   Que souhaitez-vous faire ?\033[0m \n ---------------------------------------------------------------"
+    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                   Que souhaitez-vous faire ?\033[0m \n---------------------------------------------------------------"
     
     affichageCaesar
     # Menu principal codage Caesar interractif 
@@ -86,7 +86,7 @@ caesarChif(){
             # Choix du codage Caesar pour un fichier
             tab=("                           Tout" "                  Choisissez les lignes" "                          Retour")
             indice=0
-            messagePrincipal="---------------------------------------------------------------\n \033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m \n ---------------------------------------------------------------"
+            messagePrincipal="---------------------------------------------------------------\n \033[1;33m  Voulez vous coder tout le fichier ou juste quelques lignes ?  \033[0m \n---------------------------------------------------------------"
             affichageCaesar
             # Menu interractif du codage Caesar pour un fichier
             menu "3"
@@ -211,7 +211,7 @@ caesarDechif(){
     # choix du menu principal décodage Caesar
     tab=("                Le contenu d'un fichier externe" "                         Une phrase" "                   Retour au menu Caesar")
     indice=0
-    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                 Que souhaitez-vous décoder ?\033[0m \n ---------------------------------------------------------------"
+    messagePrincipal="---------------------------------------------------------------\n \033[1;33m                 Que souhaitez-vous décoder ?\033[0m \n---------------------------------------------------------------"
 
     affichageCaesar
     menu "e" # Menu principal décodage Caesar interractif 
@@ -240,7 +240,7 @@ caesarDechif(){
              # Choix du codage Caesar pour un fichier
             tab=("                           Tout" "                  Choisissez les lignes" "                          Retour")
             indice=0
-            messagePrincipal="---------------------------------------------------------------\n \033[1;33m Voulez vous décoder tout le fichier ou juste quelques lignes ?\033[0m \n ---------------------------------------------------------------"
+            messagePrincipal="---------------------------------------------------------------\n \033[1;33m Voulez vous décoder tout le fichier ou juste quelques lignes ?\033[0m \n---------------------------------------------------------------"
 
             affichageCaesar
             # Menu interractif du décodage Caesar pour un fichier
