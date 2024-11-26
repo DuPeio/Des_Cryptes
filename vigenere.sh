@@ -973,4 +973,3 @@ vigenereMain() {
     vigenereMain_
 }
 
-vigenereMain
