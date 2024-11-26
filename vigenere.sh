@@ -11,6 +11,9 @@ estFichierOutput=0
 fichierInput=""
 fichierOutput=""
 outputChoice="ajouter"
+indexMenu=0
+menu=()
+selection="\033[34m"
 
 #Création de la fonction vigenereMain pour les appels dans d'autres fonctions
 vigenereMain() {
@@ -31,57 +34,183 @@ actionInvalide() {
 continuerYN() {
     local rep=""
 
-    printf "Voulez-vous quitter le programme ? (y/n) "
-    read rep
-    printf "\n"
+    echo "---------------------------------------------------------------"
+    echo "              Voulez-vous quitter le programme ?"
+    echo "---------------------------------------------------------------"
+    echo -e "                            ${menu[0]}Oui\033[0m"
+    echo -e "                            ${menu[1]}Non\033[0m"
+
+    read -rsn1 rep
+    while ! [[ -z $rep ]]; do
+        if [[ $rep == $'\x1b' ]]; then
+            read -sn2 rep
+            case "$rep" in
+                '[A')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 0 ]]; then
+                        indexMenu=1
+                    else
+                        ((indexMenu--))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "              Voulez-vous quitter le programme ?"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                            ${menu[0]}Oui\033[0m"
+                    echo -e "                            ${menu[1]}Non\033[0m"
+                    ;;
+                '[B')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 1 ]]; then
+                        indexMenu=0
+                    else
+                        ((indexMenu++))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "              Voulez-vous quitter le programme ?"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                            ${menu[0]}Oui\033[0m"
+                    echo -e "                            ${menu[1]}Non\033[0m"
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+        fi
+        read -rsn1 rep
+    done
 
     clear
 
-    if [[ $rep =~ [Yy] ]]; then
+    if [[ $indexMenu == 0 ]]; then
         quitter
-    elif [[ $rep =~ [Nn] ]]; then
-        vigenereMain
     else
-        actionInvalide
-        continuerYN
+        vigenereMain
     fi
 }
 
 estFileInput() {
     local rep=""
 
-    printf "Voulez-vous choisir un fichier en entrée ? (y/n) "
-    read rep
-    printf "\n"
+    echo "---------------------------------------------------------------"
+    echo "         Voulez-vous choisir un fichier en entrée ?"
+    echo "---------------------------------------------------------------"
+    echo -e "                            ${menu[0]}Oui\033[0m"
+    echo -e "                            ${menu[1]}Non\033[0m"
+
+    read -rsn1 rep
+    while ! [[ -z $rep ]]; do
+        if [[ $rep == $'\x1b' ]]; then
+            read -sn2 rep
+            case "$rep" in
+                '[A')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 0 ]]; then
+                        indexMenu=1
+                    else
+                        ((indexMenu--))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "         Voulez-vous choisir un fichier en entrée ?"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                            ${menu[0]}Oui\033[0m"
+                    echo -e "                            ${menu[1]}Non\033[0m"
+                    ;;
+                '[B')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 1 ]]; then
+                        indexMenu=0
+                    else
+                        ((indexMenu++))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "         Voulez-vous choisir un fichier en entrée ?"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                            ${menu[0]}Oui\033[0m"
+                    echo -e "                            ${menu[1]}Non\033[0m"
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+        fi
+        read -rsn1 rep
+    done
 
     clear
 
-    if [[ "$rep" =~ [Yy] ]]; then
+    if [[ $indexMenu == 0 ]]; then
         estFichierInput=1
-    elif [[ "$rep" =~ [Nn] ]]; then
-        estFichierInput=0
     else
-        actionInvalide
-        estFileInput
+        estFichierInput=0
     fi
 }
 
 estFileOutput() {
     local rep=""
 
-    printf "Voulez-vous choisir un fichier en sortie ? (y/n) "
-    read rep
-    printf "\n"
+    echo "---------------------------------------------------------------"
+    echo "         Voulez-vous choisir un fichier en sortie ?"
+    echo "---------------------------------------------------------------"
+    echo -e "                            ${menu[0]}Oui\033[0m"
+    echo -e "                            ${menu[1]}Non\033[0m"
 
+    read -rsn1 rep
+    while ! [[ -z $rep ]]; do
+        if [[ $rep == $'\x1b' ]]; then
+            read -sn2 rep
+            case "$rep" in
+                '[A')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 0 ]]; then
+                        indexMenu=1
+                    else
+                        ((indexMenu--))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "         Voulez-vous choisir un fichier en sortie ?"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                            ${menu[0]}Oui\033[0m"
+                    echo -e "                            ${menu[1]}Non\033[0m"
+                    ;;
+                '[B')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 1 ]]; then
+                        indexMenu=0
+                    else
+                        ((indexMenu++))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "         Voulez-vous choisir un fichier en sortie ?"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                            ${menu[0]}Oui\033[0m"
+                    echo -e "                            ${menu[1]}Non\033[0m"
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+        fi
+        read -rsn1 rep
+    done
+    
     clear
 
-    if [[ "$rep" =~ [Yy] ]]; then
+    if [[ $indexMenu == 0 ]]; then
         estFichierOutput=1
-    elif [[ "$rep" =~ [Nn] ]]; then
-        estFichierOutput=0
     else
-        actionInvalide
-        estFileOutput
+        estFichierOutput=0
     fi
 }
 
@@ -98,6 +227,8 @@ choixFichierInput() {
 
     if [[ -f "$rep" ]]; then
         fichierInput=$rep
+        indexMenu=0
+        menu=($selection " ")
         selectLigne
     else
         clear
@@ -127,17 +258,59 @@ choixFichierOutput() {
 
     if [[ -f "$rep" ]]; then
         fichierOutput="$rep"
-        printf "Voulez-vous écraser le fichier (1) ou ajouter la chaine de caractères à la fin (2) ?  "
-        read choixOutput
-        printf "\n"
-        while ! [[ $choixOutput =~ [12] ]]; do
-            actionInvalide
-            printf "Voulez-vous ajouter la chaine de caractères à la fin (1) ou écraser le fichier (2) ?  "
-            read choixOutput
-            printf "\n"
-        done
         clear
-        if [[ $choixOutput == 2 ]]; then
+        echo "--------------------------------------------------------------------------------"
+        echo "  Voulez-vous écraser le fichier ou ajouter la chaine de caractères à la fin ?"
+        echo "--------------------------------------------------------------------------------"
+        echo -e "                                   ${menu[0]}Ecraser\033[0m"
+        echo -e "                                   ${menu[1]}Ajouter\033[0m"
+
+        read -rsn1 choixOutput
+        while ! [[ -z $choixOutput ]]; do
+            if [[ $choixOutput == $'\x1b' ]]; then
+                read -sn2 choixOutput
+                case "$choixOutput" in
+                    '[A')
+                        menu[$indexMenu]=" "
+                        if [[ $indexMenu == 0 ]]; then
+                            indexMenu=1
+                        else
+                            ((indexMenu--))
+                        fi
+                        menu[$indexMenu]=$selection
+                        clear
+                        echo "--------------------------------------------------------------------------------"
+                        echo "  Voulez-vous écraser le fichier ou ajouter la chaine de caractères à la fin ?"
+                        echo "--------------------------------------------------------------------------------"
+                        echo -e "                                   ${menu[0]}Ecraser\033[0m"
+                        echo -e "                                   ${menu[1]}Ajouter\033[0m"
+                        ;;
+                    '[B')
+                        menu[$indexMenu]=" "
+                        if [[ $indexMenu == 1 ]]; then
+                            indexMenu=0
+                        else
+                            ((indexMenu++))
+                        fi
+                        menu[$indexMenu]=$selection
+                        clear
+                        echo "--------------------------------------------------------------------------------"
+                        echo "  Voulez-vous écraser le fichier ou ajouter la chaine de caractères à la fin ?"
+                        echo "--------------------------------------------------------------------------------"
+                        echo -e "                                   ${menu[0]}Ecraser\033[0m"
+                        echo -e "                                   ${menu[1]}Ajouter\033[0m"
+                        ;;
+                    *)
+                        continue
+                        ;;
+                esac
+            fi
+            read -rsn1 choixOutput
+        done
+
+        clear
+
+        if [[ $indexMenu == 0 ]]; then
             outputChoice="ecraser"
         fi
 
@@ -150,23 +323,64 @@ choixFichierOutput() {
         echo ""
         sleep 1
         clear
+        
+        echo "---------------------------------------------------------------"
+        echo "                     Voulez-vous le créer ?"
+        echo "---------------------------------------------------------------"
+        echo -e "                             ${menu[0]}Oui\033[0m"
+        echo -e "                             ${menu[1]}Non\033[0m"
 
-        printf "Voulez-vous le créer ? (y/n) "
-        read choixCreation
-        printf "\n"
-        clear
-
-        while ! [[ $choixCreation =~ [yYnN] ]]; do
-            actionInvalide
-            printf "Voulez-vous le créer ? (y/n) "
-            read choixCreation
-            printf "\n"
+        read -rsn1 choixCreation
+        while ! [[ -z $choixCreation ]]; do
+            if [[ $choixCreation == $'\x1b' ]]; then
+                read -sn2 choixCreation
+                case "$choixCreation" in
+                    '[A')
+                        menu[$indexMenu]=" "
+                        if [[ $indexMenu == 0 ]]; then
+                            indexMenu=1
+                        else
+                            ((indexMenu--))
+                        fi
+                        menu[$indexMenu]=$selection
+                        clear
+                        echo "---------------------------------------------------------------"
+                        echo "                     Voulez-vous le créer ?"
+                        echo "---------------------------------------------------------------"
+                        echo -e "                             ${menu[0]}Oui\033[0m"
+                        echo -e "                             ${menu[1]}Non\033[0m"
+                        ;;
+                    '[B')
+                        menu[$indexMenu]=" "
+                        if [[ $indexMenu == 1 ]]; then
+                            indexMenu=0
+                        else
+                            ((indexMenu++))
+                        fi
+                        menu[$indexMenu]=$selection
+                        clear
+                        echo "---------------------------------------------------------------"
+                        echo "                     Voulez-vous le créer ?"
+                        echo "---------------------------------------------------------------"
+                        echo -e "                             ${menu[0]}Oui\033[0m"
+                        echo -e "                             ${menu[1]}Non\033[0m"
+                        ;;
+                    *)
+                        continue
+                        ;;
+                esac
+            fi
+            read -rsn1 choixCreation
         done
 
-        if [[ $choixCreation =~ [yY] ]]; then
+        clear
+
+        if [[ $indexMenu == 0 ]]; then
             fichierOutput=$rep
             touch $fichierOutput
         else
+            indexMenu=0
+            menu=($selection " ")
             choixFichierOutput
         fi
     fi
@@ -175,21 +389,62 @@ choixFichierOutput() {
 selectLigne() {
     local ind=0
     local phrs=""
-    local choixPhrase=0
+    local choixPhrase=""
     local nbLignes=$(printf "%d" "$(grep -oP '^[0-9]+' <<< "$(wc -l $fichierInput)")")
     ((nbLignes++))
 
-    printf "Voulez-vous chiffrer/déchiffrer le fichier en entier (1), ou juste une ligne (2) ?  "
-    read choixPhrase
-    printf "\n"
-    while ! [[ $choixPhrase =~ [12] ]]; do
-        actionInvalide
-        printf "Voulez-vous chiffrer/déchiffrer le fichier en entier (1), ou juste une ligne (2) ?  "
-        read choixPhrase
-        printf "\n"
+    echo "------------------------------------------------------------------------------" 
+    echo "  Voulez-vous chiffrer/déchiffrer le fichier en entier, ou juste une ligne ?"
+    echo "------------------------------------------------------------------------------"
+    echo -e "                             ${menu[0]}Le fichier en entier\033[0m"
+    echo -e "                             ${menu[1]}Juste une ligne\033[0m"
+
+    read -rsn1 choixPhrase
+    while ! [[ -z $choixPhrase ]]; do
+        if [[ $choixPhrase == $'\x1b' ]]; then
+            read -sn2 choixPhrase
+            case "$choixPhrase" in
+                '[A')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 0 ]]; then
+                        indexMenu=1
+                    else
+                        ((indexMenu--))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "------------------------------------------------------------------------------" 
+                    echo "  Voulez-vous chiffrer/déchiffrer le fichier en entier, ou juste une ligne ?"
+                    echo "------------------------------------------------------------------------------"
+                    echo -e "                             ${menu[0]}Le fichier en entier\033[0m"
+                    echo -e "                             ${menu[1]}Juste une ligne\033[0m"
+                    ;;
+                '[B')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 1 ]]; then
+                        indexMenu=0
+                    else
+                        ((indexMenu++))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "------------------------------------------------------------------------------" 
+                    echo "  Voulez-vous chiffrer/déchiffrer le fichier en entier, ou juste une ligne ?"
+                    echo "------------------------------------------------------------------------------"
+                    echo -e "                             ${menu[0]}Le fichier en entier\033[0m"
+                    echo -e "                             ${menu[1]}Juste une ligne\033[0m"
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+        fi
+        read -rsn1 choixPhrase
     done
 
-    if [[ $choixPhrase == 1 ]]; then
+    clear
+
+    if [[ $indexMenu == 0 ]]; then
         phrs="$(cat $fichierInput)"
     else
         printf "Veuillez choisir la ligne que vous voulez chiffrer/déchiffrer (de 1 à $nbLignes): "
@@ -381,25 +636,74 @@ dechiffrementVigenere() {
 }
 
 chiffrerVigenere() {
-    echo "+-------------------------------------------------------------+"
-    echo "|                Veuillez choisir une action                  |"
-    echo "+-------------------------------------------------------------+"
-    echo "|                    Choisir une clé (1)                      |"
-    echo "|                Utiliser une clé générée (2)                 |"
-    echo "|                        Retour (3)                           |"
-    echo "•                       Quitter  (4)                          •"
-
-    echo ""
+    echo "---------------------------------------------------------------"
+    echo "                  Veuillez choisir une action"
+    echo "---------------------------------------------------------------"
+    echo -e "                    ${menu[0]}Choisir une clé\033[0m"
+    echo -e "                    ${menu[1]}Utiliser une clé générée\033[0m"
+    echo -e "                    ${menu[2]}Retour\033[0m"
+    echo -e "                    ${menu[3]}Quitter\033[0m"
     local actionChif=""
-    read actionChif
+
+    read -rsn1 actionChif
+    while ! [[ -z $actionChif ]]; do
+        if [[ $actionChif == $'\x1b' ]]; then
+            read -sn2 actionChif
+            case "$actionChif" in
+                '[A')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 0 ]]; then
+                        indexMenu=3
+                    else
+                        ((indexMenu--))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "                  Veuillez choisir une action"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                    ${menu[0]}Choisir une clé\033[0m"
+                    echo -e "                    ${menu[1]}Utiliser une clé générée\033[0m"
+                    echo -e "                    ${menu[2]}Retour\033[0m"
+                    echo -e "                    ${menu[3]}Quitter\033[0m"
+                    ;;
+                '[B')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 3 ]]; then
+                        indexMenu=0
+                    else
+                        ((indexMenu++))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "                  Veuillez choisir une action"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                    ${menu[0]}Choisir une clé\033[0m"
+                    echo -e "                    ${menu[1]}Utiliser une clé générée\033[0m"
+                    echo -e "                    ${menu[2]}Retour\033[0m"
+                    echo -e "                    ${menu[3]}Quitter\033[0m"
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+        fi
+        read -rsn1 actionChif
+    done
+
     clear
 
-    case $actionChif in
-        "1")
+    case $indexMenu in
+        "0")
             choixCle
             clear
+            indexMenu=0
+            menu=($selection " ")
             estFileInput
             clear
+            indexMenu=0
+            menu=($selection " ")
             estFileOutput
             clear
             if [[ $estFichierInput == 0 ]]; then
@@ -410,19 +714,27 @@ chiffrerVigenere() {
                 clear
             fi
             if [[ $estFichierOutput == 1 ]]; then
+                indexMenu=0
+                menu=($selection " ")
                 choixFichierOutput
             fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
             printf "\n"
+            indexMenu=0
+            menu=($selection " ")
             continuerYN
             ;;
-        "2")
+        "1")
             echo ""
             genCle
             clear
+            indexMenu=0
+            menu=($selection " ")
             estFileInput
             clear
+            indexMenu=0
+            menu=($selection " ")
             estFileOutput
             clear
             if [[ $estFichierInput == 0 ]]; then
@@ -433,44 +745,99 @@ chiffrerVigenere() {
                 clear
             fi
             if [[ $estFichierOutput == 1 ]]; then
+                indexMenu=0
+                menu=($selection " ")
                 choixFichierOutput
             fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
             printf "\n"
+            indexMenu=0
+            menu=($selection " ")
             continuerYN
             ;;
-        "3")
+        "2")
             vigenereMain
             ;;
-        "4")
+        "3")
             quitter
             ;;  
         *)
             actionInvalide
+            indexMenu=0
+            menu=($selection " " " " " ")
             chiffrerVigenere
             ;;
     esac
 }
 
 dechiffrerVigenere() {
-    echo "+-------------------------------------------------------------+"
-    echo "|                Veuillez choisir une action                  |"
-    echo "+-------------------------------------------------------------+"
-    echo "|                    Choisir une clé (1)                      |"
-    echo "|                        Retour (2)                           |"
-    echo "•                       Quitter  (3)                          •"
+    echo "---------------------------------------------------------------"
+    echo "                   Veuillez choisir une action"
+    echo "---------------------------------------------------------------"
+    echo -e "                         ${menu[0]}Choisir une clé\033[0m"
+    echo -e "                         ${menu[1]}Retour\033[0m"
+    echo -e "                         ${menu[2]}Quitter\033[0m"
 
     local actionDechif=""
-    read actionDechif
+
+    read -rsn1 actionDechif
+    while ! [[ -z $actionDechif ]]; do
+        if [[ $actionDechif == $'\x1b' ]]; then
+            read -sn2 actionDechif
+            case "$actionDechif" in
+                '[A')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 0 ]]; then
+                        indexMenu=2
+                    else
+                        ((indexMenu--))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "                   Veuillez choisir une action"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                         ${menu[0]}Choisir une clé\033[0m"
+                    echo -e "                         ${menu[1]}Retour\033[0m"
+                    echo -e "                         ${menu[2]}Quitter\033[0m"
+                    ;;
+                '[B')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 2 ]]; then
+                        indexMenu=0
+                    else
+                        ((indexMenu++))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "                   Veuillez choisir une action"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                         ${menu[0]}Choisir une clé\033[0m"
+                    echo -e "                         ${menu[1]}Retour\033[0m"
+                    echo -e "                         ${menu[2]}Quitter\033[0m"
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+        fi
+        read -rsn1 actionDechif
+    done
+
     clear
 
-    case $actionDechif in
-        "1")
+    case $indexMenu in
+        "0")
             choixCle
             clear
+            indexMenu=0
+            menu=($selection " ")
             estFileInput
             clear
+            indexMenu=0
+            menu=($selection " ")
             estFileOutput
             clear
             if [[ $estFichierInput == 0 ]]; then
@@ -481,59 +848,113 @@ dechiffrerVigenere() {
                 clear
             fi
             if [[ $estFichierOutput == 1 ]]; then
+                indexMenu=0
+                menu=($selection " ")
                 choixFichierOutput
             fi
             echo "Voici la clé: $cle"
             dechiffrementVigenere "$cle" "$phrase"
             printf "\n"
 
+            indexMenu=0
+            menu=($selection " ")
             continuerYN
             ;;
-        "2")
+        "1")
             vigenereMain
             ;;
-        "3")
+        "2")
             quitter
             ;;  
         *)
             actionInvalide
+            indexMenu=0
+            menu=($selection " " " ")
             dechiffrerVigenere
             ;;
     esac
 }
 
 vigenereMain_() {
-    echo "+-------------------------------------------------------------+"
-    echo "|                Veuillez choisir une action                  |"
-    echo "+-------------------------------------------------------------+"
-    echo "|                       Chiffrer (1)                          |"
-    echo "|                      Dechiffrer (2)                         |"
-    echo "|                        Retour (3)                           |"
-    echo "•                       Quitter  (4)                          •"
+    echo "---------------------------------------------------------------"
+    echo "                  Veuillez choisir une action"
+    echo "---------------------------------------------------------------"
+    echo -e "                        ${menu[0]}Chiffrer\033[0m"
+    echo -e "                        ${menu[1]}Dechiffrer\033[0m"
+    echo -e "                        ${menu[2]}Retour\033[0m"
+    echo -e "                        ${menu[3]}Quitter\033[0m"
 
-    echo ""
+    
+
     local choixVigenere=""
     cle=""
-    read choixVigenere
+    read -rsn1 choixVigenere
+    while ! [[ -z $choixVigenere ]]; do
+        if [[ $choixVigenere == $'\x1b' ]]; then
+            read -sn2 choixVigenere
+            case "$choixVigenere" in
+                '[A')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 0 ]]; then
+                        indexMenu=3
+                    else
+                        ((indexMenu--))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "                  Veuillez choisir une action"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                        ${menu[0]}Chiffrer\033[0m"
+                    echo -e "                        ${menu[1]}Dechiffrer\033[0m"
+                    echo -e "                        ${menu[2]}Retour\033[0m"
+                    echo -e "                        ${menu[3]}Quitter\033[0m"
+                    ;;
+                '[B')
+                    menu[$indexMenu]=" "
+                    if [[ $indexMenu == 3 ]]; then
+                        indexMenu=0
+                    else
+                        ((indexMenu++))
+                    fi
+                    menu[$indexMenu]=$selection
+                    clear
+                    echo "---------------------------------------------------------------"
+                    echo "                Veuillez choisir une action"
+                    echo "---------------------------------------------------------------"
+                    echo -e "                        ${menu[0]}Chiffrer\033[0m"
+                    echo -e "                        ${menu[1]}Dechiffrer\033[0m"
+                    echo -e "                        ${menu[2]}Retour\033[0m"
+                    echo -e "                        ${menu[3]}Quitter\033[0m"
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+        fi
+        read -rsn1 choixVigenere
+    done
 
     clear
 
-    case $choixVigenere in
-        "1")
+    case "$indexMenu" in
+        "0")
+            indexMenu=0
+            menu=($selection " " " " " ")
             chiffrerVigenere
             ;;
-        "2")
+        "1")
+            indexMenu=0
+            menu=($selection " " " " " ")
             dechiffrerVigenere
             ;;
-        "3")
+        "2")
+            indexMenu=0
             main
             ;;
-        "4")
+        "3")
+            indexMenu=0
             quitter
-            ;;
-        *)
-            actionInvalide
-            vigenereMain
             ;;
     esac
 }
@@ -547,5 +968,9 @@ vigenereMain() {
     fichierInput=""
     fichierOutput=""
     outputChoice="ajouter"
+    indexMenu=0
+    menu=($selection " " " " " ")
     vigenereMain_
 }
+
+vigenereMain
