@@ -920,7 +920,7 @@ vigenereMain_() {
                     menu[$indexMenu]=$selection
                     clear
                     echo "---------------------------------------------------------------"
-                    echo "                Veuillez choisir une action"
+                    echo "                  Veuillez choisir une action"
                     echo "---------------------------------------------------------------"
                     echo -e "                        ${menu[0]}Chiffrer\033[0m"
                     echo -e "                        ${menu[1]}Dechiffrer\033[0m"
