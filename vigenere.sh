@@ -13,7 +13,9 @@ fichierOutput=""
 outputChoice="ajouter"
 indexMenu=0
 menu=()
+menuFleche=()
 selection="\033[34m"
+selectionFleche=" <"
 
 #Création de la fonction vigenereMain pour les appels dans d'autres fonctions
 vigenereMain() {
@@ -37,8 +39,8 @@ continuerYN() {
     echo "---------------------------------------------------------------"
     echo "              Voulez-vous quitter le programme ?"
     echo "---------------------------------------------------------------"
-    echo -e "                            ${menu[0]}Oui\033[0m"
-    echo -e "                            ${menu[1]}Non\033[0m"
+    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
 
     read -rsn1 rep
     while ! [[ -z $rep ]]; do
@@ -46,34 +48,38 @@ continuerYN() {
             read -sn2 rep
             case "$rep" in
                 '[A')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 0 ]]; then
                         indexMenu=1
                     else
                         ((indexMenu--))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "              Voulez-vous quitter le programme ?"
                     echo "---------------------------------------------------------------"
-                    echo -e "                            ${menu[0]}Oui\033[0m"
-                    echo -e "                            ${menu[1]}Non\033[0m"
+                    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
                     ;;
                 '[B')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 1 ]]; then
                         indexMenu=0
                     else
                         ((indexMenu++))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "              Voulez-vous quitter le programme ?"
                     echo "---------------------------------------------------------------"
-                    echo -e "                            ${menu[0]}Oui\033[0m"
-                    echo -e "                            ${menu[1]}Non\033[0m"
+                    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
                     ;;
                 *)
                     continue
@@ -98,8 +104,8 @@ estFileInput() {
     echo "---------------------------------------------------------------"
     echo "         Voulez-vous choisir un fichier en entrée ?"
     echo "---------------------------------------------------------------"
-    echo -e "                            ${menu[0]}Oui\033[0m"
-    echo -e "                            ${menu[1]}Non\033[0m"
+    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
 
     read -rsn1 rep
     while ! [[ -z $rep ]]; do
@@ -107,34 +113,38 @@ estFileInput() {
             read -sn2 rep
             case "$rep" in
                 '[A')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 0 ]]; then
                         indexMenu=1
                     else
                         ((indexMenu--))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "         Voulez-vous choisir un fichier en entrée ?"
                     echo "---------------------------------------------------------------"
-                    echo -e "                            ${menu[0]}Oui\033[0m"
-                    echo -e "                            ${menu[1]}Non\033[0m"
+                    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
                     ;;
                 '[B')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 1 ]]; then
                         indexMenu=0
                     else
                         ((indexMenu++))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "         Voulez-vous choisir un fichier en entrée ?"
                     echo "---------------------------------------------------------------"
-                    echo -e "                            ${menu[0]}Oui\033[0m"
-                    echo -e "                            ${menu[1]}Non\033[0m"
+                    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
                     ;;
                 *)
                     continue
@@ -159,8 +169,8 @@ estFileOutput() {
     echo "---------------------------------------------------------------"
     echo "         Voulez-vous choisir un fichier en sortie ?"
     echo "---------------------------------------------------------------"
-    echo -e "                            ${menu[0]}Oui\033[0m"
-    echo -e "                            ${menu[1]}Non\033[0m"
+    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
+    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
 
     read -rsn1 rep
     while ! [[ -z $rep ]]; do
@@ -168,34 +178,38 @@ estFileOutput() {
             read -sn2 rep
             case "$rep" in
                 '[A')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 0 ]]; then
                         indexMenu=1
                     else
                         ((indexMenu--))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "         Voulez-vous choisir un fichier en sortie ?"
                     echo "---------------------------------------------------------------"
-                    echo -e "                            ${menu[0]}Oui\033[0m"
-                    echo -e "                            ${menu[1]}Non\033[0m"
+                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
+                    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
                     ;;
                 '[B')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 1 ]]; then
                         indexMenu=0
                     else
                         ((indexMenu++))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "         Voulez-vous choisir un fichier en sortie ?"
                     echo "---------------------------------------------------------------"
-                    echo -e "                            ${menu[0]}Oui\033[0m"
-                    echo -e "                            ${menu[1]}Non\033[0m"
+                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
+                    echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
                     ;;
                 *)
                     continue
@@ -228,7 +242,8 @@ choixFichierInput() {
     if [[ -f "$rep" ]]; then
         fichierInput=$rep
         indexMenu=0
-        menu=($selection " ")
+        menu=($selection "")
+        menuFleche=("$selectionFleche" "")
         selectLigne
     else
         clear
@@ -262,8 +277,8 @@ choixFichierOutput() {
         echo "--------------------------------------------------------------------------------"
         echo "  Voulez-vous écraser le fichier ou ajouter la chaine de caractères à la fin ?"
         echo "--------------------------------------------------------------------------------"
-        echo -e "                                   ${menu[0]}Ecraser\033[0m"
-        echo -e "                                   ${menu[1]}Ajouter\033[0m"
+        echo -e "                                   ${menu[0]}Ecraser${menuFleche[0]}\033[0m"
+        echo -e "                                   ${menu[1]}Ajouter${menuFleche[1]}\033[0m"
 
         read -rsn1 choixOutput
         while ! [[ -z $choixOutput ]]; do
@@ -271,34 +286,38 @@ choixFichierOutput() {
                 read -sn2 choixOutput
                 case "$choixOutput" in
                     '[A')
-                        menu[$indexMenu]=" "
+                        menu[$indexMenu]=""
+                        menuFleche[$indexMenu]=""
                         if [[ $indexMenu == 0 ]]; then
                             indexMenu=1
                         else
                             ((indexMenu--))
                         fi
                         menu[$indexMenu]=$selection
+                        menuFleche[$indexMenu]=$selectionFleche
                         clear
                         echo "--------------------------------------------------------------------------------"
                         echo "  Voulez-vous écraser le fichier ou ajouter la chaine de caractères à la fin ?"
                         echo "--------------------------------------------------------------------------------"
-                        echo -e "                                   ${menu[0]}Ecraser\033[0m"
-                        echo -e "                                   ${menu[1]}Ajouter\033[0m"
+                        echo -e "                                   ${menu[0]}Ecraser${menuFleche[0]}\033[0m"
+                        echo -e "                                   ${menu[1]}Ajouter${menuFleche[1]}\033[0m"
                         ;;
                     '[B')
-                        menu[$indexMenu]=" "
+                        menu[$indexMenu]=""
+                        menuFleche[$indexMenu]=""
                         if [[ $indexMenu == 1 ]]; then
                             indexMenu=0
                         else
                             ((indexMenu++))
                         fi
                         menu[$indexMenu]=$selection
+                        menuFleche[$indexMenu]=$selectionFleche
                         clear
                         echo "--------------------------------------------------------------------------------"
                         echo "  Voulez-vous écraser le fichier ou ajouter la chaine de caractères à la fin ?"
                         echo "--------------------------------------------------------------------------------"
-                        echo -e "                                   ${menu[0]}Ecraser\033[0m"
-                        echo -e "                                   ${menu[1]}Ajouter\033[0m"
+                        echo -e "                                   ${menu[0]}Ecraser${menuFleche[0]}\033[0m"
+                        echo -e "                                   ${menu[1]}Ajouter${menuFleche[1]}\033[0m"
                         ;;
                     *)
                         continue
@@ -327,8 +346,8 @@ choixFichierOutput() {
         echo "---------------------------------------------------------------"
         echo "                     Voulez-vous le créer ?"
         echo "---------------------------------------------------------------"
-        echo -e "                             ${menu[0]}Oui\033[0m"
-        echo -e "                             ${menu[1]}Non\033[0m"
+        echo -e "                             ${menu[0]}Oui${menuFleche[0]}\033[0m"
+        echo -e "                             ${menu[1]}Non${menuFleche[1]}\033[0m"
 
         read -rsn1 choixCreation
         while ! [[ -z $choixCreation ]]; do
@@ -336,34 +355,38 @@ choixFichierOutput() {
                 read -sn2 choixCreation
                 case "$choixCreation" in
                     '[A')
-                        menu[$indexMenu]=" "
+                        menu[$indexMenu]=""
+                        menuFleche[$indexMenu]=""
                         if [[ $indexMenu == 0 ]]; then
                             indexMenu=1
                         else
                             ((indexMenu--))
                         fi
                         menu[$indexMenu]=$selection
+                        menuFleche[$indexMenu]=$selectionFleche
                         clear
                         echo "---------------------------------------------------------------"
                         echo "                     Voulez-vous le créer ?"
                         echo "---------------------------------------------------------------"
-                        echo -e "                             ${menu[0]}Oui\033[0m"
-                        echo -e "                             ${menu[1]}Non\033[0m"
+                        echo -e "                             ${menu[0]}Oui${menuFleche[0]}\033[0m"
+                        echo -e "                             ${menu[1]}Non${menuFleche[1]}\033[0m"
                         ;;
                     '[B')
-                        menu[$indexMenu]=" "
+                        menu[$indexMenu]=""
+                        menuFleche[$indexMenu]=""
                         if [[ $indexMenu == 1 ]]; then
                             indexMenu=0
                         else
                             ((indexMenu++))
                         fi
                         menu[$indexMenu]=$selection
+                        menuFleche[$indexMenu]=$selectionFleche
                         clear
                         echo "---------------------------------------------------------------"
                         echo "                     Voulez-vous le créer ?"
                         echo "---------------------------------------------------------------"
-                        echo -e "                             ${menu[0]}Oui\033[0m"
-                        echo -e "                             ${menu[1]}Non\033[0m"
+                        echo -e "                             ${menu[0]}Oui${menuFleche[0]}\033[0m"
+                        echo -e "                             ${menu[1]}Non${menuFleche[1]}\033[0m"
                         ;;
                     *)
                         continue
@@ -380,7 +403,8 @@ choixFichierOutput() {
             touch $fichierOutput
         else
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             choixFichierOutput
         fi
     fi
@@ -396,8 +420,8 @@ selectLigne() {
     echo "------------------------------------------------------------------------------" 
     echo "  Voulez-vous chiffrer/déchiffrer le fichier en entier, ou juste une ligne ?"
     echo "------------------------------------------------------------------------------"
-    echo -e "                             ${menu[0]}Le fichier en entier\033[0m"
-    echo -e "                             ${menu[1]}Juste une ligne\033[0m"
+    echo -e "                             ${menu[0]}Le fichier en entier${menuFleche[0]}\033[0m"
+    echo -e "                             ${menu[1]}Juste une ligne${menuFleche[1]}\033[0m"
 
     read -rsn1 choixPhrase
     while ! [[ -z $choixPhrase ]]; do
@@ -405,34 +429,38 @@ selectLigne() {
             read -sn2 choixPhrase
             case "$choixPhrase" in
                 '[A')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 0 ]]; then
                         indexMenu=1
                     else
                         ((indexMenu--))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "------------------------------------------------------------------------------" 
                     echo "  Voulez-vous chiffrer/déchiffrer le fichier en entier, ou juste une ligne ?"
                     echo "------------------------------------------------------------------------------"
-                    echo -e "                             ${menu[0]}Le fichier en entier\033[0m"
-                    echo -e "                             ${menu[1]}Juste une ligne\033[0m"
+                    echo -e "                             ${menu[0]}Le fichier en entier${menuFleche[0]}\033[0m"
+                    echo -e "                             ${menu[1]}Juste une ligne${menuFleche[1]}\033[0m"
                     ;;
                 '[B')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 1 ]]; then
                         indexMenu=0
                     else
                         ((indexMenu++))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "------------------------------------------------------------------------------" 
                     echo "  Voulez-vous chiffrer/déchiffrer le fichier en entier, ou juste une ligne ?"
                     echo "------------------------------------------------------------------------------"
-                    echo -e "                             ${menu[0]}Le fichier en entier\033[0m"
-                    echo -e "                             ${menu[1]}Juste une ligne\033[0m"
+                    echo -e "                             ${menu[0]}Le fichier en entier${menuFleche[0]}\033[0m"
+                    echo -e "                             ${menu[1]}Juste une ligne${menuFleche[1]}\033[0m"
                     ;;
                 *)
                     continue
@@ -639,10 +667,10 @@ chiffrerVigenere() {
     echo "---------------------------------------------------------------"
     echo "                  Veuillez choisir une action"
     echo "---------------------------------------------------------------"
-    echo -e "                    ${menu[0]}Choisir une clé\033[0m"
-    echo -e "                    ${menu[1]}Utiliser une clé générée\033[0m"
-    echo -e "                    ${menu[2]}Retour\033[0m"
-    echo -e "                    ${menu[3]}Quitter\033[0m"
+    echo -e "                    ${menu[0]}Choisir une clé${menuFleche[0]}\033[0m"
+    echo -e "                    ${menu[1]}Utiliser une clé générée${menuFleche[1]}\033[0m"
+    echo -e "                    ${menu[2]}Retour${menuFleche[2]}\033[0m"
+    echo -e "                    ${menu[3]}Quitter${menuFleche[3]}\033[0m"
     local actionChif=""
 
     read -rsn1 actionChif
@@ -651,38 +679,42 @@ chiffrerVigenere() {
             read -sn2 actionChif
             case "$actionChif" in
                 '[A')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 0 ]]; then
                         indexMenu=3
                     else
                         ((indexMenu--))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "                  Veuillez choisir une action"
                     echo "---------------------------------------------------------------"
-                    echo -e "                    ${menu[0]}Choisir une clé\033[0m"
-                    echo -e "                    ${menu[1]}Utiliser une clé générée\033[0m"
-                    echo -e "                    ${menu[2]}Retour\033[0m"
-                    echo -e "                    ${menu[3]}Quitter\033[0m"
+                    echo -e "                    ${menu[0]}Choisir une clé${menuFleche[0]}\033[0m"
+                    echo -e "                    ${menu[1]}Utiliser une clé générée${menuFleche[1]}\033[0m"
+                    echo -e "                    ${menu[2]}Retour${menuFleche[2]}\033[0m"
+                    echo -e "                    ${menu[3]}Quitter${menuFleche[3]}\033[0m"
                     ;;
                 '[B')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 3 ]]; then
                         indexMenu=0
                     else
                         ((indexMenu++))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "                  Veuillez choisir une action"
                     echo "---------------------------------------------------------------"
-                    echo -e "                    ${menu[0]}Choisir une clé\033[0m"
-                    echo -e "                    ${menu[1]}Utiliser une clé générée\033[0m"
-                    echo -e "                    ${menu[2]}Retour\033[0m"
-                    echo -e "                    ${menu[3]}Quitter\033[0m"
+                    echo -e "                    ${menu[0]}Choisir une clé${menuFleche[0]}\033[0m"
+                    echo -e "                    ${menu[1]}Utiliser une clé générée${menuFleche[1]}\033[0m"
+                    echo -e "                    ${menu[2]}Retour${menuFleche[2]}\033[0m"
+                    echo -e "                    ${menu[3]}Quitter${menuFleche[3]}\033[0m"
                     ;;
                 *)
                     continue
@@ -699,11 +731,13 @@ chiffrerVigenere() {
             choixCle
             clear
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             estFileInput
             clear
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             estFileOutput
             clear
             if [[ $estFichierInput == 0 ]]; then
@@ -715,14 +749,16 @@ chiffrerVigenere() {
             fi
             if [[ $estFichierOutput == 1 ]]; then
                 indexMenu=0
-                menu=($selection " ")
+                menu=($selection "")
+                menuFleche=("$selectionFleche" "")
                 choixFichierOutput
             fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
             printf "\n"
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             continuerYN
             ;;
         "1")
@@ -730,11 +766,13 @@ chiffrerVigenere() {
             genCle
             clear
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             estFileInput
             clear
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             estFileOutput
             clear
             if [[ $estFichierInput == 0 ]]; then
@@ -746,14 +784,16 @@ chiffrerVigenere() {
             fi
             if [[ $estFichierOutput == 1 ]]; then
                 indexMenu=0
-                menu=($selection " ")
+                menu=($selection "")
+                menuFleche=("$selectionFleche" "")
                 choixFichierOutput
             fi
             echo "Voici la clé: $cle"
             chiffrementVigenere "$cle" "$phrase"
             printf "\n"
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             continuerYN
             ;;
         "2")
@@ -765,7 +805,8 @@ chiffrerVigenere() {
         *)
             actionInvalide
             indexMenu=0
-            menu=($selection " " " " " ")
+            menu=($selection "" "" "")
+            menuFleche=("$selectionFleche" "" "" "")
             chiffrerVigenere
             ;;
     esac
@@ -775,9 +816,9 @@ dechiffrerVigenere() {
     echo "---------------------------------------------------------------"
     echo "                   Veuillez choisir une action"
     echo "---------------------------------------------------------------"
-    echo -e "                         ${menu[0]}Choisir une clé\033[0m"
-    echo -e "                         ${menu[1]}Retour\033[0m"
-    echo -e "                         ${menu[2]}Quitter\033[0m"
+    echo -e "                         ${menu[0]}Choisir une clé${menuFleche[0]}\033[0m"
+    echo -e "                         ${menu[1]}Retour${menuFleche[1]}\033[0m"
+    echo -e "                         ${menu[2]}Quitter${menuFleche[2]}\033[0m"
 
     local actionDechif=""
 
@@ -787,36 +828,40 @@ dechiffrerVigenere() {
             read -sn2 actionDechif
             case "$actionDechif" in
                 '[A')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 0 ]]; then
                         indexMenu=2
                     else
                         ((indexMenu--))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "                   Veuillez choisir une action"
                     echo "---------------------------------------------------------------"
-                    echo -e "                         ${menu[0]}Choisir une clé\033[0m"
-                    echo -e "                         ${menu[1]}Retour\033[0m"
-                    echo -e "                         ${menu[2]}Quitter\033[0m"
+                    echo -e "                         ${menu[0]}Choisir une clé${menuFleche[0]}\033[0m"
+                    echo -e "                         ${menu[1]}Retour${menuFleche[1]}\033[0m"
+                    echo -e "                         ${menu[2]}Quitter${menuFleche[2]}\033[0m"
                     ;;
                 '[B')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 2 ]]; then
                         indexMenu=0
                     else
                         ((indexMenu++))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "                   Veuillez choisir une action"
                     echo "---------------------------------------------------------------"
-                    echo -e "                         ${menu[0]}Choisir une clé\033[0m"
-                    echo -e "                         ${menu[1]}Retour\033[0m"
-                    echo -e "                         ${menu[2]}Quitter\033[0m"
+                    echo -e "                         ${menu[0]}Choisir une clé${menuFleche[0]}\033[0m"
+                    echo -e "                         ${menu[1]}Retour${menuFleche[1]}\033[0m"
+                    echo -e "                         ${menu[2]}Quitter${menuFleche[2]}\033[0m"
                     ;;
                 *)
                     continue
@@ -833,11 +878,13 @@ dechiffrerVigenere() {
             choixCle
             clear
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             estFileInput
             clear
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             estFileOutput
             clear
             if [[ $estFichierInput == 0 ]]; then
@@ -849,7 +896,8 @@ dechiffrerVigenere() {
             fi
             if [[ $estFichierOutput == 1 ]]; then
                 indexMenu=0
-                menu=($selection " ")
+                menu=($selection "")
+                menuFleche=("$selectionFleche" "")
                 choixFichierOutput
             fi
             echo "Voici la clé: $cle"
@@ -857,7 +905,8 @@ dechiffrerVigenere() {
             printf "\n"
 
             indexMenu=0
-            menu=($selection " ")
+            menu=($selection "")
+            menuFleche=("$selectionFleche" "")
             continuerYN
             ;;
         "1")
@@ -869,7 +918,8 @@ dechiffrerVigenere() {
         *)
             actionInvalide
             indexMenu=0
-            menu=($selection " " " ")
+            menu=($selection "" "")
+            menuFleche=("$selectionFleche" "" "")
             dechiffrerVigenere
             ;;
     esac
@@ -879,10 +929,10 @@ vigenereMain_() {
     echo "---------------------------------------------------------------"
     echo "                  Veuillez choisir une action"
     echo "---------------------------------------------------------------"
-    echo -e "                        ${menu[0]}Chiffrer\033[0m"
-    echo -e "                        ${menu[1]}Dechiffrer\033[0m"
-    echo -e "                        ${menu[2]}Retour\033[0m"
-    echo -e "                        ${menu[3]}Quitter\033[0m"
+    echo -e "                        ${menu[0]}Chiffrer${menuFleche[0]}\033[0m"
+    echo -e "                        ${menu[1]}Dechiffrer${menuFleche[1]}\033[0m"
+    echo -e "                        ${menu[2]}Retour${menuFleche[2]}\033[0m"
+    echo -e "                        ${menu[3]}Quitter${menuFleche[3]}\033[0m"
 
     
 
@@ -894,38 +944,42 @@ vigenereMain_() {
             read -sn2 choixVigenere
             case "$choixVigenere" in
                 '[A')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 0 ]]; then
                         indexMenu=3
                     else
                         ((indexMenu--))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "                  Veuillez choisir une action"
                     echo "---------------------------------------------------------------"
-                    echo -e "                        ${menu[0]}Chiffrer\033[0m"
-                    echo -e "                        ${menu[1]}Dechiffrer\033[0m"
-                    echo -e "                        ${menu[2]}Retour\033[0m"
-                    echo -e "                        ${menu[3]}Quitter\033[0m"
+                    echo -e "                        ${menu[0]}Chiffrer${menuFleche[0]}\033[0m"
+                    echo -e "                        ${menu[1]}Dechiffrer${menuFleche[1]}\033[0m"
+                    echo -e "                        ${menu[2]}Retour${menuFleche[2]}\033[0m"
+                    echo -e "                        ${menu[3]}Quitter${menuFleche[3]}\033[0m"
                     ;;
                 '[B')
-                    menu[$indexMenu]=" "
+                    menu[$indexMenu]=""
+                    menuFleche[$indexMenu]=""
                     if [[ $indexMenu == 3 ]]; then
                         indexMenu=0
                     else
                         ((indexMenu++))
                     fi
                     menu[$indexMenu]=$selection
+                    menuFleche[$indexMenu]=$selectionFleche
                     clear
                     echo "---------------------------------------------------------------"
                     echo "                  Veuillez choisir une action"
                     echo "---------------------------------------------------------------"
-                    echo -e "                        ${menu[0]}Chiffrer\033[0m"
-                    echo -e "                        ${menu[1]}Dechiffrer\033[0m"
-                    echo -e "                        ${menu[2]}Retour\033[0m"
-                    echo -e "                        ${menu[3]}Quitter\033[0m"
+                    echo -e "                        ${menu[0]}Chiffrer${menuFleche[0]}\033[0m"
+                    echo -e "                        ${menu[1]}Dechiffrer${menuFleche[1]}\033[0m"
+                    echo -e "                        ${menu[2]}Retour${menuFleche[2]}\033[0m"
+                    echo -e "                        ${menu[3]}Quitter${menuFleche[3]}\033[0m"
                     ;;
                 *)
                     continue
@@ -940,12 +994,14 @@ vigenereMain_() {
     case "$indexMenu" in
         "0")
             indexMenu=0
-            menu=($selection " " " " " ")
+            menu=($selection "" "" "")
+            menuFleche=("$selectionFleche" "" "" "")
             chiffrerVigenere
             ;;
         "1")
             indexMenu=0
-            menu=($selection " " " " " ")
+            menu=($selection "" "" "")
+            menuFleche=("$selectionFleche" "" "" "")
             dechiffrerVigenere
             ;;
         "2")
@@ -969,7 +1025,7 @@ vigenereMain() {
     fichierOutput=""
     outputChoice="ajouter"
     indexMenu=0
-    menu=($selection " " " " " ")
+    menu=($selection "" "" "")
+    menuFleche=("$selectionFleche" "" "" "")
     vigenereMain_
 }
-
