@@ -22,6 +22,7 @@ vigenereMain() {
     echo "test"
 }
 
+#Affiche un message dû à une action invalide
 actionInvalide() {
     clear
     echo ""
@@ -33,6 +34,7 @@ actionInvalide() {
     clear
 }
 
+#Propose à l'utilisateur s'il veut quitter le programme ou non
 continuerYN() {
     local rep=""
 
@@ -98,6 +100,7 @@ continuerYN() {
     fi
 }
 
+#Demande à l'utilisateur s'il veut un fichier en tant qu'entrée pour le chiffrement/déchiffrement
 estFileInput() {
     local rep=""
 
@@ -163,6 +166,7 @@ estFileInput() {
     fi
 }
 
+#Demande à l'utilisateur s'il veut un fichier en tant que sortie pour le chiffrement/déchiffrement
 estFileOutput() {
     local rep=""
 
@@ -228,6 +232,7 @@ estFileOutput() {
     fi
 }
 
+#Demande à l'utilisateur quel fichier en entrée il veut
 choixFichierInput() {
     local rep=""
 
@@ -258,6 +263,7 @@ choixFichierInput() {
     fi
 }
 
+#Demande à l'utilisateur quel fichier en sortie il veut, s'il n'existe pas, le fichier sera créé, et lui demande aussi s'il veut ajouter le résultat à la fin du fichier ou écraser le fichier
 choixFichierOutput() {
     local rep=""
     local choixCreation=""
@@ -410,6 +416,7 @@ choixFichierOutput() {
     fi
 }
 
+#Demande à l'utilisateur quelle ligne il veut chiffrer/déchiffrer
 selectLigne() {
     local ind=0
     local phrs=""
@@ -493,6 +500,7 @@ selectLigne() {
     phrase=$phrs
 }
 
+#Demande à l'utilisateur une clé qui servira de chiffrement/déchiffrement, uniquement les caractères alphabetiques sont acceptés
 choixCle() {
     local choix=""
 
@@ -517,6 +525,7 @@ choixCle() {
     cle=$choix
 }
 
+#Demande à l'utilisateur la phrase à chiffrer/déchiffrer
 choixPhrase() {
     local phrs=""
     
@@ -527,6 +536,7 @@ choixPhrase() {
     phrase=$phrs
 }
 
+#Génère une clé de taille de aléatoire (entre 1 et 69), avec des caractères alphabétiques aléatoires
 genCle() {
     local res=""
     local taille=$((RANDOM % 69 + 1))
@@ -538,6 +548,7 @@ genCle() {
     cle=$res
 }
 
+#Chiffre la phrase dans le 2ème paramètre (sentence) avec la clé du premier pramaètre (key)
 chiffrementVigenere() {
     #Initialisation de toutes les variables
     local key="$1"
@@ -597,6 +608,7 @@ chiffrementVigenere() {
     fi
 }
 
+#Déchiffre la phrase dans le 2ème paramètre (sentence) avec la clé du premier pramaètre (key)
 dechiffrementVigenere() {
     #Initialisation de toutes les variables
     local key="$1"
@@ -663,6 +675,7 @@ dechiffrementVigenere() {
     fi
 }
 
+#Affiche un menu, dont le but est de chiffrer, où l'utilisateur peut choisir une clé, utiliser une clé générée aléatoirement, aller en arrière, ou quitter le programme
 chiffrerVigenere() {
     echo "---------------------------------------------------------------"
     echo "                  Veuillez choisir une action"
@@ -812,6 +825,7 @@ chiffrerVigenere() {
     esac
 }
 
+#Affiche un menu, dont le but est de déchiffrer, où l'utilisateur peut choisir une clé, aller en arrière, ou quitter le programme
 dechiffrerVigenere() {
     echo "---------------------------------------------------------------"
     echo "                   Veuillez choisir une action"
@@ -925,6 +939,7 @@ dechiffrerVigenere() {
     esac
 }
 
+#Affiche un menu qui propose à l'utilisateur de chiffrer (appelle de la fonction chiffrerVigenere), de déchiffrer (appelle de la fonction dechiffrerVigenere), de retourner en arrière (fonction main), ou de quitter (fonction quitter)
 vigenereMain_() {
     echo "---------------------------------------------------------------"
     echo "                  Veuillez choisir une action"
@@ -1015,6 +1030,7 @@ vigenereMain_() {
     esac
 }
 
+#Initialise toutes les variables et appelle la fonction vigenereMain_
 vigenereMain() {
     clear
     cle=""
