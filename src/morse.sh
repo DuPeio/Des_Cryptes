@@ -17,7 +17,7 @@ do
         code_morse["$cle"]="$valeur" # Ajoute les éléments a la liste d'associatioon
         decode_morse["$valeur"]="$cle"
     fi
-done < 'morse.json'
+done < '../res/morse.json'
 
 erreur=0 # Variable globale pour les messages dans les menus
 erreurFunc() { 
