@@ -173,8 +173,8 @@ estFileOutput() {
     echo "---------------------------------------------------------------"
     echo "         Voulez-vous choisir un fichier en sortie ?"
     echo "---------------------------------------------------------------"
-    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
     echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
 
     read -rsn1 rep
     while ! [[ -z $rep ]]; do
@@ -195,8 +195,8 @@ estFileOutput() {
                     echo "---------------------------------------------------------------"
                     echo "         Voulez-vous choisir un fichier en sortie ?"
                     echo "---------------------------------------------------------------"
-                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
                     echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
                     ;;
                 '[B')
                     menu[$indexMenu]=""
@@ -212,8 +212,8 @@ estFileOutput() {
                     echo "---------------------------------------------------------------"
                     echo "         Voulez-vous choisir un fichier en sortie ?"
                     echo "---------------------------------------------------------------"
-                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
                     echo -e "                            ${menu[0]}Oui${menuFleche[0]}\033[0m"
+                    echo -e "                            ${menu[1]}Non${menuFleche[1]}\033[0m"
                     ;;
                 *)
                     continue
