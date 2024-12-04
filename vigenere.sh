@@ -611,10 +611,10 @@ dechiffrementVigenere() {
     local nb=0
 
     for (( i=0; i<len_sentence; i++ )); do
-        chara=${key:ind % len_key:1}        #caractère de key à l'index ind
-        char=${sentence:i:1}        #caractère de sentence à l'index i
+        chara=${key:ind % len_key:1}        # caractère de key à l'index ind
+        char=${sentence:i:1}        # caractère de sentence à l'index i
 
-        #Tant que le caractère n'est pas utilisable en tant que clé, le prochain sera utilisé, et si on atteint la fin, on retourne au début
+        # Tant que le caractère n'est pas utilisable en tant que clé, le prochain sera utilisé, et si on atteint la fin, on retourne au début
         while ! [[ "$chara" =~ [a-zA-Z] ]]; do
             ((ind++))
             chara=${key:ind % len_key:1}
